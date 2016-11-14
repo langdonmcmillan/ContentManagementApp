@@ -1,0 +1,47 @@
+*.class
+
+# ignore temporary files
+*.*~
+
+# Mobile Tools for Java (J2ME)
+.mtj.tmp/
+
+# Package Files #
+*.jar
+*.war
+*.ear
+
+# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
+hs_err_pid*
+
+# maven
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+.mvn/timing.properties
+
+# netbeans
+nbproject/private/
+build/
+nbbuild/
+dist/
+nbdist/
+.nb-gradle/
+# /Assignments/JavaBasics/WindowMasterV2/nbproject/private/
+# /Assignments/JavaBasics/test/nbproject/private/
+/Assignments/JavaOOConcepts/Drills/JUnitDrillsPart1/nbproject/
+/Assignments/JavaOOConcepts/Labs/VendingMachine/nbproject/
+/Assignments/JavaOOConcepts/Labs/AddressBook/nbproject/
+/Assignments/JavaOOConcepts/Mastery/FlooringMastery/nbproject/
+
+#OSX
+.DS_Store
+/Assignments/WebUI/BootstrapLabs1And2/nbproject/private/
+/Assignments/WebUI/Labs/SiteLab/nbproject/
+/Assignments/WebUI/Labs/AddressBookSMVC/nbproject/
+/Assignments/WebUI/Labs/DvdLibraryAJAX/nbproject/
