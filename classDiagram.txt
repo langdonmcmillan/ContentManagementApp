@@ -1,0 +1,40 @@
+Tag (DTO)
+int tagId
+String tagDescription
+
+Tag (interface)
+public void addTag (Tag tag)
+public Tag updateTag (Tag tag)
+public void archiveTag (int tagId)
+public Tag selectTagById (int tagId)
+public List<Tag> selectAllTags()
+
+Post (DTO)
+int postId
+
+LocalDate createdDate
+LocalDate lastUpdatedDate
+LocalDate archivedDate
+int createdByUserId
+int lastUpdatedByUserId
+int archivedByUserId
+Content publishedContent
+List<Content> listOfContentsPerPost
+
+Post (interface)
+public void addPost(Post post)
+public Post updatePost(Post post)
+public void archivePost (int postId)
+public Post selectPostbyId (int postId)
+
+public List<Content> listContentsOfPost(int postId)
+public Content getPublishedPost(int postId)
+
+public List<Post> selectAllPosts()
+
+-- these below can be done for most recently published, updated, and archived --
+public List<Post> sortPostByAscendingDate()
+public List<Post> sortPostByDescendingDate()
+
+
+
