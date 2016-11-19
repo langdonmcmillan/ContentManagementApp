@@ -109,8 +109,8 @@ INSERT INTO Category (CategoryDescription) VALUES ('Animal Rescue');
 
 -- establishing foreign keys for content table
 ALTER TABLE Content
-ADD CONSTRAINT User_fk_Post FOREIGN KEY (PostId) REFERENCES Post (PostId) ON DELETE NO ACTION,
-ADD CONSTRAINT User_fk_Status FOREIGN KEY (StatusId) REFERENCES `Status` (StatusId) ON DELETE NO ACTION;
+ADD CONSTRAINT Content_fk_Post FOREIGN KEY (PostId) REFERENCES Post (PostId) ON DELETE NO ACTION,
+ADD CONSTRAINT Content_fk_Status FOREIGN KEY (StatusId) REFERENCES `Status` (StatusId) ON DELETE NO ACTION;
 
 -- establishing foreign key for user table
 ALTER TABLE User
