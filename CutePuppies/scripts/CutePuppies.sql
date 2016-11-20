@@ -1,4 +1,3 @@
--- Based on Joes2Pros
 SET SQL_SAFE_UPDATES = 0;
 DROP DATABASE IF EXISTS CutePuppies;
 CREATE DATABASE CutePuppies;
@@ -9,85 +8,84 @@ ContentId INT NOT NULL AUTO_INCREMENT,
 PostId INT NOT NULL,
 Title VARCHAR(100),
 ContentImgLink VARCHAR(500),
-Body BLOB,
-Snippet BLOB,
-StatusId INT NOT NULL,
-UrlPattern VARCHAR(1000) NOT NULL,
-ContentTypeId INT NOT NULL,
+Body TEXT,
+Snippet TEXT,
+ContentStatusCode INT NOT NULL,
+UrlPattern VARCHAR(100) NOT NULL,
+ContentTypeCode INT NOT NULL,
 CreatedByUserId INT NOT NULL,
 CreatedOnDate DATE NOT NULL,
-UpdatedByUserId INT NOT NULL,
-UpdatedOnDate DATE NOT NULL,
-ArchivedByUserId INT NOT NULL,
-ArchivedOnDate DATE NOT NULL,
+UpdatedByUserId INT,
+UpdatedOnDate DATE,
+ArchivedByUserId INT,
+ArchivedOnDate DATE,
 PRIMARY KEY (ContentId),
 KEY (PostId),
-KEY(StatusId)
+KEY(ContentStatusCode)
 );
 
 CREATE TABLE Post (
 PostId INT NOT NULL AUTO_INCREMENT,
 CreatedByUserId INT NOT NULL,
 CreatedOnDate DATE NOT NULL,
-UpdatedByUserId INT NOT NULL,
-UpdatedOnDate DATE NOT NULL,
-ArchivedByUserId INT NOT NULL,
-ArchivedOnDate DATE NOT NULL,
+UpdatedByUserId INT,
+UpdatedOnDate DATE,
+ArchivedByUserId INT,
+ArchivedOnDate DATE,
 PRIMARY KEY (PostId)
 );
 
 CREATE TABLE User (
 UserId INT NOT NULL AUTO_INCREMENT,
-RoleID INT NOT NULL,
+RoleCode VARCHAR(20) NOT NULL,
 CreatedDate DATE NOT NULL,
 UpdatedDate DATE,
 DeletedDate DATE,
-UserName VARCHAR(100),
-UserPassword VARCHAR(100),
+UserName VARCHAR(100) NOT NULL,
+UserPassword VARCHAR(100) NOT NULL,
+UserEmail VARCHAR(100) NOT NULL,
 PRIMARY KEY (UserId),
-KEY (RoleId)
+KEY (RoleCode)
 );
 
-CREATE TABLE `Status` (
-StatusId INT NOT NULL AUTO_INCREMENT,
-StatusDescription VARCHAR(100),
-PRIMARY KEY (StatusId)
+CREATE TABLE ContentStatus (
+ContentStatusCode VARCHAR(20) NOT NULL,
+ContentStatusDescription VARCHAR(100),
+PRIMARY KEY (ContentStatusCode)
 );
-INSERT INTO `Status` (StatusDescription) VALUES ('Published');
-INSERT INTO `Status` (StatusDescription) VALUES ('Draft');
-INSERT INTO `Status` (StatusDescription) VALUES ('Awaiting approval');
-INSERT INTO `Status` (StatusDescription) VALUES ('Archived');
+INSERT INTO ContentStatus (ContentStatusCode, ContentStatusDescription) VALUES ('PUBLISHED', 'Published');
+INSERT INTO ContentStatus (ContentStatusCode, ContentStatusDescription) VALUES ('DRAFT', 'Draft');
+INSERT INTO ContentStatus (ContentStatusCode, ContentStatusDescription) VALUES ('AWAITING', 'Awaiting approval');
+INSERT INTO ContentStatus (ContentStatusCode, ContentStatusDescription) VALUES ('ARCHIVED', 'Archived');
 
 CREATE TABLE Role (
-RoleId INT NOT NULL AUTO_INCREMENT,
+RoleCode VARCHAR(20) NOT NULL,
 RoleDescription VARCHAR(100),
-PRIMARY KEY (RoleId)
+PRIMARY KEY (RoleCode)
 );
-INSERT INTO Role (RoleDescription) VALUES ('Administrator');
-INSERT INTO Role (RoleDescription) VALUES ('Author');
-INSERT INTO Role (RoleDescription) VALUES ('Visitor');
-INSERT INTO Role (RoleDescription) VALUES ('Member');
+INSERT INTO Role (RoleCode, RoleDescription) VALUES ('ADMIN', 'Administrator');
+INSERT INTO Role (RoleCode, RoleDescription) VALUES ('AUTHOR', 'Author');
+INSERT INTO Role (RoleCode, RoleDescription) VALUES ('GUEST', 'Guest');
+INSERT INTO Role (RoleCode, RoleDescription) VALUES ('MEMBER', 'Member');
 
 CREATE TABLE ContentType (
-ContentTypeId INT NOT NULL AUTO_INCREMENT,
+ContentTypeCode VARCHAR(20) NOT NULL,
 ContentTypeDescription VARCHAR(100),
-PRIMARY KEY (ContentTypeId)
+PRIMARY KEY (ContentTypeCode)
 );
-INSERT INTO ContentType (ContentTypeDescription) VALUES ('Post');
-INSERT INTO ContentType (ContentTypeDescription) VALUES ('Static page');
-INSERT INTO ContentType (ContentTypeDescription) VALUES ('Comment');
+INSERT INTO ContentType (ContentTypeCode, ContentTypeDescription) VALUES ('POST', 'Post');
+INSERT INTO ContentType (ContentTypeCode, ContentTypeDescription) VALUES ('STATIC PAGE', 'Static page');
+INSERT INTO ContentType (ContentTypeCode, ContentTypeDescription) VALUES ('COMMENT', 'Comment');
 
 CREATE TABLE Permission (
-PermissionId INT NOT NULL AUTO_INCREMENT,
+PermissionCode VARCHAR(100) NOT NULL,
 PermissionDescription VARCHAR(100),
-PRIMARY KEY (PermissionId)
+PRIMARY KEY (PermissionCode)
 );
-INSERT INTO Permission (PermissionDescription) VALUES ('Can Create New Draft');
-INSERT INTO Permission (PermissionDescription) VALUES ('Can Edit Published And Draft Post');
-INSERT INTO Permission (PermissionDescription) VALUES ('Can Publish Post');
-INSERT INTO Permission (PermissionDescription) VALUES ('Can Delete Post');
-INSERT INTO Permission (PermissionDescription) VALUES ('Can Submit Draft To Publish');
-INSERT INTO Permission (PermissionDescription) VALUES ('Can Submit Post To Delete');
+INSERT INTO Permission (PermissionCode, PermissionDescription) VALUES ('CAN_CREATE', 'Can Create New Draft');
+INSERT INTO Permission (PermissionCode, PermissionDescription) VALUES ('CAN_EDIT', 'Can Edit Published And Draft Post');
+INSERT INTO Permission (PermissionCode, PermissionDescription) VALUES ('CAN_PUBLISH', 'Can Publish Post');
+INSERT INTO Permission (PermissionCode, PermissionDescription) VALUES ('CAN_DELETE', 'Can Delete Post');
 
 CREATE TABLE Tag (
 TagId INT NOT NULL AUTO_INCREMENT,
@@ -110,22 +108,22 @@ INSERT INTO Category (CategoryDescription) VALUES ('Animal Rescue');
 -- establishing foreign keys for content table
 ALTER TABLE Content
 ADD CONSTRAINT Content_fk_Post FOREIGN KEY (PostId) REFERENCES Post (PostId) ON DELETE NO ACTION,
-ADD CONSTRAINT Content_fk_Status FOREIGN KEY (StatusId) REFERENCES `Status` (StatusId) ON DELETE NO ACTION;
+ADD CONSTRAINT Content_fk_ContentStatus FOREIGN KEY (ContentStatusCode) REFERENCES ContentStatus (ContentStatusCode) ON DELETE NO ACTION;
 
 -- establishing foreign key for user table
 ALTER TABLE User
-ADD CONSTRAINT User_fk_Role FOREIGN KEY (RoleId) REFERENCES Role (RoleId) ON DELETE NO ACTION;
+ADD CONSTRAINT User_fk_Role FOREIGN KEY (RoleCode) REFERENCES Role (RoleCode) ON DELETE NO ACTION;
 
 -- establishing bridge table betwen role and permission
 CREATE TABLE role_permission (
-RoleId INT NOT NULL,
-PermissionId INT NOT NULL,
-KEY RoleId (RoleId),
-KEY PermissionId (PermissionId)
+RoleCode VARCHAR(20) NOT NULL,
+PermissionCode VARCHAR(100) NOT NULL,
+KEY RoleCode (RoleCode),
+KEY PermissionCode (PermissionCode)
 );
 ALTER TABLE role_permission
-ADD CONSTRAINT role_permission_fk_role FOREIGN KEY (RoleId) REFERENCES Role (RoleId) ON DELETE NO ACTION,
-ADD CONSTRAINT role_permission_fk_permission FOREIGN KEY (PermissionId) REFERENCES Permission (PermissionId) ON DELETE NO ACTION;
+ADD CONSTRAINT role_permission_fk_role FOREIGN KEY (RoleCode) REFERENCES Role (RoleCode) ON DELETE NO ACTION,
+ADD CONSTRAINT role_permission_fk_permission FOREIGN KEY (PermissionCode) REFERENCES Permission (PermissionCode) ON DELETE NO ACTION;
 
 -- establishing bridge table between content and tag
 CREATE TABLE content_tag (
@@ -148,4 +146,3 @@ KEY CategoryId (CategoryId)
 ALTER TABLE content_category
 ADD CONSTRAINT content_category_fk_content FOREIGN KEY (ContentId) REFERENCES Content (ContentId) ON DELETE NO ACTION,
 ADD CONSTRAINT content_category_fk_category FOREIGN KEY (CategoryId) REFERENCES Category (CategoryId) ON DELETE NO ACTION;
-
