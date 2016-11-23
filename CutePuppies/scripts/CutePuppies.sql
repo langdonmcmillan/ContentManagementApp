@@ -9,10 +9,14 @@ PostId INT NOT NULL,
 Title VARCHAR(100),
 ContentImgLink VARCHAR(500),
 Body TEXT,
-Snippet TEXT,
+Snippet TEXT, -- look into dot dot dot js
 ContentStatusCode INT NOT NULL,
+-- controller has to figure out how to get the data, it will call dao to do that
+-- if it's a title, it has to be unique
+-- if it's a contentId / postId, this will be unique
 UrlPattern VARCHAR(100) NOT NULL,
 ContentTypeCode INT NOT NULL,
+-- not required...
 CreatedByUserId INT NOT NULL,
 CreatedOnDate DATE NOT NULL,
 UpdatedByUserId INT,
@@ -26,6 +30,7 @@ KEY(ContentStatusCode)
 
 CREATE TABLE Post (
 PostId INT NOT NULL AUTO_INCREMENT,
+-- not necessary...
 CreatedByUserId INT NOT NULL,
 CreatedOnDate DATE NOT NULL,
 UpdatedByUserId INT,
@@ -38,6 +43,7 @@ PRIMARY KEY (PostId)
 CREATE TABLE User (
 UserId INT NOT NULL AUTO_INCREMENT,
 RoleCode VARCHAR(20) NOT NULL,
+-- not necessary
 CreatedDate DATE NOT NULL,
 UpdatedDate DATE,
 DeletedDate DATE,
@@ -106,6 +112,8 @@ INSERT INTO Category (CategoryDescription) VALUES ('Adoption Story');
 INSERT INTO Category (CategoryDescription) VALUES ('Animal Rescue');
 
 -- establishing foreign keys for content table
+-- ON DELETE NO ACTION creates orphans
+-- this is contingent on methods that take care of the other end of the foreign key relationship in the 'main table'
 ALTER TABLE Content
 ADD CONSTRAINT Content_fk_Post FOREIGN KEY (PostId) REFERENCES Post (PostId) ON DELETE NO ACTION,
 ADD CONSTRAINT Content_fk_ContentStatus FOREIGN KEY (ContentStatusCode) REFERENCES ContentStatus (ContentStatusCode) ON DELETE NO ACTION;
@@ -125,6 +133,7 @@ ALTER TABLE role_permission
 ADD CONSTRAINT role_permission_fk_role FOREIGN KEY (RoleCode) REFERENCES Role (RoleCode) ON DELETE NO ACTION,
 ADD CONSTRAINT role_permission_fk_permission FOREIGN KEY (PermissionCode) REFERENCES Permission (PermissionCode) ON DELETE NO ACTION;
 
+-- talk to team about doing post_tag and post_category instead of content_tag and content_category
 -- establishing bridge table between content and tag
 CREATE TABLE content_tag (
 ContentId INT NOT NULL,
