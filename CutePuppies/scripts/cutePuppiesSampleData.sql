@@ -10,7 +10,11 @@ VALUES (0, '2016-11-30', null, null, null, null);
 
 -- post 3
 INSERT INTO Post (CreatedByUserId, CreatedOnDate, UpdatedByUserId, UpdatedOnDate, ArchivedByUserId, ArchivedOnDate) 
-VALUES (0, '2016-12-01', null, null, null, null);
+VALUES (1, '2016-12-01', null, null, null, null);
+
+-- post 4
+INSERT INTO Post (CreatedByUserId, CreatedOnDate, UpdatedByUserId, UpdatedOnDate, ArchivedByUserId, ArchivedOnDate) 
+VALUES (0, '2016-12-10', null, null, null, null);
 
 -- 2 content for post 1. one archived, one published.
 INSERT INTO Content 
@@ -37,6 +41,12 @@ INSERT INTO Content
 (PostId, Title, ContentImgLink, Body, Snippet, ContentStatusCode, UrlPattern, ContentTypeCode, CreatedByUserId, CreatedOnDate, UpdatedByUserId, UpdatedOnDate, ArchivedByUserId, ArchivedOnDate) 
 VALUES
 (3, 'Post by marketing person', 'someImgLink', 'body for content 2 of post 3', 'snippet for content 2 of post 3', 'AWAITING', 'urlPatternContent2Post3', 'POST', 1, '2016-12-05', null, null, null, null);
+
+-- 1 content for post 4. one published.
+INSERT INTO Content 
+(PostId, Title, ContentImgLink, Body, Snippet, ContentStatusCode, UrlPattern, ContentTypeCode, CreatedByUserId, CreatedOnDate, UpdatedByUserId, UpdatedOnDate, ArchivedByUserId, ArchivedOnDate) 
+VALUES
+(4, 'Post by admin', 'someImgLink', 'body for content 1 of post 4', 'snippet for content 1 of post 4', 'PUBLISHED', 'urlPatternContent1Post4', 'POST', 0, '2016-12-10', null, null, null, null);
 
 SELECT 
     *
