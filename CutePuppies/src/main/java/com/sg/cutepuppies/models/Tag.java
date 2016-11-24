@@ -11,5 +11,21 @@ package com.sg.cutepuppies.models;
  */
 public class Tag {
     private int tagID;
-    private String tagName;
+    private String tagDescription;
+
+    public int getTagID() {
+        return tagID;
+    }
+
+    public void setTagID(int tagID) {
+        this.tagID = tagID;
+    }
+
+    public String getTagDescription() {
+        return tagDescription;
+    }
+
+    public void setTagDescription(String tagDescription) {
+        this.tagDescription = tagDescription;
+    }
 }

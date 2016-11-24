@@ -12,11 +12,67 @@ import java.time.LocalDate;
  * @author apprentice
  */
 public class Post {
-    private int postID;
-    private int createUserID;
-    private LocalDate createDate;
-    private int lastUpdateUserID;
-    private LocalDate lastUpdateDate;
-    private int deleteUserID;
-    private LocalDate deleteDate;
+    private int postId;
+    private int createdByUserId;
+    private LocalDate createdOnDate;
+    private int updatedByUserId;
+    private LocalDate updatedByDate;
+    private int archivedByUserId;
+    private LocalDate archivedOnDate;
+
+    public int getPostId() {
+        return postId;
+    }
+
+    public void setPostId(int postId) {
+        this.postId = postId;
+    }
+
+    public int getCreatedByUserId() {
+        return createdByUserId;
+    }
+
+    public void setCreatedByUserId(int createdByUserId) {
+        this.createdByUserId = createdByUserId;
+    }
+
+    public LocalDate getCreatedOnDate() {
+        return createdOnDate;
+    }
+
+    public void setCreatedOnDate(LocalDate createdOnDate) {
+        this.createdOnDate = createdOnDate;
+    }
+
+    public int getUpdatedByUserId() {
+        return updatedByUserId;
+    }
+
+    public void setUpdatedByUserId(int updatedByUserId) {
+        this.updatedByUserId = updatedByUserId;
+    }
+
+    public LocalDate getUpdatedByDate() {
+        return updatedByDate;
+    }
+
+    public void setUpdatedByDate(LocalDate updatedByDate) {
+        this.updatedByDate = updatedByDate;
+    }
+
+    public int getArchivedByUserId() {
+        return archivedByUserId;
+    }
+
+    public void setArchivedByUserId(int archivedByUserId) {
+        this.archivedByUserId = archivedByUserId;
+    }
+
+    public LocalDate getArchivedOnDate() {
+        return archivedOnDate;
+    }
+
+    public void setArchivedOnDate(LocalDate archivedOnDate) {
+        this.archivedOnDate = archivedOnDate;
+    }
 }
