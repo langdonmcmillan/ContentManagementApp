@@ -16,7 +16,7 @@ public class Post {
     private int createdByUserId;
     private LocalDate createdOnDate;
     private int updatedByUserId;
-    private LocalDate updatedByDate;
+    private LocalDate updatedOnDate;
     private int archivedByUserId;
     private LocalDate archivedOnDate;
 
@@ -52,12 +52,12 @@ public class Post {
         this.updatedByUserId = updatedByUserId;
     }
 
-    public LocalDate getUpdatedByDate() {
-        return updatedByDate;
+    public LocalDate getUpdatedOnDate() {
+        return updatedOnDate;
     }
 
-    public void setUpdatedByDate(LocalDate updatedByDate) {
-        this.updatedByDate = updatedByDate;
+    public void setUpdatedOnDate(LocalDate updatedOnDate) {
+        this.updatedOnDate = updatedOnDate;
     }
 
     public int getArchivedByUserId() {
