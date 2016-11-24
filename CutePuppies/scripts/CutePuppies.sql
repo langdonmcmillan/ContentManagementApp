@@ -12,7 +12,7 @@ CREATE TABLE Content (
     Snippet TEXT,
     ContentStatusCode VARCHAR(20) NOT NULL,
     UrlPattern VARCHAR(100) NOT NULL,
-    ContentTypeCode INT NOT NULL,
+    ContentTypeCode VARCHAR(20) NOT NULL,
     CreatedByUserId INT NOT NULL,
     CreatedOnDate DATE NOT NULL,
     UpdatedByUserId INT,
