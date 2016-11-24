@@ -10,5 +10,6 @@ package com.sg.cutepuppies.models;
  * @author apprentice
  */
 public class Category {
-    
+    private int categoryID;
+    private String categoryName;
 }

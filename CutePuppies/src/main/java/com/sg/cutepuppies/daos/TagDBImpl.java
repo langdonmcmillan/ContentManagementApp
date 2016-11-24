@@ -5,10 +5,38 @@
  */
 package com.sg.cutepuppies.daos;
 
+import com.sg.cutepuppies.models.Tag;
+import java.util.List;
+
 /**
  *
  * @author apprentice
  */
-public class TagDBImpl {
+public class TagDBImpl implements TagDAOInterface {
+
+    @Override
+    public List<Tag> getAllTags() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Tag getTagByName(String tag) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Tag addTag(String tag) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Tag updateTag(Tag tag) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void deleteTag(int tagID) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     
 }

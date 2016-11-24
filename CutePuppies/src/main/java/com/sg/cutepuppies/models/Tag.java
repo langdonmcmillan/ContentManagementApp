@@ -10,5 +10,6 @@ package com.sg.cutepuppies.models;
  * @author apprentice
  */
 public class Tag {
-    
+    private int tagID;
+    private String tagName;
 }
