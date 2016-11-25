@@ -36,8 +36,8 @@ public class CutePuppiesController {
     }
 
     @RequestMapping(value = {"/"}, method = RequestMethod.GET)
-    public String displayIndex() {
-        return "blog";
+    public String getLandingPage() {
+        return "index";
     }
 
     @RequestMapping(value = "getAllPosts", method = RequestMethod.GET)

@@ -1,9 +1,18 @@
-#blog-main-pic {
-    display:block;
-    margin: auto;
-    width: 30%;
+* {
+    font-family: 'McLaren', cursive;
 }
 
-.emphasis {
-    font-size: 20px;
+#blog-main-pic {
+    display: block;
+    margin: auto;
+    width: 40%;
+    padding: 30px;
+}
+
+body {
+    padding-top: 70px;
+}
+
+footer {
+    margin: 50px;
 }
