@@ -35,25 +35,28 @@
                 </div>
             </div>
         </nav>
-        <img class = "img-responsive" id = "blog-main-pic" src="http://4.bp.blogspot.com/-FHl93z8Tavw/U3A4mwjmwRI/AAAAAAAAJWI/uiuJ9wlhNE4/s1600/Nine+Brothers+and+Sisters.jpg" alt="logo?">
 
         <div class="container">
             <div class="row">
-                <div class="col-md-8">
-                    <h1 id = "title" >Blog Post Title</h1>
-                    <p id = "userName" class="lead">by <a href="#">Admin</a></p>
-                    <hr>
-                    <p><span class="glyphicon glyphicon-time" id = "createdOnDate" ></span></p>
-                    <hr>
-                    <img id = "contentImgLink" class="img-responsive" src="http://placehold.it/900x300" alt="">
-                    <hr>
-                    <p id = "body" >Authentic gluten-free cray, four loko butcher fam ennui offal mumblecore fingerstache direct trade fanny pack scenester. 
-                        Austin waistcoat pabst 90's iPhone, snackwave migas selfies 8-bit hashtag unicorn distillery. Post-ironic selvage migas, 
-                        shabby chic art party kickstarter brooklyn next level ethical 8-bit kale chips actually tote bag. Plaid thundercats small batch, 
-                        jianbing humblebrag williamsburg meh. Beard hammock irony, cardigan bushwick fashion axe godard shabby chic kombucha asymmetrical 
-                        post-ironic banjo chia locavore. Salvia wayfarers taxidermy, try-hard flannel food truck DIY irony chia. 
-                        Taxidermy fanny pack vegan, vape gluten-free literally polaroid activated charcoal tattooed PBR&B.</p>
-                    <hr>
+                <img class = "img-responsive" id = "blog-main-pic" src="http://4.bp.blogspot.com/-FHl93z8Tavw/U3A4mwjmwRI/AAAAAAAAJWI/uiuJ9wlhNE4/s1600/Nine+Brothers+and+Sisters.jpg" alt="logo?">
+
+                <div id = "allPosts" class="col-md-8">
+                    <div class ="singlePost">
+                        <h1 class = "title" >Blog Post Title</h1>
+                        <p class = "lead userName">by <a href="#">Admin</a></p>
+                        <hr>
+                        <p><span class="glyphicon glyphicon-time createdOnDate"></span></p>
+                        <hr>
+                        <img class="img-responsive contentImgLink" src="http://placehold.it/900x300" alt="">
+                        <hr>
+                        <p class = "body" >Authentic gluten-free cray, four loko butcher fam ennui offal mumblecore fingerstache direct trade fanny pack scenester. 
+                            Austin waistcoat pabst 90's iPhone, snackwave migas selfies 8-bit hashtag unicorn distillery. Post-ironic selvage migas, 
+                            shabby chic art party kickstarter brooklyn next level ethical 8-bit kale chips actually tote bag. Plaid thundercats small batch, 
+                            jianbing humblebrag williamsburg meh. Beard hammock irony, cardigan bushwick fashion axe godard shabby chic kombucha asymmetrical 
+                            post-ironic banjo chia locavore. Salvia wayfarers taxidermy, try-hard flannel food truck DIY irony chia. 
+                            Taxidermy fanny pack vegan, vape gluten-free literally polaroid activated charcoal tattooed PBR&B.</p>
+                        <hr>
+                    </div>
                 </div>
 
                 <div class="col-md-4">
