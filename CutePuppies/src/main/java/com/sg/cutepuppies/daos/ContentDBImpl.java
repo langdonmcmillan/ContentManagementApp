@@ -7,6 +7,7 @@ package com.sg.cutepuppies.daos;
 
 import com.sg.cutepuppies.models.Content;
 import java.util.List;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 /**
  *
@@ -14,6 +15,14 @@ import java.util.List;
  */
 public class ContentDBImpl implements ContentDAOInterface {
 
+    
+    private JdbcTemplate jdbcTemplate;
+
+    // setter injection
+    public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
+    
     @Override
     public List<Content> getContentByPostID(int postID) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.

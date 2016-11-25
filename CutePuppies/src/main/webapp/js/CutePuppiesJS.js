@@ -4,4 +4,16 @@
  * and open the template in the editor.
  */
 
+$(document).ready(function () {
+    loadAllPosts();
+});
 
+
+function loadAllPosts() {
+    $.ajax({
+        url: 'getAllPosts',
+        type: 'GET'
+    }).success(function (data, status) {
+        // fill posts here
+    });
+}

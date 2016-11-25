@@ -7,12 +7,20 @@ package com.sg.cutepuppies.daos;
 
 import com.sg.cutepuppies.models.Category;
 import java.util.List;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 /**
  *
  * @author apprentice
  */
 public class CategoryDBImpl implements CategoryDAOInterface {
+    
+    private JdbcTemplate jdbcTemplate;
+
+    // setter injection
+    public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
 
     @Override
     public List<Category> getAllCategories() {

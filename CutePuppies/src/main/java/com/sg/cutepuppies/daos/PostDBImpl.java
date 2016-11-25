@@ -7,6 +7,7 @@ package com.sg.cutepuppies.daos;
 
 import com.sg.cutepuppies.models.Post;
 import java.util.List;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 /**
  *
@@ -14,6 +15,13 @@ import java.util.List;
  */
 public class PostDBImpl implements PostDAOInterface {
 
+    private JdbcTemplate jdbcTemplate;
+
+    // setter injection
+    public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
+    
     @Override
     public List<Post> getAllPosts() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.

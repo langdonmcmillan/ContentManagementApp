@@ -7,6 +7,7 @@ package com.sg.cutepuppies.daos;
 
 import com.sg.cutepuppies.models.Tag;
 import java.util.List;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 /**
  *
@@ -14,6 +15,13 @@ import java.util.List;
  */
 public class TagDBImpl implements TagDAOInterface {
 
+    private JdbcTemplate jdbcTemplate;
+
+    // setter injection
+    public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
+    
     @Override
     public List<Tag> getAllTags() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.

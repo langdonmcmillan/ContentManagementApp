@@ -1,1 +1,9 @@
+#blog-main-pic {
+    display:block;
+    margin: auto;
+    width: 30%;
+}
 
+.emphasis {
+    font-size: 20px;
+}
