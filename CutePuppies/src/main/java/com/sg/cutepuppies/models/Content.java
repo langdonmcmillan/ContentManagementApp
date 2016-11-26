@@ -6,7 +6,6 @@
 package com.sg.cutepuppies.models;
 
 import java.sql.Date;
-import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -14,6 +13,7 @@ import java.util.List;
  * @author apprentice
  */
 public class Content {
+
     private int contentId;
     private int postId;
     private String title;
@@ -25,6 +25,7 @@ public class Content {
     private String contentTypeCode;
     private int createByUserId;
     private Date createdOnDate;
+    private User updatedByUser;
     private int updatedByUserId;
     private Date updatedOnDate;
     private int archivedByUserId;
@@ -166,5 +167,13 @@ public class Content {
 
     public void setListOfCategories(List<Category> listOfCategories) {
         this.listOfCategories = listOfCategories;
+    }
+
+    public User getUpdatedByUser() {
+        return updatedByUser;
+    }
+
+    public void setUpdatedByUser(User updatedByUser) {
+        this.updatedByUser = updatedByUser;
     }
 }
