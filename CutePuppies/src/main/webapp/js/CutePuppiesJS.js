@@ -19,12 +19,12 @@ function loadAllPosts() {
             oldestPostId: sessionStorage.getItem('lastPostId'),
             postsPerPage: sessionStorage.getItem('postsPerPage'),
             direction: sessionStorage.getItem('searchDirection'),
-            tag: sessionStorage.getItem('selectedTag'),
-            category: sessionStorage.getItem('selectedCategory')
+            tagId: sessionStorage.getItem('selectedTagId'),
+            categoryId: sessionStorage.getItem('selectedCategoryId')
         }
     }).success(function (data, status) {
-        sessionStorage.setItem('firstPost', data[0].postId);
-        sessionStorage.setItem('lastPost', data[data.length-1].postId);
+        sessionStorage.setItem('firstPostId', data[0].postId);
+        sessionStorage.setItem('lastPostId', data[data.length-1].postId);
         fillPostSnippetsContainer(data);
     }).error(function (data, status) {
         // display message that data could not be loaded
@@ -50,14 +50,14 @@ function fillPostSnippetsContainer(posts) {
 };
 
 function setSessionProperties() {
-    if (sessionStorage.getItem('postsPerPage') === undefined) {
+    if (sessionStorage.getItem('postsPerPage') === null) {
         sessionStorage.setItem('postsPerPage', 5);
     }
-    if (sessionStorage.getItem('firstPostId') === undefined) {
+    if (sessionStorage.getItem('firstPostId') === null) {
         sessionStorage.setItem('firstPostId', null);
         sessionStorage.setItem('lastPostId', null);
     }
     sessionStorage.setItem('searchDirection', 'forward');
-    sessionStorage.setItem('selectedTag', null);
-    sessionStorage.setItem('selectedCategory', null);
+    sessionStorage.setItem('selectedTagId', null);
+    sessionStorage.setItem('selectedCategoryId', null);
 };
