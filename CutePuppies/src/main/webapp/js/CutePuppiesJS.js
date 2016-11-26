@@ -24,40 +24,44 @@ function loadAllPosts() {
         }
     }).success(function (data, status) {
         sessionStorage.setItem('firstPostId', data[0].postId);
-        sessionStorage.setItem('lastPostId', data[data.length-1].postId);
+        sessionStorage.setItem('lastPostId', data[data.length - 1].postId);
         fillPostSnippetsContainer(data);
     }).error(function (data, status) {
         // display message that data could not be loaded
     });
-};
+}
+;
 
 function fillPostSnippetsContainer(posts) {
-    clearPostSnippetContainer();
+//    clearPostSnippetContainer();
     var postSnippetContainer = $('#allPosts');
-    $.each(posts, function(index, post) {
-        postSnippetContainer.append($('<div class="singlePost">')
-                .append($('<h1 class="title">').text(post.title))
-                .append('<p class = "lead userName">').html('by <a href="#">' + post.author + '</a>')
+    postSnippetContainer.empty();
+    $.each(posts, function (index, post) {
+        postSnippetContainer.append($('<div class="singlePost">'))
+                .append($('<h1 class="title">').text(post.publishedContent.title))
+                .append($('<p class = "lead userName">').html('by <a href="#">' + post.createdByUserId + '</a>'))
                 .append('<hr>')
-                .append('<p>').html('<span class="glyphicon glyphicon-time createdOnDate"></span><span>' + post.createdOnDate + '</span>')
+                .append($('<p>').html('<span class="glyphicon glyphicon-time createdOnDate"></span><span>' + post.createdOnDate + '</span>'))
                 .append('<hr>')
-                .append('<img class="img-responsive contentImgLink">').attr({'src': post.imgUrl, 'alt': post.imgAlt})
+                .append($('<img class="img-responsive contentImgLink">').attr({'src': post.publishedContent.contentImgLink, 'alt': post.publishedContent.title}))
                 .append('<hr>')
-                .append('<p class = "body">').html(post.content.body)
-                .append('<hr>')
-                );
+                .append($('<p class = "body">').html(post.publishedContent.body))
+                .append('<hr>');
+
     });
-};
+}
+;
 
 function setSessionProperties() {
     if (sessionStorage.getItem('postsPerPage') === null) {
         sessionStorage.setItem('postsPerPage', 5);
     }
     if (sessionStorage.getItem('firstPostId') === null) {
-        sessionStorage.setItem('firstPostId', null);
-        sessionStorage.setItem('lastPostId', null);
+        sessionStorage.setItem('firstPostId', 'null');
+        sessionStorage.setItem('lastPostId', 'null');
     }
     sessionStorage.setItem('searchDirection', 'forward');
-    sessionStorage.setItem('selectedTagId', null);
-    sessionStorage.setItem('selectedCategoryId', null);
-};
+    sessionStorage.setItem('selectedTagId', 'null');
+    sessionStorage.setItem('selectedCategoryId', 'null');
+}
+;

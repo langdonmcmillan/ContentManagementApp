@@ -44,12 +44,34 @@ public class CutePuppiesController {
         return "blog";
     }
 
-
-    @RequestMapping(value = "/getPagePosts", method = RequestMethod.GET)
+    @RequestMapping(value = "getPagePosts/", method = RequestMethod.GET)
     @ResponseBody
-    public List<Post> getPagePosts(int newestPostId, int oldestPostId, int postsPerPage, String searchDirection, int selectedTagId, int selectedCategoryId) {
+    public List<Post> getPagePosts(String newestPostId, String oldestPostId, String postsPerPage, String direction, String tagId, String categoryId) {
+        // parse to int: newestPostId, oldestPostId, postsPerPage, tagId, categoryId
+        int newestPostIdInt = 0;
+        int oldestPostIdInt = 0;
+        int postsPerPageInt = 0;
+        int tagIdInt = 0;
+        int categoryIdInt = 0;
+        
+        if (!newestPostId.equals("null")) {
+            Integer.parseInt(newestPostId);
+        }
+        if (!oldestPostId.equals("null")) {
+            oldestPostIdInt = Integer.parseInt(oldestPostId);
+        }
+        if (!postsPerPage.equals("null")) {
+            postsPerPageInt = Integer.parseInt(postsPerPage);
+        }
+        if (!tagId.equals("null")) {
+            tagIdInt = Integer.parseInt(tagId);
+        }
+        if (!categoryId.equals("null")) {
+            categoryIdInt = Integer.parseInt(categoryId);
+        }        
+        
         // get me a list of Post objects.
-        List<Post> listOfPosts = postDao.getPostsByAllCriteria(newestPostId, oldestPostId, postsPerPage, searchDirection, selectedTagId, selectedCategoryId);
+        List<Post> listOfPosts = postDao.getPostsByAllCriteria(newestPostIdInt, oldestPostIdInt, postsPerPageInt, direction, tagIdInt, categoryIdInt);
 
         listOfPosts.forEach((post) -> {
             int postId = post.getPostId();

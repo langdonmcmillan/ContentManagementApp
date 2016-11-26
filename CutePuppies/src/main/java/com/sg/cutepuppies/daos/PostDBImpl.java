@@ -44,6 +44,40 @@ public class PostDBImpl implements PostDAOInterface {
             + "and ctg.CategoryId = ?"
             + "order by p.CreatedOnDate desc"
             + "limit ?";
+    
+//    SELECT p.* from Post p
+//JOIN Content c on c.PostId = p.PostId
+//JOIN content_tag ct on c.ContentId = ct.ContentId
+//JOIN Tag t ON ct.TagId = t.TagId
+//JOIN content_category cc ON c.ContentId = cc.ContentId
+//JOIN Category ctg ON ctg.CategoryId = cc.CategoryId
+//WHERE 1 = 1
+//AND c.ContentStatusCode = 'PUBLISHED'
+//ORDER BY p.CreatedOnDate DESC
+//LIMIT 5;
+        private static final String SQL_GET_POSTS_BY_ALL_CRITERIA_OLDER
+            = "select p.* from Post p"
+            + " join Content c on c.PostId = p.PostId "
+            + " join content_tag ct on c.ContentId = ct.ContentId "
+            + " join Tag t on ct.TagId = t.TagId "
+            + " join content_category cc on c.ContentId = cc.ContentId "
+            + " join Category ctg on cc.CategoryId = ctg.CategoryId "
+            + " where 1 = 1 "
+            + " and c.ContentStatusCode = 'PUBLISHED' "
+//            + "and p.CreatedOnDate < (select p.CreatedOnDate from Post p where p.PostId = ?)"
+//            + "and t.TagId = ?"
+//            + "and ctg.CategoryId = ?"
+            + " order by p.CreatedOnDate desc "
+            + " limit ?";
+
+    private static final String SQL_UPDATE_POST = "update Post"
+            + "set CreatedUserId = ?"
+            + ", set CreatedOnDate = ?"
+            + ", set UpdatedByUserId = ?"
+            + ", set UpdatedOnDate = ?"
+            + ", set ArchivedByUserId = ?"
+            + ", set ArchivedByDate = ?"
+            + "where PostId = ?";
 
     @Override
     public List<Post> getAllPosts() {
@@ -92,20 +126,33 @@ public class PostDBImpl implements PostDAOInterface {
 
     @Override
     public void deletePost(int postID) {
+        // this should 'archive the post, as well as set all associated
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public Post updatePost(Post post) {
+//        jdbcTemplate.update(SQL_UPDATE_POST,
+//                post.getCreatedByUserId(),
+//                post.getCreatedOnDate(),
+//                post.getUpdatedByUserId(),
+//                post.getUpdatedOnDate(),
+//                post.getArchivedByUserId(),
+//                post.getArchivedOnDate(),
+//                post.getPostId()
+//        );
+//        
+//        return post;
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+
     }
 
     @Override
-    public List<Post> getPostsByAllCriteria(int newestPostId, int oldestPostId, int postsPerPage, String direction, int tagId, int categoryId) {
+    public List<Post> getPostsByAllCriteria(int newestPostIdInt, int oldestPostIdInt, int postsPerPageInt, String direction, int tagIdInt, int categoryIdInt) {
         if (direction.equalsIgnoreCase("previous")) {
-            return jdbcTemplate.query(SQL_GET_POSTS_BY_ALL_CRITERIA_NEWER, new Object[]{oldestPostId, tagId, categoryId, postsPerPage}, new PostMapper());
+            return jdbcTemplate.query(SQL_GET_POSTS_BY_ALL_CRITERIA_NEWER, new Object[]{oldestPostIdInt, tagIdInt, categoryIdInt, postsPerPageInt}, new PostMapper());
         } else {
-            return jdbcTemplate.query(SQL_GET_POSTS_BY_ALL_CRITERIA_NEWER, new Object[]{newestPostId, tagId, categoryId, postsPerPage}, new PostMapper());
+            return jdbcTemplate.query(SQL_GET_POSTS_BY_ALL_CRITERIA_OLDER, new Object[]{postsPerPageInt}, new PostMapper());
         }
     }
 
