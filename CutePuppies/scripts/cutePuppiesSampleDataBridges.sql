@@ -1,8 +1,5 @@
 USE CutePuppies;
 
-SELECT * FROM Post;
-SELECT * FROM Content;
-
 -- add tag 1 and 2 to content 1
 INSERT INTO content_tag (ContentId, TagId) VALUES (1, 1);
 INSERT INTO content_tag (ContentId, TagId) VALUES (1, 2);

@@ -5,7 +5,8 @@
  */
 package com.sg.cutepuppies.models;
 
-import java.time.LocalDate;
+import java.sql.Date;
+import java.util.List;
 
 /**
  *
@@ -14,11 +15,13 @@ import java.time.LocalDate;
 public class Post {
     private int postId;
     private int createdByUserId;
-    private LocalDate createdOnDate;
+    private Date createdOnDate;
     private int updatedByUserId;
-    private LocalDate updatedOnDate;
+    private Date updatedOnDate;
     private int archivedByUserId;
-    private LocalDate archivedOnDate;
+    private Date archivedOnDate;
+    private Content publishedContent;
+    private List<Content> allContentRevisions;
 
     public int getPostId() {
         return postId;
@@ -36,11 +39,11 @@ public class Post {
         this.createdByUserId = createdByUserId;
     }
 
-    public LocalDate getCreatedOnDate() {
+    public Date getCreatedOnDate() {
         return createdOnDate;
     }
 
-    public void setCreatedOnDate(LocalDate createdOnDate) {
+    public void setCreatedOnDate(Date createdOnDate) {
         this.createdOnDate = createdOnDate;
     }
 
@@ -52,11 +55,11 @@ public class Post {
         this.updatedByUserId = updatedByUserId;
     }
 
-    public LocalDate getUpdatedOnDate() {
+    public Date getUpdatedOnDate() {
         return updatedOnDate;
     }
 
-    public void setUpdatedOnDate(LocalDate updatedOnDate) {
+    public void setUpdatedOnDate(Date updatedOnDate) {
         this.updatedOnDate = updatedOnDate;
     }
 
@@ -68,11 +71,27 @@ public class Post {
         this.archivedByUserId = archivedByUserId;
     }
 
-    public LocalDate getArchivedOnDate() {
+    public Date getArchivedOnDate() {
         return archivedOnDate;
     }
 
-    public void setArchivedOnDate(LocalDate archivedOnDate) {
+    public void setArchivedOnDate(Date archivedOnDate) {
         this.archivedOnDate = archivedOnDate;
+    }
+
+    public Content getPublishedContent() {
+        return publishedContent;
+    }
+
+    public void setPublishedContent(Content publishedContent) {
+        this.publishedContent = publishedContent;
+    }
+
+    public List<Content> getAllContentRevisions() {
+        return allContentRevisions;
+    }
+
+    public void setAllContentRevisions(List<Content> allContentRevisions) {
+        this.allContentRevisions = allContentRevisions;
     }
 }

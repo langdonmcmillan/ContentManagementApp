@@ -26,6 +26,11 @@ public class TagDBImpl implements TagDAOInterface {
     public List<Tag> getAllTags() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+    
+    @Override
+    public List<Tag> getListOfTagsForContent(int contentId) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 
     @Override
     public Tag getTagByName(String tag) {

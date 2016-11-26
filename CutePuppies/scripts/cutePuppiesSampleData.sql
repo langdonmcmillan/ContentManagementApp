@@ -47,12 +47,3 @@ INSERT INTO Content
 (PostId, Title, ContentImgLink, Body, Snippet, ContentStatusCode, UrlPattern, ContentTypeCode, CreatedByUserId, CreatedOnDate, UpdatedByUserId, UpdatedOnDate, ArchivedByUserId, ArchivedOnDate) 
 VALUES
 (4, 'Post by admin', 'someImgLink', 'body for content 1 of post 4', 'snippet for content 1 of post 4', 'PUBLISHED', 'urlPatternContent1Post4', 'POST', 0, '2016-12-10', null, null, null, null);
-
-SELECT 
-    *
-FROM
-    Content;
-SELECT 
-    *
-FROM
-    Post;

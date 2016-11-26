@@ -9,9 +9,12 @@ import com.sg.cutepuppies.daos.CategoryDAOInterface;
 import com.sg.cutepuppies.daos.ContentDAOInterface;
 import com.sg.cutepuppies.daos.PostDAOInterface;
 import com.sg.cutepuppies.daos.TagDAOInterface;
+import com.sg.cutepuppies.models.Content;
 import com.sg.cutepuppies.models.Post;
+import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -20,6 +23,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
  *
  * @author apprentice
  */
+@Controller
 public class CutePuppiesController {
     
     private CategoryDAOInterface categoryDao;
@@ -37,13 +41,21 @@ public class CutePuppiesController {
 
     @RequestMapping(value = {"/"}, method = RequestMethod.GET)
     public String getLandingPage() {
-        return "index";
+        return "blog";
     }
 
-    @RequestMapping(value = "getAllPosts", method = RequestMethod.GET)
+    @RequestMapping(value = "/getAllPosts", method = RequestMethod.GET)
     @ResponseBody
-    public List<Post> getAllPosts() {
-        return postDao.getAllPosts();
+    public List<Post> getAllPosts(String postsPerPage, String nextPage) {
+        // get me a list of Post objects.
+        List<Post> listOfPosts = postDao.getAllPosts();
+        
+        for (Post post : listOfPosts) {
+            int postId = post.getPostId();
+            Content contentPerPost = postDao.getPublishedContentOfPost(postId);
+            post.setPublishedContent(contentPerPost);
+        }
+        return listOfPosts;
     }
 
 }

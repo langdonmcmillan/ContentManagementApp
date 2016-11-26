@@ -5,6 +5,7 @@
  */
 package com.sg.cutepuppies.daos;
 
+import com.sg.cutepuppies.models.Content;
 import com.sg.cutepuppies.models.Post;
 import java.util.List;
 
@@ -18,6 +19,8 @@ public interface PostDAOInterface {
     public List<Post> getPostByTag(int tagID);
     public List<Post> getPostByCategory(int categoryID);
     public List<Post> getPostBySearch(String searchTerm);
+    public Content getPublishedContentOfPost(int postId);
+    public List<Content> getAllContentOfPost(int postId);
     public Post getPostByID(int postID);
     public Post addPost(Post post);
     public void deletePost(int postID);

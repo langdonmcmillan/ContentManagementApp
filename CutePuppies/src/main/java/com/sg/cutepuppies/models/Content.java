@@ -5,7 +5,9 @@
  */
 package com.sg.cutepuppies.models;
 
+import java.sql.Date;
 import java.time.LocalDate;
+import java.util.List;
 
 /**
  *
@@ -22,11 +24,13 @@ public class Content {
     private String urlPattern;
     private String contentTypeCode;
     private int createByUserId;
-    private LocalDate createdOnDate;
+    private Date createdOnDate;
     private int updatedByUserId;
-    private LocalDate updateOnDate;
+    private Date updatedOnDate;
     private int archivedByUserId;
-    private LocalDate archivedOnDate;
+    private Date archivedOnDate;
+    private List<Tag> listOfTags;
+    private List<Category> listOfCategories;
 
     public int getContentId() {
         return contentId;
@@ -108,11 +112,11 @@ public class Content {
         this.createByUserId = createByUserId;
     }
 
-    public LocalDate getCreatedOnDate() {
+    public Date getCreatedOnDate() {
         return createdOnDate;
     }
 
-    public void setCreatedOnDate(LocalDate createdOnDate) {
+    public void setCreatedOnDate(Date createdOnDate) {
         this.createdOnDate = createdOnDate;
     }
 
@@ -124,12 +128,12 @@ public class Content {
         this.updatedByUserId = updatedByUserId;
     }
 
-    public LocalDate getUpdateOnDate() {
-        return updateOnDate;
+    public Date getUpdatedOnDate() {
+        return updatedOnDate;
     }
 
-    public void setUpdateOnDate(LocalDate updateOnDate) {
-        this.updateOnDate = updateOnDate;
+    public void setUpdatedOnDate(Date updatedOnDate) {
+        this.updatedOnDate = updatedOnDate;
     }
 
     public int getArchivedByUserId() {
@@ -140,11 +144,27 @@ public class Content {
         this.archivedByUserId = archivedByUserId;
     }
 
-    public LocalDate getArchivedOnDate() {
+    public Date getArchivedOnDate() {
         return archivedOnDate;
     }
 
-    public void setArchivedOnDate(LocalDate archivedOnDate) {
+    public void setArchivedOnDate(Date archivedOnDate) {
         this.archivedOnDate = archivedOnDate;
+    }
+
+    public List<Tag> getListOfTags() {
+        return listOfTags;
+    }
+
+    public void setListOfTags(List<Tag> listOfTags) {
+        this.listOfTags = listOfTags;
+    }
+
+    public List<Category> getListOfCategories() {
+        return listOfCategories;
+    }
+
+    public void setListOfCategories(List<Category> listOfCategories) {
+        this.listOfCategories = listOfCategories;
     }
 }

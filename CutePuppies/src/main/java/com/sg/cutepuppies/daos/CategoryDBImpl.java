@@ -14,7 +14,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
  * @author apprentice
  */
 public class CategoryDBImpl implements CategoryDAOInterface {
-    
+
     private JdbcTemplate jdbcTemplate;
 
     // setter injection
@@ -24,6 +24,11 @@ public class CategoryDBImpl implements CategoryDAOInterface {
 
     @Override
     public List<Category> getAllCategories() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public List<Category> getListOfCategoriesForContent (int contentId) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -46,5 +51,5 @@ public class CategoryDBImpl implements CategoryDAOInterface {
     public void deleteCategory(int categoryID) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
 }
