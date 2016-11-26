@@ -45,7 +45,7 @@ public class CutePuppiesController {
 
     @RequestMapping(value = "/getPagePosts", method = RequestMethod.GET)
     @ResponseBody
-    public List<Post> getAllPosts(int newestPostId, int oldestPostId, int postsPerPage, String searchDirection, int selectedTagId, int selectedCategoryId) {
+    public List<Post> getPagePosts(int newestPostId, int oldestPostId, int postsPerPage, String searchDirection, int selectedTagId, int selectedCategoryId) {
         // get me a list of Post objects.
         List<Post> listOfPosts = postDao.getPostsByAllCriteria(newestPostId, oldestPostId, postsPerPage, searchDirection, selectedTagId, selectedCategoryId);
 
