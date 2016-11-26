@@ -64,7 +64,7 @@ public class ContentDBImpl implements ContentDAOInterface {
 
     @Override
     public Content getPublishedPostContent(int postID) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return jdbcTemplate.queryForObject(SQL_GET_PUBLISHED_CONTENT_BY_POST_ID, new ContentMapper(), postID);
     }
 
     private static final class ContentMapper implements RowMapper<Content> {

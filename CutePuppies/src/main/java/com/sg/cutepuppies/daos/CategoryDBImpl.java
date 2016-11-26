@@ -6,8 +6,12 @@
 package com.sg.cutepuppies.daos;
 
 import com.sg.cutepuppies.models.Category;
+import com.sg.cutepuppies.models.Tag;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 
 /**
  *
@@ -21,6 +25,9 @@ public class CategoryDBImpl implements CategoryDAOInterface {
     public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
+
+    // SQL PREPARED STATEMENTS
+    private static final String SQL_GET_CATEGORIES_BY_CONTENT_ID = "select ctg.* from Category ctg join content_category cc on ctg.CategoryId = cc.CategoryId where cc.ContentId = ?";
 
     @Override
     public List<Category> getAllCategories() {
@@ -49,7 +56,20 @@ public class CategoryDBImpl implements CategoryDAOInterface {
 
     @Override
     public List<Category> getCategoriesByContentId(int contentId) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return jdbcTemplate.query(SQL_GET_CATEGORIES_BY_CONTENT_ID, new CategoryMapper(), contentId);
+    }
+
+
+    private static final class CategoryMapper implements RowMapper<Category> {
+
+        @Override
+        public Category mapRow(ResultSet rs, int i) throws SQLException {
+
+            Category category = new Category();
+            category.setCategoryID(rs.getInt("CategoryId"));
+            category.setCategoryDescription(rs.getString("CategoryDescription"));
+            return category;
+        }
     }
 
 }
