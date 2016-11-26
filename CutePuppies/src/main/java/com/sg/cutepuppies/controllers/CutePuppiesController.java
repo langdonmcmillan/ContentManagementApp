@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
  */
 @Controller
 public class CutePuppiesController {
-    
+
     private CategoryDAOInterface categoryDao;
     private TagDAOInterface tagDao;
     private ContentDAOInterface contentDao;
@@ -44,17 +44,20 @@ public class CutePuppiesController {
         return "blog";
     }
 
-    @RequestMapping(value = "/getAllPosts", method = RequestMethod.GET)
+
+    @RequestMapping(value = "/getPagePosts", method = RequestMethod.GET)
     @ResponseBody
-    public List<Post> getAllPosts(String postsPerPage, String nextPage) {
+    public List<Post> getPagePosts(int newestPostId, int oldestPostId, int postsPerPage, String searchDirection, int selectedTagId, int selectedCategoryId) {
         // get me a list of Post objects.
-        List<Post> listOfPosts = postDao.getAllPosts();
-        
-        for (Post post : listOfPosts) {
+        List<Post> listOfPosts = postDao.getPostsByAllCriteria(newestPostId, oldestPostId, postsPerPage, searchDirection, selectedTagId, selectedCategoryId);
+
+        listOfPosts.forEach((post) -> {
             int postId = post.getPostId();
-            Content contentPerPost = postDao.getPublishedContentOfPost(postId);
-            post.setPublishedContent(contentPerPost);
-        }
+            Content postContent = contentDao.getPublishedPostContent(postId);
+            postContent.setListOfTags(tagDao.getTagsByContentId(postContent.getContentId()));
+            postContent.setListOfCategories(categoryDao.getCategoriesByContentId(postContent.getContentId()));
+            post.setPublishedContent(postContent);
+        });
         return listOfPosts;
     }
 

@@ -100,6 +100,11 @@ public class PostDBImpl implements PostDAOInterface {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+    @Override
+    public List<Post> getPostsByAllCriteria(int newestPostId, int oldestPostId, int postsPerPage, String direction, int tagId, int categoryId) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
     private static final class PostMapper implements RowMapper<Post> {
 
         @Override

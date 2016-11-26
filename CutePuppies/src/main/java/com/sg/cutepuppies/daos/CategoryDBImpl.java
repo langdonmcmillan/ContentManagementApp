@@ -28,11 +28,6 @@ public class CategoryDBImpl implements CategoryDAOInterface {
     }
 
     @Override
-    public List<Category> getListOfCategoriesForContent (int contentId) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
     public Category getCategoryByName(String category) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
@@ -49,6 +44,11 @@ public class CategoryDBImpl implements CategoryDAOInterface {
 
     @Override
     public void deleteCategory(int categoryID) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public List<Category> getCategoriesByContentId(int contentId) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 

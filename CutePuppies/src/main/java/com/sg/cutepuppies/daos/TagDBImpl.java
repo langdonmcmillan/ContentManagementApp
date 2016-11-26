@@ -26,11 +26,6 @@ public class TagDBImpl implements TagDAOInterface {
     public List<Tag> getAllTags() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
-    @Override
-    public List<Tag> getListOfTagsForContent(int contentId) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
 
     @Override
     public Tag getTagByName(String tag) {
@@ -49,6 +44,11 @@ public class TagDBImpl implements TagDAOInterface {
 
     @Override
     public void deleteTag(int tagID) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public List<Tag> getTagsByContentId(int contentId) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     

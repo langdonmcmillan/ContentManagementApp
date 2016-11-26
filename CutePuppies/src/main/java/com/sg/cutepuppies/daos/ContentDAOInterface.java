@@ -17,7 +17,7 @@ import java.util.List;
 public interface ContentDAOInterface {
     
     public List<Content> getContentByPostID(int postID);
-    public Content getPublishedContentByPostID(int postID);
+    public Content getPublishedPostContent(int postID);
     public Content updatePostContent(Content content);
     public List<Content> getAllStaticPages();
     public Content getStaticPageByURL(String urlPattern);

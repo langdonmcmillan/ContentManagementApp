@@ -38,11 +38,6 @@ public class ContentDBImpl implements ContentDAOInterface {
     }
 
     @Override
-    public Content getPublishedContentByPostID(int postID) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
     public Content updatePostContent(Content content) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
@@ -64,6 +59,11 @@ public class ContentDBImpl implements ContentDAOInterface {
 
     @Override
     public Content updateStaticPage(Content content) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Content getPublishedPostContent(int postID) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 

@@ -14,7 +14,8 @@ import java.util.List;
  */
 public interface TagDAOInterface {
     public List<Tag> getAllTags();
-    public List<Tag> getListOfTagsForContent(int contentId);
+
+    public List<Tag> getTagsByContentId(int contentId);
     public Tag getTagByName(String tag);
     public Tag addTag(String tag);
     public Tag updateTag(Tag tag);
