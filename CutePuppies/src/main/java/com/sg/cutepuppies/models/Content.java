@@ -18,6 +18,7 @@ public class Content {
     private int postId;
     private String title;
     private String contentImgLink;
+    private String contentImgAltTxt;
     private String body;
     private String snippet;
     private String contentStatusCode;
@@ -62,6 +63,14 @@ public class Content {
 
     public void setContentImgLink(String contentImgLink) {
         this.contentImgLink = contentImgLink;
+    }
+
+    public String getContentImgAltTxt() {
+        return contentImgAltTxt;
+    }
+
+    public void setContentImgAltTxt(String contentImgAltTxt) {
+        this.contentImgAltTxt = contentImgAltTxt;
     }
 
     public String getBody() {

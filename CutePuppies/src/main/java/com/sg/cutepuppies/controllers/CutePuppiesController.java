@@ -11,7 +11,6 @@ import com.sg.cutepuppies.daos.PostDAOInterface;
 import com.sg.cutepuppies.daos.TagDAOInterface;
 import com.sg.cutepuppies.models.Content;
 import com.sg.cutepuppies.models.Post;
-import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
 import org.springframework.stereotype.Controller;

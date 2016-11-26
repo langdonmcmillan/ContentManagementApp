@@ -77,6 +77,7 @@ public class ContentDBImpl implements ContentDAOInterface {
             content.setPostId(rs.getInt("PostId"));
             content.setTitle(rs.getString("Title"));
             content.setContentImgLink(rs.getString("ContentImgLink"));
+            content.setContentImgAltTxt(rs.getString("ContentImgAltTxt"));
             content.setBody(rs.getString("Body"));
             content.setSnippet(rs.getString("Snippet"));
             content.setContentStatusCode(rs.getString("ContentStatusCode"));

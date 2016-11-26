@@ -43,7 +43,7 @@ function fillPostSnippetsContainer(posts) {
                 .append('<hr>')
                 .append($('<p>').html('<span class="glyphicon glyphicon-time createdOnDate"></span><span>' + post.createdOnDate + '</span>'))
                 .append('<hr>')
-                .append($('<img class="img-responsive contentImgLink">').attr({'src': post.publishedContent.contentImgLink, 'alt': post.publishedContent.title}))
+                .append($('<img class="img-responsive contentImgLink">').attr({'src': post.publishedContent.contentImgLink, 'alt': post.publishedContent.contentImgAltTxt}))
                 .append('<hr>')
                 .append($('<p class = "body">').html(post.publishedContent.body))
                 .append('<hr>');
