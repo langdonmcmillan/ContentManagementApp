@@ -1,6 +1,6 @@
 USE CutePuppies;
 
-alter table content add ContentImgAltTxt varchar(255) after ContentImgLink;
+alter table Content add ContentImgAltTxt varchar(255) after ContentImgLink;
 UPDATE Content 
 SET 
     ContentImgAltTxt = 'sample alt text';
