@@ -5,3 +5,23 @@
  */
 
 
+$(document).ready(function () {
+    loadAllPosts();
+});
+
+function loadAllPosts() {
+
+
+    $.ajax({
+        type: 'GET',
+        url: 'getAllPostsNotArchived'
+    }).succes(function (data, status) {
+        fillTableWithAllPosts(data);
+    }).error(function (data, status) {
+        // some error window pop-up?
+    });
+}
+
+function fillTaleWithAllPosts(listOfAllPosts) {
+    var tBody = $('#populateTable');
+}
