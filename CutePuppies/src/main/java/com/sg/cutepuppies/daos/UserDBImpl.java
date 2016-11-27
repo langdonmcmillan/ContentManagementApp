@@ -28,12 +28,12 @@ public class UserDBImpl implements UserDAOInterface {
     private static final String SQL_GET_USER_FOR_USER_ID = "select * from User u where UserId = ?";
     
     @Override
-    public User getCreatedByUserForPost(int createdByUserId) {
+    public User getUserWhoCreatedPost(int createdByUserId) {
         return jdbcTemplate.queryForObject(SQL_GET_USER_FOR_USER_ID, new UserMapper(), createdByUserId);
     }
 
     @Override
-    public User getUpdatedByUserForContent(int updatedByUserId) {
+    public User getUserWhoCreatedContent(int updatedByUserId) {
         return jdbcTemplate.queryForObject(SQL_GET_USER_FOR_USER_ID, new UserMapper(), updatedByUserId);
     }
     

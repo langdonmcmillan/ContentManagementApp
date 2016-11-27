@@ -81,8 +81,8 @@ public class CutePuppiesController {
             Content postContent = contentDao.getPublishedPostContent(postId);
             postContent.setListOfTags(tagDao.getTagsByContentId(postContent.getContentId()));
             postContent.setListOfCategories(categoryDao.getCategoriesByContentId(postContent.getContentId()));
-            postContent.setUpdatedByUser(userDao.getUpdatedByUserForContent(postContent.getUpdatedByUserId()));
-            post.setCreatedByUser(userDao.getCreatedByUserForPost(post.getCreatedByUserId()));
+            postContent.setCreatedByUser(userDao.getUserWhoCreatedContent(postContent.getCreatedByUserId()));
+            post.setCreatedByUser(userDao.getUserWhoCreatedPost(post.getCreatedByUserId()));
             post.setPublishedContent(postContent);
         });
         return listOfPosts;

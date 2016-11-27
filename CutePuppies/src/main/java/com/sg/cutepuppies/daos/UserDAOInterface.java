@@ -13,7 +13,7 @@ import com.sg.cutepuppies.models.User;
  */
 public interface UserDAOInterface {
     
-    public User getCreatedByUserForPost(int createdByUserId);
+    public User getUserWhoCreatedPost(int createdByUserId);
     
-    public User getUpdatedByUserForContent(int updatedByUserId);
+    public User getUserWhoCreatedContent(int createdByUserId);
 }

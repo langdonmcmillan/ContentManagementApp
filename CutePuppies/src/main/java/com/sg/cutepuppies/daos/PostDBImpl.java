@@ -189,7 +189,7 @@ public class PostDBImpl implements PostDAOInterface {
             content.setContentStatusCode(rs.getString("ContentStatusCode"));
             content.setUrlPattern(rs.getString("UrlPattern"));
             content.setContentTypeCode(rs.getString("ContentTypeCode"));
-            content.setCreateByUserId(rs.getInt("CreatedByUserId"));
+            content.setCreatedByUserId(rs.getInt("CreatedByUserId"));
             content.setCreatedOnDate(rs.getDate("CreatedOnDate"));
             content.setUpdatedByUserId(rs.getInt("UpdatedByUserId"));
             content.setUpdatedOnDate(rs.getDate("UpdatedOnDate"));

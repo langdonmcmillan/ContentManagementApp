@@ -23,9 +23,9 @@ public class Content {
     private String contentStatusCode;
     private String urlPattern;
     private String contentTypeCode;
-    private int createByUserId;
+    private int createdByUserId;
     private Date createdOnDate;
-    private User updatedByUser;
+    private User createdByUser;
     private int updatedByUserId;
     private Date updatedOnDate;
     private int archivedByUserId;
@@ -105,12 +105,12 @@ public class Content {
         this.contentTypeCode = contentTypeCode;
     }
 
-    public int getCreateByUserId() {
-        return createByUserId;
+    public int getCreatedByUserId() {
+        return createdByUserId;
     }
 
-    public void setCreateByUserId(int createByUserId) {
-        this.createByUserId = createByUserId;
+    public void setCreatedByUserId(int createdByUserId) {
+        this.createdByUserId = createdByUserId;
     }
 
     public Date getCreatedOnDate() {
@@ -169,11 +169,11 @@ public class Content {
         this.listOfCategories = listOfCategories;
     }
 
-    public User getUpdatedByUser() {
-        return updatedByUser;
+    public User getCreatedByUser() {
+        return createdByUser;
     }
 
-    public void setUpdatedByUser(User updatedByUser) {
-        this.updatedByUser = updatedByUser;
+    public void setCreatedByUser(User createdByUser) {
+        this.createdByUser = createdByUser;
     }
 }

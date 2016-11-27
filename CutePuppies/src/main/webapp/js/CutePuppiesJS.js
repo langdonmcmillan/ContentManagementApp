@@ -37,9 +37,14 @@ function fillPostSnippetsContainer(posts) {
     var postSnippetContainer = $('#allPosts');
     postSnippetContainer.empty();
     $.each(posts, function (index, post) {
+        var appendInput = '';
+        if (!post.createdByUser.userName === post.publishedContent.createdByUser.userName) {
+            appendInput = $('<p class = "lead userName">').html('updated by <a href="#">' + post.publishedContent.createdByUser.userName + '</a>');
+        }
         postSnippetContainer.append($('<div class="singlePost">'))
                 .append($('<h1 class="title">').text(post.publishedContent.title))
-                .append($('<p class = "lead userName">').html('by <a href="#">' + post.createdByUserId + '</a>'))
+                .append($('<p class = "lead userName">').html('created by <a href="#">' + post.createdByUser.userName + '</a>'))
+                .append(appendInput)
                 .append('<hr>')
                 .append($('<p>').html('<span class="glyphicon glyphicon-time createdOnDate"></span><span>' + post.createdOnDate + '</span>'))
                 .append('<hr>')

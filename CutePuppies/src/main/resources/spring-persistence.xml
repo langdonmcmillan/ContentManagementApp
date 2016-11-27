@@ -55,7 +55,7 @@
     <bean id="TagDAO" class="com.sg.cutepuppies.daos.TagDBImpl">
         <property name="jdbcTemplate" ref="jdbcTemplate"/>
     </bean> 
-    <bean id="UserDAO" class="UserDBImpl">
+    <bean id="UserDAO" class="com.sg.cutepuppies.daos.UserDBImpl">
         <property name="jdbcTemplate" ref="jdbcTemplate"/>
     </bean> 
     
