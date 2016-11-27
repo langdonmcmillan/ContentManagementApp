@@ -27,14 +27,16 @@ public class ContentDBImpl implements ContentDAOInterface {
     }
 
     // SQL PREPARED STATEMENTS
-    private static final String SQL_GET_CONTENT_BY_POST_ID = "select * from Content c join Post p "
-            + "where c.PostId = p.PostId and c.PostId = ?";
+    private static final String SQL_GET_CONTENT_NOT_ARCHIVED_BY_POST_ID 
+            = "select c.* from Content c "
+            + " join Post p on c.PostId = p.PostId "
+            + " where c.ContentStatusCode != 'ARCHIVED' and c.PostId = ?";
     private static final String SQL_GET_PUBLISHED_CONTENT_BY_POST_ID = "select c.* from Content c join Post p "
             + "on c.PostId = p.PostId where c.ContentStatusCode = 'PUBLISHED' and c.PostId = ?";
 
     @Override
-    public List<Content> getContentByPostID(int postID) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public List<Content> getContentNotArchivedByPostId(int postID) {
+        return jdbcTemplate.query(SQL_GET_CONTENT_NOT_ARCHIVED_BY_POST_ID, new ContentMapper(), postID);
     }
 
     @Override

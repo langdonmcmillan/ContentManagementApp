@@ -32,7 +32,14 @@ public class PostDBImpl implements PostDAOInterface {
 
     // SQL PREPARED STATEMENTS
     private static final String SQL_GET_POST_BY_ID = "select * from Post where postId = :postId";
-    private static final String SQL_SELECT_ALL_POSTS = "select * from Post";
+    private static final String SQL_SELECT_ALL_POSTS 
+            = "select p.* from Post p"
+            + " join Content c on c.PostId = p.PostId"
+            + " left join content_tag ct on c.ContentId = ct.ContentId"
+            + " left join Tag t on ct.TagId = t.TagId"
+            + " left join content_category cc on c.ContentId = cc.ContentId"
+            + " left join Category ctg on cc.CategoryId = ctg.CategoryId"
+            + " where 1 = 1";
     private static final String SQL_GET_POSTS_BY_ALL_CRITERIA
             = "select p.* from Post p "
             + " join Content c on c.PostId = p.PostId"
