@@ -12,6 +12,8 @@ import java.sql.SQLException;
 import java.util.List;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
 /**
  *
@@ -20,55 +22,25 @@ import org.springframework.jdbc.core.RowMapper;
 public class PostDBImpl implements PostDAOInterface {
 
     private JdbcTemplate jdbcTemplate;
+    private NamedParameterJdbcTemplate npJdbcTemplate;
 
     // setter injection
     public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
+        this.npJdbcTemplate = new NamedParameterJdbcTemplate(this.jdbcTemplate);
     }
 
     // SQL PREPARED STATEMENTS
     private static final String SQL_SELECT_ALL_POSTS = "select * from Post";
-    private static final String SQL_SELECT_PUBLISHED_CONTENT_OF_POST = "select c.* from Content c join Post p on c.PostId = p.PostId"
-            + "where c.ContentStatusCode = 'PUBLISHED' and p.PostId = ?";
-    private static final String SQL_GET_POSTS_BY_ALL_CRITERIA_NEWER
+    private static String SQL_GET_POSTS_BY_ALL_CRITERIA
             = "select p.* from Post p "
-            + "join Content c on c.PostId = p.PostId"
-            + "join content_tag ct on c.ContentId = ct.ContentId"
-            + "join Tag t on ct.TagId = t.TagId"
-            + "join content_category cc on c.ContentId = cc.ContentId"
-            + "join Category ctg on cc.CategoryId = ctg.CategoryId"
-            + "where 1 = 1"
-            + "and c.ContentStatusCode = 'PUBLISHED'"
-            + "and p.CreatedOnDate > (select p.CreatedOnDate from Post p where p.PostId = ?)"
-            + "and t.TagId = ?"
-            + "and ctg.CategoryId = ?"
-            + "order by p.CreatedOnDate desc"
-            + "limit ?";
-    
-//    SELECT p.* from Post p
-//JOIN Content c on c.PostId = p.PostId
-//JOIN content_tag ct on c.ContentId = ct.ContentId
-//JOIN Tag t ON ct.TagId = t.TagId
-//JOIN content_category cc ON c.ContentId = cc.ContentId
-//JOIN Category ctg ON ctg.CategoryId = cc.CategoryId
-//WHERE 1 = 1
-//AND c.ContentStatusCode = 'PUBLISHED'
-//ORDER BY p.CreatedOnDate DESC
-//LIMIT 5;
-        private static final String SQL_GET_POSTS_BY_ALL_CRITERIA_OLDER
-            = "select p.* from Post p"
-            + " join Content c on c.PostId = p.PostId "
-            + " join content_tag ct on c.ContentId = ct.ContentId "
-            + " join Tag t on ct.TagId = t.TagId "
-            + " join content_category cc on c.ContentId = cc.ContentId "
-            + " join Category ctg on cc.CategoryId = ctg.CategoryId "
-            + " where 1 = 1 "
-            + " and c.ContentStatusCode = 'PUBLISHED' "
-//            + "and p.CreatedOnDate < (select p.CreatedOnDate from Post p where p.PostId = ?)"
-//            + "and t.TagId = ?"
-//            + "and ctg.CategoryId = ?"
-            + " order by p.CreatedOnDate desc "
-            + " limit ?";
+            + " join Content c on c.PostId = p.PostId"
+            + " left join content_tag ct on c.ContentId = ct.ContentId"
+            + " left join Tag t on ct.TagId = t.TagId"
+            + " left join content_category cc on c.ContentId = cc.ContentId"
+            + " left join Category ctg on cc.CategoryId = ctg.CategoryId"
+            + " where 1 = 1"
+            + " and c.ContentStatusCode = 'PUBLISHED'";
 
     private static final String SQL_UPDATE_POST = "update Post"
             + "set CreatedUserId = ?"
@@ -82,16 +54,6 @@ public class PostDBImpl implements PostDAOInterface {
     @Override
     public List<Post> getAllPosts() {
         return jdbcTemplate.query(SQL_SELECT_ALL_POSTS, new PostMapper());
-    }
-
-    @Override
-    public Content getPublishedContentOfPost(int postId) {
-        return jdbcTemplate.queryForObject(SQL_SELECT_PUBLISHED_CONTENT_OF_POST, new ContentMapper(), postId);
-    }
-
-    @Override
-    public List<Content> getAllContentOfPost(int postId) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
@@ -149,11 +111,33 @@ public class PostDBImpl implements PostDAOInterface {
 
     @Override
     public List<Post> getPostsByAllCriteria(int newestPostIdInt, int oldestPostIdInt, int postsPerPageInt, String direction, int tagIdInt, int categoryIdInt) {
-        if (direction.equalsIgnoreCase("previous")) {
-            return jdbcTemplate.query(SQL_GET_POSTS_BY_ALL_CRITERIA_NEWER, new Object[]{oldestPostIdInt, tagIdInt, categoryIdInt, postsPerPageInt}, new PostMapper());
-        } else {
-            return jdbcTemplate.query(SQL_GET_POSTS_BY_ALL_CRITERIA_OLDER, new Object[]{postsPerPageInt}, new PostMapper());
+        MapSqlParameterSource namedParameters = new MapSqlParameterSource();
+        // set base query
+        String SQL_QUERY = SQL_GET_POSTS_BY_ALL_CRITERIA;
+        if (direction.equalsIgnoreCase("previous") && newestPostIdInt != 0) {
+            // if getting newer posts (previous page)
+            SQL_QUERY += " and p.CreatedOnDate > (select p.CreatedOnDate from Post p where p.PostId = :newestPostId)";
+            namedParameters.addValue("newestPostId", newestPostIdInt);
+        } else if (oldestPostIdInt != 0) {
+            // if getting older posts (next page)
+            SQL_QUERY += " and p.CreatedOnDate < (select p.CreatedOnDate from Post p where p.PostId = :oldestPostId)";
+            namedParameters.addValue("oldestPostId", oldestPostIdInt);
         }
+        // if filtering by tag
+        if (tagIdInt != 0) {
+            SQL_QUERY += " and t.TagId = :tagId";
+            namedParameters.addValue("tagId", tagIdInt);
+        }
+        // if filtering by category
+        if (categoryIdInt != 0) {
+            SQL_QUERY += " and ctg.CategoryId = :categoryId";
+            namedParameters.addValue("categoryId", categoryIdInt);
+        }
+        // always order by date and limit to selected posts per page
+        SQL_QUERY += " order by p.CreatedOnDate desc limit :postsPerPage";
+        namedParameters.addValue("postsPerPage", postsPerPageInt);
+        return npJdbcTemplate.query(SQL_QUERY, namedParameters, new PostMapper());
+
     }
 
     private static final class PostMapper implements RowMapper<Post> {
