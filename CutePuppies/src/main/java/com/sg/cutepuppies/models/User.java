@@ -5,7 +5,7 @@
  */
 package com.sg.cutepuppies.models;
 
-import java.time.LocalDate;
+import java.sql.Date;
 
 /**
  *
@@ -15,9 +15,9 @@ public class User {
 
     private int userId;
     private String roleCode;
-    private LocalDate createdDate;
-    private LocalDate updateDate;
-    private LocalDate deletedDate;
+    private Date createdDate;
+    private Date updateDate;
+    private Date deletedDate;
     private String userName;
     private String userPassword;
     private String userEmail;
@@ -38,27 +38,27 @@ public class User {
         this.roleCode = roleCode;
     }
 
-    public LocalDate getCreatedDate() {
+    public Date getCreatedDate() {
         return createdDate;
     }
 
-    public void setCreatedDate(LocalDate createdDate) {
+    public void setCreatedDate(Date createdDate) {
         this.createdDate = createdDate;
     }
 
-    public LocalDate getUpdateDate() {
+    public Date getUpdateDate() {
         return updateDate;
     }
 
-    public void setUpdateDate(LocalDate updateDate) {
+    public void setUpdateDate(Date updateDate) {
         this.updateDate = updateDate;
     }
 
-    public LocalDate getDeletedDate() {
+    public Date getDeletedDate() {
         return deletedDate;
     }
 
-    public void setDeletedDate(LocalDate deletedDate) {
+    public void setDeletedDate(Date deletedDate) {
         this.deletedDate = deletedDate;
     }
 

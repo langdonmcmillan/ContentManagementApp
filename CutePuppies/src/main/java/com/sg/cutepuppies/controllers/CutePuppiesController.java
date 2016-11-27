@@ -9,6 +9,7 @@ import com.sg.cutepuppies.daos.CategoryDAOInterface;
 import com.sg.cutepuppies.daos.ContentDAOInterface;
 import com.sg.cutepuppies.daos.PostDAOInterface;
 import com.sg.cutepuppies.daos.TagDAOInterface;
+import com.sg.cutepuppies.daos.UserDAOInterface;
 import com.sg.cutepuppies.models.Content;
 import com.sg.cutepuppies.models.Post;
 import java.util.List;
@@ -29,13 +30,15 @@ public class CutePuppiesController {
     private TagDAOInterface tagDao;
     private ContentDAOInterface contentDao;
     private PostDAOInterface postDao;
+    private UserDAOInterface userDao;
 
     @Inject
-    public CutePuppiesController(CategoryDAOInterface categoryDao, TagDAOInterface tagDao, ContentDAOInterface contentDao, PostDAOInterface postDao) {
+    public CutePuppiesController(CategoryDAOInterface categoryDao, TagDAOInterface tagDao, ContentDAOInterface contentDao, PostDAOInterface postDao, UserDAOInterface userDao) {
         this.categoryDao = categoryDao;
         this.tagDao = tagDao;
         this.contentDao = contentDao;
         this.postDao = postDao;
+        this.userDao = userDao;
     }
 
     @RequestMapping(value = {"/"}, method = RequestMethod.GET)
@@ -77,6 +80,8 @@ public class CutePuppiesController {
             Content postContent = contentDao.getPublishedPostContent(postId);
             postContent.setListOfTags(tagDao.getTagsByContentId(postContent.getContentId()));
             postContent.setListOfCategories(categoryDao.getCategoriesByContentId(postContent.getContentId()));
+            postContent.setCreatedByUser(userDao.getUserWhoCreatedContent(postContent.getCreatedByUserId()));
+            post.setCreatedByUser(userDao.getUserWhoCreatedPost(post.getCreatedByUserId()));
             post.setPublishedContent(postContent);
         });
         return listOfPosts;

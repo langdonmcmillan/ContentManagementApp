@@ -13,7 +13,9 @@ import java.util.List;
  * @author apprentice
  */
 public class Post {
+
     private int postId;
+    private User createdByUser;
     private int createdByUserId;
     private Date createdOnDate;
     private int updatedByUserId;
@@ -93,5 +95,13 @@ public class Post {
 
     public void setAllContentRevisions(List<Content> allContentRevisions) {
         this.allContentRevisions = allContentRevisions;
+    }
+
+    public User getCreatedByUser() {
+        return createdByUser;
+    }
+
+    public void setCreatedByUser(User createdByUser) {
+        this.createdByUser = createdByUser;
     }
 }
