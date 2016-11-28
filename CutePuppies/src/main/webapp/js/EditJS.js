@@ -111,7 +111,7 @@ function addPost(contentStatusCode) {
         dataType: 'json'
     }).success(function (post, status) {
         postID = post.postId;
-        window.location.assign('dashboard');
+        window.location.assign('/CutePuppies/dashboard');
     }).error(function (post, status) {
 
     });
