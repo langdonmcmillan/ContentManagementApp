@@ -7,11 +7,17 @@ package com.sg.cutepuppies.daos;
 
 import com.sg.cutepuppies.models.Content;
 import com.sg.cutepuppies.models.Post;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
 /**
  *
@@ -20,10 +26,12 @@ import org.springframework.jdbc.core.RowMapper;
 public class ContentDBImpl implements ContentDAOInterface {
 
     private JdbcTemplate jdbcTemplate;
+    private NamedParameterJdbcTemplate npJdbcTemplate;
 
     // setter injection
     public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
+        this.npJdbcTemplate = new NamedParameterJdbcTemplate(this.jdbcTemplate);
     }
 
     // SQL PREPARED STATEMENTS
@@ -31,6 +39,13 @@ public class ContentDBImpl implements ContentDAOInterface {
             + "where c.PostId = p.PostId and c.PostId = ?";
     private static final String SQL_GET_PUBLISHED_CONTENT_BY_POST_ID = "select c.* from Content c join Post p "
             + "on c.PostId = p.PostId where c.ContentStatusCode = 'PUBLISHED' and c.PostId = ?";
+    private static final String SQL_ADD_CONTENT_TO_POST = "insert into Content (PostId, Title, "
+            + "ContentImgLink, ContentImgAltTxt, Body, Snippet, ContentStatusCode, UrlPattern, ContentTypeCode, "
+            + "CreatedByUserId, CreatedOnDate) "
+            + "values (:postID, :title, :contentImgLink, :contentImgAltTxt, :body, :snippet, :contentStatusCode, "
+            + ":urlPattern, :contentTypeCode, :createdByUserID, :createdOnDate)";
+    private static final String SQL_ARCHIVE_OLD_CONTENT = "update Content set ContentStatusCode = 'ARCHIVED' "
+            + "where ContentStatusCode = 'PUBLISHED' and postID = :postID";
 
     @Override
     public List<Content> getContentByPostID(int postID) {
@@ -39,7 +54,71 @@ public class ContentDBImpl implements ContentDAOInterface {
 
     @Override
     public Content updatePostContent(Content content) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        MapSqlParameterSource namedParameters = new MapSqlParameterSource();
+        Calendar today = Calendar.getInstance();
+        java.sql.Date currentDate = new java.sql.Date((today.getTime()).getTime());
+        content.setCreatedOnDate(currentDate);
+        namedParameters.addValue("postID", content.getPostId());
+        namedParameters.addValue("title", content.getTitle());
+        namedParameters.addValue("contentImgLink", content.getContentImgLink());
+        namedParameters.addValue("contentImgAltTxt", content.getContentImgAltTxt());
+        namedParameters.addValue("body", content.getBody());
+        namedParameters.addValue("snippet", content.getSnippet());
+        namedParameters.addValue("contentStatusCode", content.getContentStatusCode());
+        namedParameters.addValue("urlPattern", content.getUrlPattern());
+        namedParameters.addValue("contentTypeCode", content.getContentTypeCode());
+        namedParameters.addValue("createdByUserID", content.getCreatedByUserId());
+        namedParameters.addValue("createdOnDate", content.getCreatedOnDate());
+        npJdbcTemplate.update(SQL_ADD_CONTENT_TO_POST, namedParameters);
+        content.setContentId(jdbcTemplate.queryForObject("select LAST_INSERT_ID()", Integer.class));
+        updateContentCategories(content);
+        updateContentTags(content);
+        return content;
+    }
+
+    private void archiveOldContent(int postID) {
+        MapSqlParameterSource namedParameters = new MapSqlParameterSource();
+        namedParameters.addValue("postID", postID);
+        npJdbcTemplate.update(SQL_ARCHIVE_OLD_CONTENT, namedParameters);
+    }
+
+    private void updateContentCategories(Content content) {
+        try {
+            jdbcTemplate.batchUpdate("", new BatchPreparedStatementSetter() {
+
+                @Override
+                public void setValues(PreparedStatement ps, int i) throws SQLException {
+                    ps.setInt(1, content.getContentId());
+                    ps.setInt(2, content.getListOfCategories().get(i).getCategoryID());
+                }
+
+                @Override
+                public int getBatchSize() {
+                    return content.getListOfCategories().size();
+                }
+            });
+        } catch (Exception e) {
+        }
+    }
+
+    private void updateContentTags(Content content) {
+        try {
+            jdbcTemplate.batchUpdate("", new BatchPreparedStatementSetter() {
+
+                @Override
+                public void setValues(PreparedStatement ps, int i) throws SQLException {
+                    ps.setInt(1, content.getContentId());
+                    ps.setInt(2, content.getListOfTags().get(i).getTagID());
+                }
+
+                @Override
+                public int getBatchSize() {
+                    return content.getListOfTags().size();
+                }
+            });
+        } catch (Exception e) {
+        }
+
     }
 
     @Override

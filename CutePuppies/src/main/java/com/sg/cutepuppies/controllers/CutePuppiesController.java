@@ -57,7 +57,7 @@ public class CutePuppiesController {
         int categoryIdInt = 0;
         
         if (!newestPostId.equals("null")) {
-            Integer.parseInt(newestPostId);
+            Integer.parseInt(newestPostId); // Should this have newestPostIdInt =?
         }
         if (!oldestPostId.equals("null")) {
             oldestPostIdInt = Integer.parseInt(oldestPostId);

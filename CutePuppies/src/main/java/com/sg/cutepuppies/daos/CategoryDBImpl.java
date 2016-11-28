@@ -27,11 +27,12 @@ public class CategoryDBImpl implements CategoryDAOInterface {
     }
 
     // SQL PREPARED STATEMENTS
+    private static final String SQL_GET_ALL_CATEGORIES = "select * from Category";
     private static final String SQL_GET_CATEGORIES_BY_CONTENT_ID = "select ctg.* from Category ctg join content_category cc on ctg.CategoryId = cc.CategoryId where cc.ContentId = ?";
 
     @Override
     public List<Category> getAllCategories() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return jdbcTemplate.query(SQL_GET_ALL_CATEGORIES, new CategoryMapper());
     }
 
     @Override
