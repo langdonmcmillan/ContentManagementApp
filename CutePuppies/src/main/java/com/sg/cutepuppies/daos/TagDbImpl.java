@@ -5,7 +5,6 @@
  */
 package com.sg.cutepuppies.daos;
 
-import com.sg.cutepuppies.models.Category;
 import com.sg.cutepuppies.models.Tag;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -17,7 +16,7 @@ import org.springframework.jdbc.core.RowMapper;
  *
  * @author apprentice
  */
-public class CategoryDBImpl implements CategoryDAOInterface {
+public class TagDbImpl implements TagDaoInterface {
 
     private JdbcTemplate jdbcTemplate;
 
@@ -25,51 +24,52 @@ public class CategoryDBImpl implements CategoryDAOInterface {
     public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
-
+    
     // SQL PREPARED STATEMENTS
-    private static final String SQL_GET_CATEGORIES_BY_CONTENT_ID = "select ctg.* from Category ctg join content_category cc on ctg.CategoryId = cc.CategoryId where cc.ContentId = ?";
+    private static final String SQL_GET_TAGS_BY_CONTENT_ID = "select t.* from Tag t join content_tag ct on t.TagId = ct.TagId where ct.ContentId = ?";
+    private static final String SQL_GET_ALL_TAGS = "select * from Tag";
+    
+    @Override
+    public List<Tag> getAllTags() {
+        return jdbcTemplate.query(SQL_GET_ALL_TAGS, new TagMapper());
+    }
 
     @Override
-    public List<Category> getAllCategories() {
+    public Tag getTagByName(String tag) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Category getCategoryByName(String category) {
+    public Tag addTag(String tag) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Category addCategory(String category) {
+    public Tag updateTag(Tag tag) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Category updateCategory(Category category) {
+    public void deleteTag(int tagID) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public void deleteCategory(int categoryID) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public List<Tag> getTagsByContentId(int contentId) {
+        return jdbcTemplate.query(SQL_GET_TAGS_BY_CONTENT_ID, new TagMapper(), contentId);
     }
-
-    @Override
-    public List<Category> getCategoriesByContentId(int contentId) {
-        return jdbcTemplate.query(SQL_GET_CATEGORIES_BY_CONTENT_ID, new CategoryMapper(), contentId);
-    }
-
-
-    private static final class CategoryMapper implements RowMapper<Category> {
+    
+        private static final class TagMapper implements RowMapper<Tag> {
 
         @Override
-        public Category mapRow(ResultSet rs, int i) throws SQLException {
+        public Tag mapRow(ResultSet rs, int i) throws SQLException {
 
-            Category category = new Category();
-            category.setCategoryID(rs.getInt("CategoryId"));
-            category.setCategoryDescription(rs.getString("CategoryDescription"));
-            return category;
+            Tag tag = new Tag();
+            tag.setTagID(rs.getInt("TagId"));
+            tag.setTagDescription(rs.getString("TagDescription"));
+
+            return tag;
         }
     }
-
+    
 }

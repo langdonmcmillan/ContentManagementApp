@@ -7,11 +7,19 @@
     width: auto;
     overflow: scroll;
 }
-
 footer {
     margin: 50px;
 }
 
 button {
     margin: 20px;
+}
+.category, .tag {
+    padding-right: 20px;
+    color: grey;
+}
+
+.selected {
+    color: #337ab7;
+    font-weight: bold;
 }

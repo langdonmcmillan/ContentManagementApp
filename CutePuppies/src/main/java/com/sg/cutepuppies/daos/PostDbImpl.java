@@ -9,6 +9,8 @@ import com.sg.cutepuppies.models.Content;
 import com.sg.cutepuppies.models.Post;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Calendar;
+import java.sql.Date;
 import java.util.List;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -19,7 +21,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
  *
  * @author apprentice
  */
-public class PostDBImpl implements PostDAOInterface {
+public class PostDbImpl implements PostDaoInterface {
 
     private JdbcTemplate jdbcTemplate;
     private NamedParameterJdbcTemplate npJdbcTemplate;
@@ -53,6 +55,9 @@ public class PostDBImpl implements PostDAOInterface {
             + ", set ArchivedByUserId = ?"
             + ", set ArchivedByDate = ?"
             + "where PostId = ?";
+    
+    private static final String SQL_ADD_POST = "insert into Post (CreatedByUserId, CreatedOnDate) "
+            + "values(:createdByUserId, :createdOnDate)";
 
     @Override
     public List<Post> getAllPosts(boolean showArchived) {
@@ -92,7 +97,16 @@ public class PostDBImpl implements PostDAOInterface {
 
     @Override
     public Post addPost(Post post) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        MapSqlParameterSource namedParameters = new MapSqlParameterSource();
+        /*
+        Calendar today = Calendar.getInstance();
+        Date currentDate = new Date((today.getTime()).getTime());
+        post.setCreatedOnDate(currentDate); */
+        namedParameters.addValue("createdByUserId", post.getCreatedByUserId());
+        namedParameters.addValue("createdOnDate", post.getCreatedOnDate());
+        npJdbcTemplate.update(SQL_ADD_POST, namedParameters);
+        post.setPostId(jdbcTemplate.queryForObject("select LAST_INSERT_ID()", Integer.class));
+        return post;
     }
 
     @Override
@@ -119,18 +133,14 @@ public class PostDBImpl implements PostDAOInterface {
     }
 
     @Override
-    public List<Post> getPostsByAllCriteria(int newestPostIdInt, int oldestPostIdInt, int postsPerPageInt, String direction, int tagIdInt, int categoryIdInt) {
+    public List<Post> getPostsByAllCriteria(int pageNumberInt, int postsPerPageInt, String direction, int tagIdInt, int categoryIdInt) {
         MapSqlParameterSource namedParameters = new MapSqlParameterSource();
         // set base query
         String SQL_QUERY = SQL_GET_POSTS_BY_ALL_CRITERIA;
-        if (direction.equalsIgnoreCase("previous") && newestPostIdInt != 0) {
+        if (direction.equalsIgnoreCase("previous") && pageNumberInt != 0) {
             // if getting newer posts (previous page)
             SQL_QUERY += " and p.CreatedOnDate > (select p.CreatedOnDate from Post p where p.PostId = :newestPostId)";
-            namedParameters.addValue("newestPostId", newestPostIdInt);
-        } else if (oldestPostIdInt != 0) {
-            // if getting older posts (next page)
-            SQL_QUERY += " and p.CreatedOnDate < (select p.CreatedOnDate from Post p where p.PostId = :oldestPostId)";
-            namedParameters.addValue("oldestPostId", oldestPostIdInt);
+            namedParameters.addValue("newestPostId", pageNumberInt);
         }
         // if filtering by tag
         if (tagIdInt != 0) {
@@ -164,31 +174,6 @@ public class PostDBImpl implements PostDAOInterface {
             post.setArchivedOnDate(rs.getDate("ArchivedOnDate"));
             return post;
 
-        }
-    }
-
-    private static final class ContentMapper implements RowMapper<Content> {
-
-        @Override
-        public Content mapRow(ResultSet rs, int i) throws SQLException {
-
-            Content content = new Content();
-            content.setContentId(rs.getInt("ContentId"));
-            content.setPostId(rs.getInt("PostId"));
-            content.setTitle(rs.getString("Title"));
-            content.setContentImgLink(rs.getString("ContentImgLink"));
-            content.setBody(rs.getString("Body"));
-            content.setSnippet(rs.getString("Snippet"));
-            content.setContentStatusCode(rs.getString("ContentStatusCode"));
-            content.setUrlPattern(rs.getString("UrlPattern"));
-            content.setContentTypeCode(rs.getString("ContentTypeCode"));
-            content.setCreatedByUserId(rs.getInt("CreatedByUserId"));
-            content.setCreatedOnDate(rs.getDate("CreatedOnDate"));
-            content.setUpdatedByUserId(rs.getInt("UpdatedByUserId"));
-            content.setUpdatedOnDate(rs.getDate("UpdatedOnDate"));
-            content.setArchivedByUserId(rs.getInt("ArchivedByUserId"));
-            content.setArchivedOnDate(rs.getDate("ArchivedOnDate"));
-            return content;
         }
     }
 

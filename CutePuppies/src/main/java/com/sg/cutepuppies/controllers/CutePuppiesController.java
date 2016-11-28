@@ -5,11 +5,6 @@
  */
 package com.sg.cutepuppies.controllers;
 
-import com.sg.cutepuppies.daos.CategoryDAOInterface;
-import com.sg.cutepuppies.daos.ContentDAOInterface;
-import com.sg.cutepuppies.daos.PostDAOInterface;
-import com.sg.cutepuppies.daos.TagDAOInterface;
-import com.sg.cutepuppies.daos.UserDAOInterface;
 import com.sg.cutepuppies.models.Content;
 import com.sg.cutepuppies.models.Post;
 import java.util.List;
@@ -19,6 +14,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import com.sg.cutepuppies.daos.CategoryDaoInterface;
+import com.sg.cutepuppies.daos.ContentDaoInterface;
+import com.sg.cutepuppies.daos.PostDaoInterface;
+import com.sg.cutepuppies.daos.TagDaoInterface;
+import com.sg.cutepuppies.daos.UserDaoInterface;
 
 /**
  *
@@ -27,14 +27,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 public class CutePuppiesController {
 
-    private CategoryDAOInterface categoryDao;
-    private TagDAOInterface tagDao;
-    private ContentDAOInterface contentDao;
-    private PostDAOInterface postDao;
-    private UserDAOInterface userDao;
+    private CategoryDaoInterface categoryDao;
+    private TagDaoInterface tagDao;
+    private ContentDaoInterface contentDao;
+    private PostDaoInterface postDao;
+    private UserDaoInterface userDao;
 
     @Inject
-    public CutePuppiesController(CategoryDAOInterface categoryDao, TagDAOInterface tagDao, ContentDAOInterface contentDao, PostDAOInterface postDao, UserDAOInterface userDao) {
+    public CutePuppiesController(CategoryDaoInterface categoryDao, TagDaoInterface tagDao, ContentDaoInterface contentDao, PostDaoInterface postDao, UserDaoInterface userDao) {
         this.categoryDao = categoryDao;
         this.tagDao = tagDao;
         this.contentDao = contentDao;
@@ -49,19 +49,15 @@ public class CutePuppiesController {
 
     @RequestMapping(value = "getPagePosts/", method = RequestMethod.GET)
     @ResponseBody
-    public List<Post> getPagePosts(String newestPostId, String oldestPostId, String postsPerPage, String direction, String tagId, String categoryId) {
+    public List<Post> getPagePosts(String pageNumber, String postsPerPage, String direction, String tagId, String categoryId) {
         // parse to int: newestPostId, oldestPostId, postsPerPage, tagId, categoryId
-        int newestPostIdInt = 0;
-        int oldestPostIdInt = 0;
+        int pageNumberInt = 0;
         int postsPerPageInt = 0;
         int tagIdInt = 0;
         int categoryIdInt = 0;
 
-        if (!newestPostId.equals("null")) {
-            newestPostIdInt = Integer.parseInt(newestPostId);
-        }
-        if (!oldestPostId.equals("null")) {
-            oldestPostIdInt = Integer.parseInt(oldestPostId);
+        if (!pageNumber.equals("null")) {
+            pageNumberInt = Integer.parseInt(pageNumber);
         }
         if (!postsPerPage.equals("null")) {
             postsPerPageInt = Integer.parseInt(postsPerPage);
@@ -74,7 +70,7 @@ public class CutePuppiesController {
         }
 
         // get me a list of Post objects.
-        List<Post> listOfPosts = postDao.getPostsByAllCriteria(newestPostIdInt, oldestPostIdInt, postsPerPageInt, direction, tagIdInt, categoryIdInt);
+        List<Post> listOfPosts = postDao.getPostsByAllCriteria(pageNumberInt, postsPerPageInt, direction, tagIdInt, categoryIdInt);
 
         listOfPosts.forEach((post) -> {
             int postId = post.getPostId();

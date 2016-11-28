@@ -14,7 +14,7 @@ import java.util.List;
  *
  * @author apprentice
  */
-public interface ContentDAOInterface {
+public interface ContentDaoInterface {
     
     public List<Content> getAllContentsByPostId(int postID);
     public Content getPublishedPostContent(int postID);
