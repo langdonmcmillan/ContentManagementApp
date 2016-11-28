@@ -8,26 +8,44 @@ $(document).ready(function () {
     setSessionProperties();
     loadPagePosts();
     $('#itemsPerPageSelect').val(sessionStorage.getItem('postsPerPage'));
-    
-    $('#allPosts').on("click", '.readMoreLink', function() {
+
+    $('#allPosts').on("click", '.readMoreLink', function () {
         var postId = $(this).data('postid');
         displayPost(postId);
     });
-    
-    $('#itemsPerPageSelect').change(function() {
+
+    $('.pagination li').click(function () {
+        var selectedPage = $(this).data('value');
+        if (selectedPage != 0) {
+            sessionStorage.setItem('pageNumber', selectedPage);
+            var prevPage = sessionStorage.getItem('pageNumber') - 1;
+            var nextPage = parseInt(sessionStorage.getItem('pageNumber')) + 1;
+            $('#prevPageButton').data('value', prevPage);
+            $('#nextPageButton').data('value', nextPage);
+            $('#prevPageButton').removeClass('disabled');
+            if (prevPage == 0) {
+                $('#prevPageButton').addClass('disabled');
+            }
+            $(this).siblings('li').removeClass('active');
+            $('.pgNum[data-value='+selectedPage+']').addClass('active');
+            loadPagePosts();
+        }
+    });
+
+    $('#itemsPerPageSelect').change(function () {
         sessionStorage.setItem('postsPerPage', $('#itemsPerPageSelect option:selected').val());
         loadPagePosts();
     });
-    
+
 });
 
-$(document).ajaxComplete(function(){
+$(document).ajaxComplete(function () {
     $(".ellipsis").dotdotdot({
-                ellipsis: '... ',
-                height: 150,
-		watch: "window",
-                after: "a.readmore"
-	});
+        ellipsis: '... ',
+        height: 150,
+        watch: "window",
+        after: "a.readmore"
+    });
 });
 
 function displayPost(postId) {
@@ -64,7 +82,6 @@ function loadPagePosts() {
         data: {
             pageNumber: sessionStorage.getItem('pageNumber'),
             postsPerPage: sessionStorage.getItem('postsPerPage'),
-            direction: sessionStorage.getItem('searchDirection'),
             tagId: sessionStorage.getItem('selectedTagId'),
             categoryId: sessionStorage.getItem('selectedCategoryId')
         }
@@ -101,19 +118,18 @@ function fillPostSnippetsContainer(posts) {
                 .append('<hr>')
                 .append($('<p class = "body ellipsis">').html(post.publishedContent.body))
                 .append($('<a title="read more" class="readmore readMoreLink">')
-                    .text('Read more »')
-                    .attr({'data-postId': post.postId})
-                )
+                        .text('Read more »')
+                        .attr({'data-postId': post.postId})
+                        )
                 .append('<hr>');
     });
-    
+
 }
 ;
 
 function resetSessionProperties() {
     sessionStorage.setItem('postsPerPage', 5);
-    sessionStorage.setItem('postsPerPage', 1);
-    sessionStorage.setItem('searchDirection', 'forward');
+    sessionStorage.setItem('pageNumber', 1);
     sessionStorage.setItem('selectedTagId', 'null');
     sessionStorage.setItem('selectedCategoryId', 'null');
 }
@@ -125,7 +141,6 @@ function setSessionProperties() {
     if (sessionStorage.getItem('pageNumber') === null) {
         sessionStorage.setItem('pageNumber', 1);
     }
-    sessionStorage.setItem('searchDirection', 'forward');
     sessionStorage.setItem('selectedTagId', 'null');
     sessionStorage.setItem('selectedCategoryId', 'null');
 }
