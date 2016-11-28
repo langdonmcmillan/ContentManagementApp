@@ -55,9 +55,10 @@ public class ContentDBImpl implements ContentDAOInterface {
     @Override
     public Content updatePostContent(Content content) {
         MapSqlParameterSource namedParameters = new MapSqlParameterSource();
+        /*
         Calendar today = Calendar.getInstance();
         java.sql.Date currentDate = new java.sql.Date((today.getTime()).getTime());
-        content.setCreatedOnDate(currentDate);
+        content.setCreatedOnDate(currentDate); */
         namedParameters.addValue("postID", content.getPostId());
         namedParameters.addValue("title", content.getTitle());
         namedParameters.addValue("contentImgLink", content.getContentImgLink());

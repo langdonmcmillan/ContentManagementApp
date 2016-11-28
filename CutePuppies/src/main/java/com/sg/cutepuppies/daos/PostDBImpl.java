@@ -91,9 +91,10 @@ public class PostDBImpl implements PostDAOInterface {
     @Override
     public Post addPost(Post post) {
         MapSqlParameterSource namedParameters = new MapSqlParameterSource();
+        /*
         Calendar today = Calendar.getInstance();
         Date currentDate = new Date((today.getTime()).getTime());
-        post.setCreatedOnDate(currentDate);
+        post.setCreatedOnDate(currentDate); */
         namedParameters.addValue("createdByUserId", post.getCreatedByUserId());
         namedParameters.addValue("createdOnDate", post.getCreatedOnDate());
         npJdbcTemplate.update(SQL_ADD_POST, namedParameters);
