@@ -27,10 +27,11 @@ public class TagDBImpl implements TagDAOInterface {
     
     // SQL PREPARED STATEMENTS
     private static final String SQL_GET_TAGS_BY_CONTENT_ID = "select t.* from Tag t join content_tag ct on t.TagId = ct.TagId where ct.ContentId = ?";
+    private static final String SQL_GET_ALL_TAGS = "select * from Tag";
     
     @Override
     public List<Tag> getAllTags() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return jdbcTemplate.query(SQL_GET_ALL_TAGS, new TagMapper());
     }
 
     @Override
