@@ -43,19 +43,19 @@
         <constructor-arg ref="jdbcTemplate"/>
     </bean> 
     
-    <bean id="PostDAO" class="com.sg.cutepuppies.daos.PostDBImpl">
+    <bean id="PostDAO" class="com.sg.cutepuppies.daos.PostDbImpl">
         <property name="jdbcTemplate" ref="jdbcTemplate"/>
     </bean> 
-    <bean id="ContentDAO" class="com.sg.cutepuppies.daos.ContentDBImpl">
+    <bean id="ContentDAO" class="com.sg.cutepuppies.daos.ContentDbImpl">
         <property name="jdbcTemplate" ref="jdbcTemplate"/>
     </bean> 
-    <bean id="CategoryDAO" class="com.sg.cutepuppies.daos.CategoryDBImpl">
+    <bean id="CategoryDAO" class="com.sg.cutepuppies.daos.CategoryDbImpl">
         <property name="jdbcTemplate" ref="jdbcTemplate"/>
     </bean> 
-    <bean id="TagDAO" class="com.sg.cutepuppies.daos.TagDBImpl">
+    <bean id="TagDAO" class="com.sg.cutepuppies.daos.TagDbImpl">
         <property name="jdbcTemplate" ref="jdbcTemplate"/>
     </bean> 
-    <bean id="UserDAO" class="com.sg.cutepuppies.daos.UserDBImpl">
+    <bean id="UserDAO" class="com.sg.cutepuppies.daos.UserDbImpl">
         <property name="jdbcTemplate" ref="jdbcTemplate"/>
     </bean> 
     

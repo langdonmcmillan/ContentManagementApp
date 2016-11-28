@@ -56,8 +56,8 @@ public class PostDbImpl implements PostDaoInterface {
             + ", set ArchivedByDate = ?"
             + "where PostId = ?";
     
-    private static final String SQL_ADD_POST = "insert into Post (CreatedByUserId, CreatedOnDate) "
-            + "values(:createdByUserId, :createdOnDate)";
+    private static final String SQL_ADD_POST = "insert into Post (CreatedByUserId) "
+            + "values(:createdByUserId)";
 
     @Override
     public List<Post> getAllPosts(boolean showArchived) {

@@ -43,9 +43,9 @@ public class ContentDbImpl implements ContentDaoInterface {
             + "on c.PostId = p.PostId where c.ContentStatusCode = 'PUBLISHED' and c.PostId = ?";
     private static final String SQL_ADD_CONTENT_TO_POST = "insert into Content (PostId, Title, "
             + "ContentImgLink, ContentImgAltTxt, Body, Snippet, ContentStatusCode, UrlPattern, ContentTypeCode, "
-            + "CreatedByUserId, CreatedOnDate) "
+            + "CreatedByUserId) "
             + "values (:postID, :title, :contentImgLink, :contentImgAltTxt, :body, :snippet, :contentStatusCode, "
-            + ":urlPattern, :contentTypeCode, :createdByUserID, :createdOnDate)";
+            + ":urlPattern, :contentTypeCode, :createdByUserID)";
     private static final String SQL_ARCHIVE_OLD_CONTENT = "update Content set ContentStatusCode = 'ARCHIVED' "
             + "where ContentStatusCode = 'PUBLISHED' and postID = :postID";
 
