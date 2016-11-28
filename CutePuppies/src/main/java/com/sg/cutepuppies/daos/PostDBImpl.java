@@ -33,8 +33,9 @@ public class PostDBImpl implements PostDAOInterface {
     }
 
     // SQL PREPARED STATEMENTS
+    private static final String SQL_GET_POST_BY_ID = "select * from Post where postId = :postId";
     private static final String SQL_SELECT_ALL_POSTS = "select * from Post";
-    private static String SQL_GET_POSTS_BY_ALL_CRITERIA
+    private static final String SQL_GET_POSTS_BY_ALL_CRITERIA
             = "select p.* from Post p "
             + " join Content c on c.PostId = p.PostId"
             + " left join content_tag ct on c.ContentId = ct.ContentId"
@@ -83,7 +84,8 @@ public class PostDBImpl implements PostDAOInterface {
 
     @Override
     public Post getPostByID(int postID) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        MapSqlParameterSource namedParameters = new MapSqlParameterSource("postId",postID);
+        return npJdbcTemplate.queryForObject(SQL_GET_POST_BY_ID, namedParameters, new PostMapper());
     }
 
     @Override

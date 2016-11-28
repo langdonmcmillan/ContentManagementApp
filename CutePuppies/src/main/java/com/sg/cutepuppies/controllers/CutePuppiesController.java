@@ -15,6 +15,7 @@ import com.sg.cutepuppies.models.Post;
 import java.util.List;
 import javax.inject.Inject;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -55,9 +56,9 @@ public class CutePuppiesController {
         int postsPerPageInt = 0;
         int tagIdInt = 0;
         int categoryIdInt = 0;
-        
+
         if (!newestPostId.equals("null")) {
-            Integer.parseInt(newestPostId); // Should this have newestPostIdInt =?
+            newestPostIdInt = Integer.parseInt(newestPostId);
         }
         if (!oldestPostId.equals("null")) {
             oldestPostIdInt = Integer.parseInt(oldestPostId);
@@ -70,8 +71,8 @@ public class CutePuppiesController {
         }
         if (!categoryId.equals("null")) {
             categoryIdInt = Integer.parseInt(categoryId);
-        }        
-        
+        }
+
         // get me a list of Post objects.
         List<Post> listOfPosts = postDao.getPostsByAllCriteria(newestPostIdInt, oldestPostIdInt, postsPerPageInt, direction, tagIdInt, categoryIdInt);
 
@@ -85,6 +86,19 @@ public class CutePuppiesController {
             post.setPublishedContent(postContent);
         });
         return listOfPosts;
+    }
+
+    @RequestMapping(value = "displayPost/{postId}", method = RequestMethod.GET)
+    @ResponseBody
+    public Post displayPost(@PathVariable("postId") int postId) {
+        Post post = postDao.getPostByID(postId);
+        Content postContent = contentDao.getPublishedPostContent(postId);
+        postContent.setListOfTags(tagDao.getTagsByContentId(postContent.getContentId()));
+        postContent.setListOfCategories(categoryDao.getCategoriesByContentId(postContent.getContentId()));
+        postContent.setCreatedByUser(userDao.getUserWhoCreatedContent(postContent.getCreatedByUserId()));
+        post.setCreatedByUser(userDao.getUserWhoCreatedPost(post.getCreatedByUserId()));
+        post.setPublishedContent(postContent);
+        return post;
     }
 
 }
