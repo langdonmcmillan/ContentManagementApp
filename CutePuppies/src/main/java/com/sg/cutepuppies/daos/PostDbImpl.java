@@ -18,7 +18,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
  *
  * @author apprentice
  */
-public class PostDBImpl implements PostDAOInterface {
+public class PostDbImpl implements PostDaoInterface {
 
     private JdbcTemplate jdbcTemplate;
     private NamedParameterJdbcTemplate npJdbcTemplate;
@@ -31,7 +31,9 @@ public class PostDBImpl implements PostDAOInterface {
 
     // SQL PREPARED STATEMENTS
     private static final String SQL_GET_POST_BY_ID = "select * from Post where postId = :postId";
-    private static final String SQL_SELECT_ALL_POSTS = "select * from Post";
+    private static final String SQL_SELECT_ALL_POSTS
+            = "select p.* from Post p"
+            + " where 1 = 1";
     private static final String SQL_GET_POSTS_BY_ALL_CRITERIA
             = "select p.* from Post p "
             + " join Content c on c.PostId = p.PostId"
@@ -51,12 +53,17 @@ public class PostDBImpl implements PostDAOInterface {
             + ", set ArchivedByDate = ?"
             + "where PostId = ?";
     
-    private static final String SQL_ADD_POST = "insert into Post (CreatedByUserId, CreatedOnDate) "
-            + "values(:createdByUserId, :createdOnDate)";
+    private static final String SQL_ADD_POST = "insert into Post (CreatedByUserId) "
+            + "values(:createdByUserId)";
 
     @Override
-    public List<Post> getAllPosts() {
-        return jdbcTemplate.query(SQL_SELECT_ALL_POSTS, new PostMapper());
+    public List<Post> getAllPosts(boolean showArchived) {
+        String SQL_BASE = SQL_SELECT_ALL_POSTS;
+        if (showArchived == false) {
+            SQL_BASE += " and p.archivedOnDate is null";
+        }
+        return jdbcTemplate.query(SQL_BASE, new PostMapper());
+
     }
 
     @Override
@@ -81,7 +88,7 @@ public class PostDBImpl implements PostDAOInterface {
 
     @Override
     public Post getPostByID(int postID) {
-        MapSqlParameterSource namedParameters = new MapSqlParameterSource("postId",postID);
+        MapSqlParameterSource namedParameters = new MapSqlParameterSource("postId", postID);
         return npJdbcTemplate.queryForObject(SQL_GET_POST_BY_ID, namedParameters, new PostMapper());
     }
 

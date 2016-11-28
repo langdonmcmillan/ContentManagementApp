@@ -2,10 +2,17 @@
     font-family: 'McLaren', cursive;
 }
 
+#listScroll {
+    height: 400px;
+    overflow: scroll;
+}
 footer {
     margin: 50px;
 }
 
+#createNewPost {
+    margin: 20px;
+}
 .category, .tag {
     padding-right: 20px;
     color: grey;

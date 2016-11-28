@@ -15,7 +15,7 @@ import org.springframework.jdbc.core.RowMapper;
  *
  * @author apprentice
  */
-public class UserDBImpl implements UserDAOInterface {
+public class UserDbImpl implements UserDaoInterface {
 
     private JdbcTemplate jdbcTemplate;
 

@@ -12,7 +12,7 @@ import java.util.List;
  *
  * @author apprentice
  */
-public interface CategoryDAOInterface {
+public interface CategoryDaoInterface {
     public List<Category> getAllCategories();
 
     public List<Category> getCategoriesByContentId(int contentId);

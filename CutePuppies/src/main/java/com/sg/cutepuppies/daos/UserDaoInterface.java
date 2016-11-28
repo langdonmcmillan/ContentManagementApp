@@ -11,7 +11,7 @@ import com.sg.cutepuppies.models.User;
  *
  * @author apprentice
  */
-public interface UserDAOInterface {
+public interface UserDaoInterface {
     
     public User getUserWhoCreatedPost(int createdByUserId);
     

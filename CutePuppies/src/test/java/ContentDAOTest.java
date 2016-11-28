@@ -4,10 +4,6 @@
  * and open the template in the editor.
  */
 
-import com.sg.cutepuppies.daos.CategoryDAOInterface;
-import com.sg.cutepuppies.daos.ContentDAOInterface;
-import com.sg.cutepuppies.daos.PostDAOInterface;
-import com.sg.cutepuppies.daos.TagDAOInterface;
 import com.sg.cutepuppies.models.Content;
 import com.sg.cutepuppies.models.Post;
 import org.junit.Test;
@@ -16,6 +12,10 @@ import org.junit.Before;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.jdbc.core.JdbcTemplate;
+import com.sg.cutepuppies.daos.CategoryDaoInterface;
+import com.sg.cutepuppies.daos.ContentDaoInterface;
+import com.sg.cutepuppies.daos.PostDaoInterface;
+import com.sg.cutepuppies.daos.TagDaoInterface;
 
 /**
  *
@@ -23,10 +23,10 @@ import org.springframework.jdbc.core.JdbcTemplate;
  */
 public class ContentDAOTest {
     
-    private PostDAOInterface postDAO;
-    private ContentDAOInterface contentDAO;
-    private CategoryDAOInterface categoryDAO;
-    private TagDAOInterface tagDAO;
+    private PostDaoInterface postDAO;
+    private ContentDaoInterface contentDAO;
+    private CategoryDaoInterface categoryDAO;
+    private TagDaoInterface tagDAO;
     
     public ContentDAOTest() {
         
@@ -36,10 +36,10 @@ public class ContentDAOTest {
     public void setUp() {
         ApplicationContext ctx
                 = new ClassPathXmlApplicationContext("test-applicationContext.xml");
-        postDAO = ctx.getBean("PostDBImplTest", PostDAOInterface.class);
-        contentDAO = ctx.getBean("ContentDBImplTest", ContentDAOInterface.class);
-        categoryDAO = ctx.getBean("CategoryDBImplTest", CategoryDAOInterface.class);
-        tagDAO = ctx.getBean("TagDBImplTest", TagDAOInterface.class);
+        postDAO = ctx.getBean("PostDBImplTest", PostDaoInterface.class);
+        contentDAO = ctx.getBean("ContentDBImplTest", ContentDaoInterface.class);
+        categoryDAO = ctx.getBean("CategoryDBImplTest", CategoryDaoInterface.class);
+        tagDAO = ctx.getBean("TagDBImplTest", TagDaoInterface.class);
         
         JdbcTemplate template = (JdbcTemplate) ctx.getBean("jdbcTemplate");
         

@@ -12,7 +12,7 @@ import java.util.List;
  *
  * @author apprentice
  */
-public interface TagDAOInterface {
+public interface TagDaoInterface {
     public List<Tag> getAllTags();
 
     public List<Tag> getTagsByContentId(int contentId);

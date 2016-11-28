@@ -23,7 +23,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
  *
  * @author apprentice
  */
-public class ContentDBImpl implements ContentDAOInterface {
+public class ContentDbImpl implements ContentDaoInterface {
 
     private JdbcTemplate jdbcTemplate;
     private NamedParameterJdbcTemplate npJdbcTemplate;
@@ -35,21 +35,23 @@ public class ContentDBImpl implements ContentDAOInterface {
     }
 
     // SQL PREPARED STATEMENTS
-    private static final String SQL_GET_CONTENT_BY_POST_ID = "select * from Content c join Post p "
-            + "where c.PostId = p.PostId and c.PostId = ?";
+    private static final String SQL_GET_ALL_REVISIONS_BY_POST_ID 
+            = "select c.* from Content c "
+            + " join Post p on c.PostId = p.PostId "
+            + " where c.PostId = ?";
     private static final String SQL_GET_PUBLISHED_CONTENT_BY_POST_ID = "select c.* from Content c join Post p "
             + "on c.PostId = p.PostId where c.ContentStatusCode = 'PUBLISHED' and c.PostId = ?";
     private static final String SQL_ADD_CONTENT_TO_POST = "insert into Content (PostId, Title, "
             + "ContentImgLink, ContentImgAltTxt, Body, Snippet, ContentStatusCode, UrlPattern, ContentTypeCode, "
-            + "CreatedByUserId, CreatedOnDate) "
+            + "CreatedByUserId) "
             + "values (:postID, :title, :contentImgLink, :contentImgAltTxt, :body, :snippet, :contentStatusCode, "
-            + ":urlPattern, :contentTypeCode, :createdByUserID, :createdOnDate)";
+            + ":urlPattern, :contentTypeCode, :createdByUserID)";
     private static final String SQL_ARCHIVE_OLD_CONTENT = "update Content set ContentStatusCode = 'ARCHIVED' "
             + "where ContentStatusCode = 'PUBLISHED' and postID = :postID";
 
     @Override
-    public List<Content> getContentByPostID(int postID) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public List<Content> getAllContentsByPostId(int postID) {
+        return jdbcTemplate.query(SQL_GET_ALL_REVISIONS_BY_POST_ID, new ContentMapper(), postID);
     }
 
     @Override
