@@ -5,15 +5,31 @@
  */
 
 $(document).ready(function () {
-    resetSessionProperties();
-    loadAllPosts();
+    setSessionProperties();
+    loadPagePosts();
+    $('#itemsPerPageSelect').val(sessionStorage.getItem('postsPerPage'));
     
     $('#allPosts').on("click", '.readMoreLink', function() {
         var postId = $(this).data('postid');
         displayPost(postId);
     });
     
+    $('#itemsPerPageSelect').change(function() {
+        sessionStorage.setItem('postsPerPage', $('#itemsPerPageSelect option:selected').val());
+        loadPagePosts();
+    });
+    
 });
+
+$(document).ajaxComplete(function(){
+    $(".ellipsis").dotdotdot({
+                ellipsis: '... ',
+                height: 150,
+		watch: "window",
+                after: "a.readmore"
+	});
+});
+
 function displayPost(postId) {
     $.ajax({
         type: 'GET',
@@ -41,21 +57,18 @@ function displayPost(postId) {
     });
 }
 
-function loadAllPosts() {
+function loadPagePosts() {
     $.ajax({
         type: 'GET',
         url: 'getPagePosts/',
         data: {
-            newestPostId: sessionStorage.getItem('firstPostId'),
-            oldestPostId: sessionStorage.getItem('lastPostId'),
+            pageNumber: sessionStorage.getItem('pageNumber'),
             postsPerPage: sessionStorage.getItem('postsPerPage'),
             direction: sessionStorage.getItem('searchDirection'),
             tagId: sessionStorage.getItem('selectedTagId'),
             categoryId: sessionStorage.getItem('selectedCategoryId')
         }
     }).success(function (data, status) {
-        sessionStorage.setItem('firstPostId', data[0].postId);
-        sessionStorage.setItem('lastPostId', data[data.length - 1].postId);
         fillPostSnippetsContainer(data);
     }).error(function (data, status) {
 // TODO: display message that data could not be loaded
@@ -86,16 +99,20 @@ function fillPostSnippetsContainer(posts) {
                             'data-postId': post.postId
                         }))
                 .append('<hr>')
-                .append($('<p class = "body">').html(post.publishedContent.body))
+                .append($('<p class = "body ellipsis">').html(post.publishedContent.body))
+                .append($('<a title="read more" class="readmore readMoreLink">')
+                    .text('Read more »')
+                    .attr({'data-postId': post.postId})
+                )
                 .append('<hr>');
     });
+    
 }
 ;
 
 function resetSessionProperties() {
     sessionStorage.setItem('postsPerPage', 5);
-    sessionStorage.setItem('firstPostId', 'null');
-    sessionStorage.setItem('lastPostId', 'null');
+    sessionStorage.setItem('postsPerPage', 1);
     sessionStorage.setItem('searchDirection', 'forward');
     sessionStorage.setItem('selectedTagId', 'null');
     sessionStorage.setItem('selectedCategoryId', 'null');
@@ -105,9 +122,8 @@ function setSessionProperties() {
     if (sessionStorage.getItem('postsPerPage') === null) {
         sessionStorage.setItem('postsPerPage', 5);
     }
-    if (sessionStorage.getItem('firstPostId') === null) {
-        sessionStorage.setItem('firstPostId', 'null');
-        sessionStorage.setItem('lastPostId', 'null');
+    if (sessionStorage.getItem('pageNumber') === null) {
+        sessionStorage.setItem('pageNumber', 1);
     }
     sessionStorage.setItem('searchDirection', 'forward');
     sessionStorage.setItem('selectedTagId', 'null');
