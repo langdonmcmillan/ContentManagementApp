@@ -49,12 +49,12 @@ public class PostDAOTest {
         Post post = new Post();
         post.setCreatedByUserId(1);
         
-        int numPosts = postDAO.getAllPosts().size();
+        int numPosts = postDAO.getAllPosts(true).size();
         assertEquals(0, post.getPostId());
         
         postDAO.addPost(post);
         
-        assertEquals(numPosts + 1, postDAO.getAllPosts().size());
+        assertEquals(numPosts + 1, postDAO.getAllPosts(true).size());
         assertNotEquals(0, post.getPostId());
     }
 }
