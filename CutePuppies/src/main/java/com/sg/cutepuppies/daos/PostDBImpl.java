@@ -5,12 +5,9 @@
  */
 package com.sg.cutepuppies.daos;
 
-import com.sg.cutepuppies.models.Content;
 import com.sg.cutepuppies.models.Post;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Calendar;
-import java.sql.Date;
 import java.util.List;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -91,10 +88,6 @@ public class PostDBImpl implements PostDAOInterface {
     @Override
     public Post addPost(Post post) {
         MapSqlParameterSource namedParameters = new MapSqlParameterSource();
-        /*
-        Calendar today = Calendar.getInstance();
-        Date currentDate = new Date((today.getTime()).getTime());
-        post.setCreatedOnDate(currentDate); */
         namedParameters.addValue("createdByUserId", post.getCreatedByUserId());
         namedParameters.addValue("createdOnDate", post.getCreatedOnDate());
         npJdbcTemplate.update(SQL_ADD_POST, namedParameters);
@@ -126,15 +119,10 @@ public class PostDBImpl implements PostDAOInterface {
     }
 
     @Override
-    public List<Post> getPostsByAllCriteria(int pageNumberInt, int postsPerPageInt, String direction, int tagIdInt, int categoryIdInt) {
+    public List<Post> getPostsByAllCriteria(int pageNumberInt, int postsPerPageInt, int tagIdInt, int categoryIdInt) {
         MapSqlParameterSource namedParameters = new MapSqlParameterSource();
         // set base query
         String SQL_QUERY = SQL_GET_POSTS_BY_ALL_CRITERIA;
-        if (direction.equalsIgnoreCase("previous") && pageNumberInt != 0) {
-            // if getting newer posts (previous page)
-            SQL_QUERY += " and p.CreatedOnDate > (select p.CreatedOnDate from Post p where p.PostId = :newestPostId)";
-            namedParameters.addValue("newestPostId", pageNumberInt);
-        }
         // if filtering by tag
         if (tagIdInt != 0) {
             SQL_QUERY += " and t.TagId = :tagId";
@@ -146,8 +134,9 @@ public class PostDBImpl implements PostDAOInterface {
             namedParameters.addValue("categoryId", categoryIdInt);
         }
         // always order by date and limit to selected posts per page
-        SQL_QUERY += " order by p.CreatedOnDate desc limit :postsPerPage";
+        SQL_QUERY += " order by p.CreatedOnDate desc limit :postsPerPage offset :postOffset";
         namedParameters.addValue("postsPerPage", postsPerPageInt);
+        namedParameters.addValue("postOffset", postsPerPageInt*(pageNumberInt-1));
         return npJdbcTemplate.query(SQL_QUERY, namedParameters, new PostMapper());
 
     }
