@@ -60,7 +60,9 @@ public class PostDbImpl implements PostDaoInterface {
     public List<Post> getAllPosts(boolean showArchived) {
         String SQL_BASE = SQL_SELECT_ALL_POSTS;
         if (showArchived == false) {
-            SQL_BASE += " and p.archivedOnDate is null";
+            SQL_BASE += " and p.archivedOnDate is null order by p.CreatedOnDate desc";
+        } else {
+            SQL_BASE += " order by p.CreatedOnDate";
         }
         return jdbcTemplate.query(SQL_BASE, new PostMapper());
 

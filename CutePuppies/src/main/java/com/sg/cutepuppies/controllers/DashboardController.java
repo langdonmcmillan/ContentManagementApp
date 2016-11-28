@@ -51,12 +51,12 @@ public class DashboardController {
         this.userDao = userDao;
     }
 
-    @RequestMapping(value = {"/dashboard"}, method = RequestMethod.GET)
+    @RequestMapping(value = {"/admin/dashboard"}, method = RequestMethod.GET)
     public String getDashBoardPage() {
         return "dashboard";
     }
 
-    @RequestMapping(value = "getAllPosts/{archiveBoxChecked}", method = RequestMethod.GET)
+    @RequestMapping(value = "admin/getAllPosts/{archiveBoxChecked}", method = RequestMethod.GET)
     @ResponseBody
     public List<Post> getAllPosts(@PathVariable("archiveBoxChecked") boolean showArchived) {
         List<Post> listOfAllPosts = postDao.getAllPosts(showArchived);
