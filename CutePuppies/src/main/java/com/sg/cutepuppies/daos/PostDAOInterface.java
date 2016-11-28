@@ -14,7 +14,7 @@ import java.util.List;
  * @author apprentice
  */
 public interface PostDAOInterface {
-    public List<Post> getAllPosts();
+    public List<Post> getAllPosts(boolean showArchived);
     public List<Post> getAllPostsInclArchived();
     public List<Post> getPostsByAllCriteria(int newestPostId, int oldestPostId, int postsPerPage, String direction, int tagId, int categoryId);
     public List<Post> getPostByTag(int tagID);

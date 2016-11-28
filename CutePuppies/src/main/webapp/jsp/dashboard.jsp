@@ -46,25 +46,31 @@
                     </div>
                     <div class="row">
                         <div class="col-sm-9 col-lg-10 text-left">
-                            <input id = "showArchivedPosts" type="checkbox" name="archivedPosts" value="Bike"> Show Archived Posts<br>
+                            <input id = "showArchivedPosts" type="checkbox" name="archivedPosts" value="showArchivedPosts"> Show Archived Posts<br>
                         </div>
                     </div>
-                    <div class="row">
-                        <table class="table table-responsive">
+                    <div class="row" id = "listScroll">
+                        <table class="table table-responsive" >
                             <thead>
                                 <tr>
                                     <th>Title</th>
-                                    <th>Author</th>
+                                    <th>Original Author</th>
+                                    <th>Date Created</th>
+                                    <th>Contributing Author</th>
                                     <th>Date Last Updated</th>
-                                    <th>Status</th>
-                                    <th>Options</th>
+                                    <th>Content Status</th>
                                 </tr>
                             </thead>
                             <tbody id ="populateTable"></tbody>
                         </table>
                     </div>
                 </div>
-            </div>
+                <div class="row">
+                    <div class="col-sm-9 col-lg-10 text-center">
+                        <button id="createNewPost" type="button" class="btn btn-primary btn-lg center-block">Create A New Post</button>
+                    </div>
+                </div>
+            </div>  
         </div>
 
         <footer>

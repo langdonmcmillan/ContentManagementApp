@@ -12,10 +12,12 @@ import com.sg.cutepuppies.daos.TagDAOInterface;
 import com.sg.cutepuppies.daos.UserDAOInterface;
 import com.sg.cutepuppies.models.Content;
 import com.sg.cutepuppies.models.Post;
+import com.sg.cutepuppies.models.User;
 import java.util.List;
 import javax.inject.Inject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -49,22 +51,19 @@ public class DashboardController {
         return "dashboard";
     }
 
-    @RequestMapping(value = "getAllPostsNotArchived", method = RequestMethod.GET)
+    @RequestMapping(value = "getAllPosts/{archiveBoxChecked}", method = RequestMethod.GET)
     @ResponseBody
-    public List<Post> getAllPosts() {
-        // gets me a list of every single post
-        List<Post> listOfAllPosts = postDao.getAllPosts();
-        listOfAllPosts.forEach((post) -> {
+    public List<Post> getAllPosts(@PathVariable("archiveBoxChecked") boolean showArchived) {
+        List<Post> listOfAllPosts = postDao.getAllPosts(showArchived);
+        listOfAllPosts.forEach(post -> {
             int postId = post.getPostId();
-            // for each post, get a list of Content whose ContentStatusCode is *not* PUBLISHED.
-            List<Content> contentsPerPost = contentDao.getContentNotArchivedByPostId(postId);
-            post.setAllContentRevisions(contentsPerPost);
-            contentsPerPost.forEach((content -> {
-                content.setListOfTags(tagDao.getTagsByContentId(content.getContentId()));
-                content.setListOfCategories(categoryDao.getCategoriesByContentId(content.getContentId()));
+            int userIdWhoCreatedPost = post.getCreatedByUserId();
+            post.setCreatedByUser(userDao.getUserWhoCreatedPost(userIdWhoCreatedPost));
+            List<Content> listOfAllContentsPerPost = contentDao.getAllContentsByPostId(postId);
+            listOfAllContentsPerPost.forEach(content -> {
                 content.setCreatedByUser(userDao.getUserWhoCreatedContent(content.getCreatedByUserId()));
-                
-            }));
+            });
+            post.setAllContentRevisions(listOfAllContentsPerPost);
         });
         return listOfAllPosts;
     }

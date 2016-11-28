@@ -6,14 +6,31 @@
 
 
 $(document).ready(function () {
-    loadAllPosts();
+    var archiveBoxChecked = $('#showArchivedPosts').is(':checked');
+    loadAllPosts(archiveBoxChecked);
 });
 
-function loadAllPosts() {
+$("#showArchivedPosts").change(function () {
+    var archiveBoxChecked = $('#showArchivedPosts').is(':checked');
 
+    if (this.checked) {
+        loadAllPosts(archiveBoxChecked);
+    } else {
+        loadAllPosts(archiveBoxChecked);
+    }
+        
+});
+
+$('#createNewPost').click(function() {
+    // needs to go to edit page.
+    window.location.href = 'edit';
+    return false;
+});
+
+function loadAllPosts(archiveBoxChecked) {
     $.ajax({
         type: 'GET',
-        url: 'getAllPostsNotArchived'
+        url: 'getAllPosts/' + archiveBoxChecked
     }).success(function (data, status) {
         fillTableWithAllPosts(data);
     }).error(function (data, status) {
@@ -26,15 +43,15 @@ function fillTableWithAllPosts(listOfAllPosts) {
     tbody.empty();
 
     $.each(listOfAllPosts, function (index, post) {
-        $.each(post.allContentRevisions, function (index, content) {
-            tbody.append($('<tr>')
-                    .append($('<td>').text(content.title))
-                    .append($('<td>').text(content.createdByUser.userName))
-                    .append($('<td>').text(content.createdOnDate))
-                    .append($('<td>').text(content.contentStatusCode))
-                    .append($('<td>').text('some options...'))
-                    );
-        });
-
+        var arrayOfContent = post.allContentRevisions;
+        var contentToDisplay = arrayOfContent[arrayOfContent.length - 1];
+        tbody.append($('<tr>')
+                .append($('<td>').text(contentToDisplay.title))
+                .append($('<td>').text(post.createdByUser.userName))
+                .append($('<td>').text(post.createdOnDate))
+                .append($('<td>').text(contentToDisplay.createdByUser.userName))
+                .append($('<td>').text(contentToDisplay.createdOnDate))
+                .append($('<td>').text(contentToDisplay.contentStatusCode))
+                );
     });
 }

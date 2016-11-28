@@ -2,6 +2,16 @@
     font-family: 'McLaren', cursive;
 }
 
+#listScroll {
+    height: 400px;
+    width: auto;
+    overflow: scroll;
+}
+
 footer {
     margin: 50px;
+}
+
+button {
+    margin: 20px;
 }

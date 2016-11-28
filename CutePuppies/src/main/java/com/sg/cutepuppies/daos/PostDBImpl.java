@@ -32,13 +32,8 @@ public class PostDBImpl implements PostDAOInterface {
 
     // SQL PREPARED STATEMENTS
     private static final String SQL_GET_POST_BY_ID = "select * from Post where postId = :postId";
-    private static final String SQL_SELECT_ALL_POSTS 
+    private static final String SQL_SELECT_ALL_POSTS
             = "select p.* from Post p"
-            + " join Content c on c.PostId = p.PostId"
-            + " left join content_tag ct on c.ContentId = ct.ContentId"
-            + " left join Tag t on ct.TagId = t.TagId"
-            + " left join content_category cc on c.ContentId = cc.ContentId"
-            + " left join Category ctg on cc.CategoryId = ctg.CategoryId"
             + " where 1 = 1";
     private static final String SQL_GET_POSTS_BY_ALL_CRITERIA
             = "select p.* from Post p "
@@ -60,8 +55,13 @@ public class PostDBImpl implements PostDAOInterface {
             + "where PostId = ?";
 
     @Override
-    public List<Post> getAllPosts() {
-        return jdbcTemplate.query(SQL_SELECT_ALL_POSTS, new PostMapper());
+    public List<Post> getAllPosts(boolean showArchived) {
+        String SQL_BASE = SQL_SELECT_ALL_POSTS;
+        if (showArchived == false) {
+            SQL_BASE += " and p.archivedOnDate is null";
+        }
+        return jdbcTemplate.query(SQL_BASE, new PostMapper());
+
     }
 
     @Override
@@ -86,7 +86,7 @@ public class PostDBImpl implements PostDAOInterface {
 
     @Override
     public Post getPostByID(int postID) {
-        MapSqlParameterSource namedParameters = new MapSqlParameterSource("postId",postID);
+        MapSqlParameterSource namedParameters = new MapSqlParameterSource("postId", postID);
         return npJdbcTemplate.queryForObject(SQL_GET_POST_BY_ID, namedParameters, new PostMapper());
     }
 
