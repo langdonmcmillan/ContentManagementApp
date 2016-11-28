@@ -49,19 +49,15 @@ public class CutePuppiesController {
 
     @RequestMapping(value = "getPagePosts/", method = RequestMethod.GET)
     @ResponseBody
-    public List<Post> getPagePosts(String newestPostId, String oldestPostId, String postsPerPage, String direction, String tagId, String categoryId) {
+    public List<Post> getPagePosts(String pageNumber, String postsPerPage, String direction, String tagId, String categoryId) {
         // parse to int: newestPostId, oldestPostId, postsPerPage, tagId, categoryId
-        int newestPostIdInt = 0;
-        int oldestPostIdInt = 0;
+        int pageNumberInt = 0;
         int postsPerPageInt = 0;
         int tagIdInt = 0;
         int categoryIdInt = 0;
 
-        if (!newestPostId.equals("null")) {
-            newestPostIdInt = Integer.parseInt(newestPostId);
-        }
-        if (!oldestPostId.equals("null")) {
-            oldestPostIdInt = Integer.parseInt(oldestPostId);
+        if (!pageNumber.equals("null")) {
+            pageNumberInt = Integer.parseInt(pageNumber);
         }
         if (!postsPerPage.equals("null")) {
             postsPerPageInt = Integer.parseInt(postsPerPage);
@@ -74,7 +70,7 @@ public class CutePuppiesController {
         }
 
         // get me a list of Post objects.
-        List<Post> listOfPosts = postDao.getPostsByAllCriteria(newestPostIdInt, oldestPostIdInt, postsPerPageInt, direction, tagIdInt, categoryIdInt);
+        List<Post> listOfPosts = postDao.getPostsByAllCriteria(pageNumberInt, postsPerPageInt, direction, tagIdInt, categoryIdInt);
 
         listOfPosts.forEach((post) -> {
             int postId = post.getPostId();

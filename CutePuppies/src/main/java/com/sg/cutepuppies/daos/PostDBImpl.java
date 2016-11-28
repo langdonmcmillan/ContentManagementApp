@@ -112,18 +112,14 @@ public class PostDBImpl implements PostDAOInterface {
     }
 
     @Override
-    public List<Post> getPostsByAllCriteria(int newestPostIdInt, int oldestPostIdInt, int postsPerPageInt, String direction, int tagIdInt, int categoryIdInt) {
+    public List<Post> getPostsByAllCriteria(int pageNumberInt, int postsPerPageInt, String direction, int tagIdInt, int categoryIdInt) {
         MapSqlParameterSource namedParameters = new MapSqlParameterSource();
         // set base query
         String SQL_QUERY = SQL_GET_POSTS_BY_ALL_CRITERIA;
-        if (direction.equalsIgnoreCase("previous") && newestPostIdInt != 0) {
+        if (direction.equalsIgnoreCase("previous") && pageNumberInt != 0) {
             // if getting newer posts (previous page)
             SQL_QUERY += " and p.CreatedOnDate > (select p.CreatedOnDate from Post p where p.PostId = :newestPostId)";
-            namedParameters.addValue("newestPostId", newestPostIdInt);
-        } else if (oldestPostIdInt != 0) {
-            // if getting older posts (next page)
-            SQL_QUERY += " and p.CreatedOnDate < (select p.CreatedOnDate from Post p where p.PostId = :oldestPostId)";
-            namedParameters.addValue("oldestPostId", oldestPostIdInt);
+            namedParameters.addValue("newestPostId", pageNumberInt);
         }
         // if filtering by tag
         if (tagIdInt != 0) {
