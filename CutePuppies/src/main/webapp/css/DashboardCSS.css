@@ -4,14 +4,13 @@
 
 #listScroll {
     height: 400px;
-    width: auto;
     overflow: scroll;
 }
 footer {
     margin: 50px;
 }
 
-button {
+#createNewPost {
     margin: 20px;
 }
 .category, .tag {

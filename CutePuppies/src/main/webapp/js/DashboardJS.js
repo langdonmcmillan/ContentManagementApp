@@ -18,13 +18,7 @@ $("#showArchivedPosts").change(function () {
     } else {
         loadAllPosts(archiveBoxChecked);
     }
-        
-});
 
-$('#createNewPost').click(function() {
-    // needs to go to edit page.
-    window.location.href = 'edit';
-    return false;
 });
 
 function loadAllPosts(archiveBoxChecked) {
@@ -46,12 +40,16 @@ function fillTableWithAllPosts(listOfAllPosts) {
         var arrayOfContent = post.allContentRevisions;
         var contentToDisplay = arrayOfContent[arrayOfContent.length - 1];
         tbody.append($('<tr>')
-                .append($('<td>').text(contentToDisplay.title))
+                .append($('<td>').append($('<a>').attr('href', 'admin/edit/'+ post.postId)
+                        .text(contentToDisplay.title)))
                 .append($('<td>').text(post.createdByUser.userName))
                 .append($('<td>').text(post.createdOnDate))
                 .append($('<td>').text(contentToDisplay.createdByUser.userName))
                 .append($('<td>').text(contentToDisplay.createdOnDate))
                 .append($('<td>').text(contentToDisplay.contentStatusCode))
                 );
+    });
+    $("tr").click(function () {
+        window.location.href = $(this).find("a").attr("href");
     });
 }

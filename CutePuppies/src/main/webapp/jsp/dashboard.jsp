@@ -38,7 +38,7 @@
                         </div>
                     </nav>
                 </div>
-                <div id = "listOfAllPostsTable" class="col-sm-9 col-lg-10">
+                <div id = "dashboardContent" class="col-sm-9 col-lg-10">
                     <div class="row">
                         <div class="col-sm-9 col-lg-10 text-center">
                             <h3>List Of All Posts</h3>
@@ -50,27 +50,29 @@
                         </div>
                     </div>
                     <div class="row" id = "listScroll">
-                        <table class="table table-responsive" >
-                            <thead>
-                                <tr>
-                                    <th>Title</th>
-                                    <th>Original Author</th>
-                                    <th>Date Created</th>
-                                    <th>Contributing Author</th>
-                                    <th>Date Last Updated</th>
-                                    <th>Content Status</th>
-                                </tr>
-                            </thead>
-                            <tbody id ="populateTable"></tbody>
-                        </table>
+                        <div class="col-sm-9 col-lg-10">
+                            <table class="table table-responsive table-hover text-center">
+                                <thead>
+                                    <tr>
+                                        <th>Title</th>
+                                        <th>Original Author</th>
+                                        <th>Date Created</th>
+                                        <th>Contributing Author</th>
+                                        <th>Date Last Updated</th>
+                                        <th>Content Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody id ="populateTable"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-9 col-lg-10 text-center">
+                            <a id="createNewPost" href="${pageContext.request.contextPath}/admin/edit" class="btn btn-primary btn-lg active" role="button">Create A New Post</a>
+                        </div>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-sm-9 col-lg-10 text-center">
-                        <button id="createNewPost" type="button" class="btn btn-primary btn-lg center-block">Create A New Post</button>
-                    </div>
-                </div>
-            </div>  
+            </div>
         </div>
 
         <footer>
