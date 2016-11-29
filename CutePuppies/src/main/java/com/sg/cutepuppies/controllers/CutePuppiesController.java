@@ -102,7 +102,7 @@ public class CutePuppiesController {
 //        return post;
 //    }
     
-    @RequestMapping(value = "displayPost/{postId}", method = RequestMethod.GET)
+    @RequestMapping(value = "post/{postId}", method = RequestMethod.GET)
     public String displayPost(@PathVariable("postId") int postId, Model model) {
         Post post = postDao.getPostByID(postId);
         Content postContent = contentDao.getPublishedPostContent(postId);
@@ -114,7 +114,7 @@ public class CutePuppiesController {
         
         post.setPublishedContent(postContent);
         model.addAttribute("post", post);
-        return "blog";
+        return "/blog";
     }
     
     @RequestMapping(value = "categories", method = RequestMethod.GET)
