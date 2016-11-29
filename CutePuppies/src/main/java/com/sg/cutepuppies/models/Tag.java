@@ -12,6 +12,7 @@ package com.sg.cutepuppies.models;
 public class Tag {
     private int tagID;
     private String tagDescription;
+    private int numUsed;
 
     public int getTagID() {
         return tagID;
@@ -27,5 +28,13 @@ public class Tag {
 
     public void setTagDescription(String tagDescription) {
         this.tagDescription = tagDescription;
+    }
+
+    public int getNumUsed() {
+        return numUsed;
+    }
+
+    public void setNumUsed(int numUsed) {
+        this.numUsed = numUsed;
     }
 }

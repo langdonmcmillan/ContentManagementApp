@@ -16,3 +16,15 @@ body {
 footer {
     margin: 50px;
 }
+
+.category {
+    padding-right: 20px;
+    color: #337ab7;
+    text-decoration: none;
+}
+
+.category:hover {
+    padding-right: 20px;
+    color: #000000;
+    text-decoration: none;
+}

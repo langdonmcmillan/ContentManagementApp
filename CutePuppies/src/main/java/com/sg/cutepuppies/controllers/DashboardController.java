@@ -88,7 +88,7 @@ public class DashboardController {
     @RequestMapping(value = "/admin/tags", method = RequestMethod.GET)
     @ResponseBody
     public List<Tag> populateTags() {
-        List<Tag> listOfTags = tagDao.getAllTags();
+        List<Tag> listOfTags = tagDao.getAllTags(false);
         return listOfTags;
     }
 

@@ -19,6 +19,8 @@ import com.sg.cutepuppies.daos.ContentDaoInterface;
 import com.sg.cutepuppies.daos.PostDaoInterface;
 import com.sg.cutepuppies.daos.TagDaoInterface;
 import com.sg.cutepuppies.daos.UserDaoInterface;
+import com.sg.cutepuppies.models.Category;
+import com.sg.cutepuppies.models.Tag;
 
 /**
  *
@@ -95,6 +97,20 @@ public class CutePuppiesController {
         post.setCreatedByUser(userDao.getUserWhoCreatedPost(post.getCreatedByUserId()));
         post.setPublishedContent(postContent);
         return post;
+    }
+    
+    @RequestMapping(value = "categories", method = RequestMethod.GET)
+    @ResponseBody
+    public List<Category> populateCategories() {
+        List<Category> listOfCategories = categoryDao.getAllCategories();
+        return listOfCategories;
+    }
+    
+    @RequestMapping(value = "tags", method = RequestMethod.GET)
+    @ResponseBody
+    public List<Tag> populateTags() {
+        List<Tag> listOfTags = tagDao.getAllTags(true);
+        return listOfTags;
     }
 
 }

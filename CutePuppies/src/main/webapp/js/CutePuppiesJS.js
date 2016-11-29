@@ -36,7 +36,12 @@ $(document).ready(function () {
         sessionStorage.setItem('postsPerPage', $('#itemsPerPageSelect option:selected').val());
         loadPagePosts();
     });
-
+    
+    $('#tagList').height($('#tagWell').height());
+    $('#tagList').width($('#tagWell').width());
+    
+    populateCategories();
+    populateTags();
 });
 
 $(document).ajaxComplete(function () {
@@ -145,3 +150,52 @@ function setSessionProperties() {
     sessionStorage.setItem('selectedCategoryId', 'null');
 }
 ;
+
+function populateCategories() {
+    $.ajax({
+        url: 'categories'
+    }).success(function (data, status) {
+        $.each(data, function (index, category) {
+            $("#categoryList").append($('<a href="#"' + category.categoryID + '>')
+                    .attr({
+                        'class': 'category',
+                        'data-categoryDescription': category.categoryDescription,
+                        'data-categoryID': category.categoryID
+                    }).append(category.categoryDescription));
+        });
+    });
+}
+
+function populateTags() {
+    $.ajax({
+        url: 'tags'
+    }).success(function (data, status) {
+        $.each(data, function (index, tag) {
+            $("#tagList").append($('<li data-weight="' + tag.numUsed + '"><a href="#">' + tag.tagDescription + '</a></li>')
+                    .attr({
+                        'class': 'tag',
+                        'data-tagDescription': tag.tagDescription,
+                        'data-tagID': tag.tagID
+                    }).append());
+            });
+        $("#tagList").tx3TagCloud({
+            multiplier: 1
+        });
+    });
+}
+
+$(document).on('click', '.category', function () {
+    var categoryId = $(this).data('categoryid');
+    sessionStorage.setItem('selectedTagId', 'null');
+    sessionStorage.setItem('selectedCategoryId', $(this).data('categoryid'));
+    sessionStorage.setItem('pageNumber', 1);
+    loadPagePosts();
+});
+
+$(document).on('click', '.tag', function () {
+    var tagId = $(this).data('tagid');
+    sessionStorage.setItem('selectedTagId', $(this).data('tagid'));
+    sessionStorage.setItem('selectedCategoryId', 'null');
+    sessionStorage.setItem('pageNumber', 1);
+    loadPagePosts();
+});
