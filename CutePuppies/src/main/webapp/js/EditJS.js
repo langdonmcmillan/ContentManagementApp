@@ -83,8 +83,10 @@ function addPost(contentStatusCode) {
         });
     });
     var body = tinyMCE.activeEditor.getContent();
-    var contentRevisionsList = [];
-    contentRevisionsList.push({
+    var user = ({
+        'userId': 1
+    });
+    var newContent = ({
         'title': $('#postTitle').val(),
         'contentImgLink': $('#imageURL').val(),
         'contentImgAltTxt': $('#imageName').val(),
@@ -92,7 +94,7 @@ function addPost(contentStatusCode) {
         'contentStatusCode': contentStatusCode,
         'urlPattern': $('#postURL').val(),
         'contentTypeCode': 'POST',
-        'createdByUserId': 1,
+        'createdByUser': user,
         'listOfCategories': categoryList,
         'listOfTags': tagList
     });
@@ -100,8 +102,8 @@ function addPost(contentStatusCode) {
         type: 'POST',
         url: 'post',
         data: JSON.stringify({
-            createdByUserId: 1,
-            allContentRevisions: contentRevisionsList
+            createdByUser: user,
+            mostRecentContent: newContent
         }),
         contentType: 'application/json; charset=utf-8',
         headers: {
