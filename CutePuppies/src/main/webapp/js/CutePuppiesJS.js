@@ -9,10 +9,10 @@ $(document).ready(function () {
     loadPagePosts();
     $('#itemsPerPageSelect').val(sessionStorage.getItem('postsPerPage'));
 
-    $('#allPosts').on("click", '.readMoreLink', function () {
-        var postId = $(this).data('postid');
-        displayPost(postId);
-    });
+//    $('#allPosts').on("click", '.readMoreLink', function () {
+//        var postId = $(this).data('postid');
+//        displayPost(postId);
+//    });
 
     $('.pagination li').click(function () {
         var selectedPage = $(this).data('value');
@@ -42,32 +42,32 @@ $(document).ajaxComplete(function () {
     });
 });
 
-function displayPost(postId) {
-    $.ajax({
-        type: 'GET',
-        url: 'displayPost/' + postId
-    }).success(function (data, status) {
-        var postSnippetContainer = $('#allPosts');
-        postSnippetContainer.empty();
-        var appendInput = '';
-        if (!data.createdByUser.userName === data.publishedContent.createdByUser.userName) {
-            appendInput = $('<p class = "lead userName">').html('updated by <a href="#">' + data.publishedContent.createdByUser.userName + '</a>');
-        }
-        postSnippetContainer.append($('<div class="singlePost">'))
-                .append($('<h1 class="title">').text(data.publishedContent.title))
-                .append($('<p class = "lead userName">').html('created by <a href="#">' + data.createdByUser.userName + '</a>'))
-                .append(appendInput)
-                .append('<hr>')
-                .append($('<p>').html('<span class="glyphicon glyphicon-time createdOnDate"></span><span>' + data.createdOnDate + '</span>'))
-                .append('<hr>')
-                .append($('<img class="img-responsive contentImgLink">').attr({'src': data.publishedContent.contentImgLink, 'alt': data.publishedContent.contentImgAltTxt}))
-                .append('<hr>')
-                .append($('<div class = "body">').html(data.publishedContent.body))
-                .append('<hr>');
-    }).error(function (data, status) {
-        // TODO: display eror loading post
-    });
-}
+//function displayPost(postId) {
+//    $.ajax({
+//        type: 'GET',
+//        url: 'displayPost/' + postId
+//    }).success(function (data, status) {
+//        var postSnippetContainer = $('#allPosts');
+//        postSnippetContainer.empty();
+//        var appendInput = '';
+//        if (!data.createdByUser.userName === data.publishedContent.createdByUser.userName) {
+//            appendInput = $('<p class = "lead userName">').html('updated by <a href="#">' + data.publishedContent.createdByUser.userName + '</a>');
+//        }
+//        postSnippetContainer.append($('<div class="singlePost">')
+//                .append($('<h1 class="title">').text(data.publishedContent.title))
+//                .append($('<p class = "lead userName">').html('created by <a href="#">' + data.createdByUser.userName + '</a>'))
+//                .append(appendInput)
+//                .append('<hr>')
+//                .append($('<p>').html('<span class="glyphicon glyphicon-time createdOnDate"></span><span>' + data.createdOnDate + '</span>'))
+//                .append('<hr>')
+//                .append($('<img class="img-responsive contentImgLink">').attr({'src': data.publishedContent.contentImgLink, 'alt': data.publishedContent.contentImgAltTxt}))
+//                .append('<hr>')
+//                .append($('<div class = "body">').html(data.publishedContent.body))
+//                .append('<hr>'));
+//    }).error(function (data, status) {
+//        // TODO: display eror loading post
+//    });
+//}
 
 function loadPagePosts() {
     $.ajax({
@@ -94,28 +94,30 @@ function fillPostSnippetsContainer(posts) {
         if (!post.createdByUser.userName === post.publishedContent.createdByUser.userName) {
             appendInput = $('<p class = "lead userName">').html('updated by <a href="#">' + post.publishedContent.createdByUser.userName + '</a>');
         }
-        postSnippetContainer.append($('<div class="singlePost">'))
-                .append($('<h1 class="title readMoreLink">')
-                        .text(post.publishedContent.title)
-                        .attr({'data-postId': post.postId}))
+        postSnippetContainer.append($('<div class="singlePost">')
+                .append($('<a href="displayPost/' + post.postId + '">')
+                        .append($('<h1 class="title readMoreLink">')
+                                .text(post.publishedContent.title)
+                                .attr({'data-postId': post.postId})))
                 .append($('<p class = "lead userName">').html('created by <a href="#">' + post.createdByUser.userName + '</a>'))
                 .append(appendInput)
                 .append('<hr>')
                 .append($('<p>').html('<span class="glyphicon glyphicon-time createdOnDate"></span><span>' + post.createdOnDate + '</span>'))
                 .append('<hr>')
-                .append($('<img class="img-responsive contentImgLink readMoreLink">')
-                        .attr({
-                            'src': post.publishedContent.contentImgLink,
-                            'alt': post.publishedContent.contentImgAltTxt,
-                            'data-postId': post.postId
-                        }))
+                .append($('<a href="displayPost/' + post.postId + '">')
+                        .append($('<img class="img-responsive contentImgLink readMoreLink">')
+                                .attr({
+                                    'src': post.publishedContent.contentImgLink,
+                                    'alt': post.publishedContent.contentImgAltTxt,
+                                    'data-postId': post.postId
+                                })))
                 .append('<hr>')
                 .append($('<p class = "body ellipsis">').html(post.publishedContent.body))
-                .append($('<a title="read more" class="readmore readMoreLink">')
+                .append($('<a title="read more" class="readmore readMoreLink" href="displayPost/' + post.postId + '">')
                         .text('Read more »')
                         .attr({'data-postId': post.postId})
                         )
-                .append('<hr>');
+                .append('<hr>'));
     });
 
 }
