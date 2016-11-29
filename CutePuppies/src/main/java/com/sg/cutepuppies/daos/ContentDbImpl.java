@@ -7,6 +7,7 @@ package com.sg.cutepuppies.daos;
 
 import com.sg.cutepuppies.models.Content;
 import com.sg.cutepuppies.models.Post;
+import com.sg.cutepuppies.models.User;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -41,6 +42,16 @@ public class ContentDbImpl implements ContentDaoInterface {
             + " where c.PostId = ?";
     private static final String SQL_GET_PUBLISHED_CONTENT_BY_POST_ID = "select c.* from Content c join Post p "
             + "on c.PostId = p.PostId where c.ContentStatusCode = 'PUBLISHED' and c.PostId = ?";
+    
+    private static final String SQL_GET_MOST_RECENT_CONTENT_BY_POST_ID 
+            = " select c.* "
+            + " from Content c "
+            + " join Post p "
+            + " on c.PostId = p.PostId"
+            + " where p.PostId = ? "
+            + " order by c.ContentId desc"
+            + " limit 1";
+    
     private static final String SQL_ADD_CONTENT_TO_POST = "insert into Content (PostId, Title, "
             + "ContentImgLink, ContentImgAltTxt, Body, Snippet, ContentStatusCode, UrlPattern, ContentTypeCode, "
             + "CreatedByUserId) "
@@ -70,7 +81,7 @@ public class ContentDbImpl implements ContentDaoInterface {
         namedParameters.addValue("contentStatusCode", content.getContentStatusCode());
         namedParameters.addValue("urlPattern", content.getUrlPattern());
         namedParameters.addValue("contentTypeCode", content.getContentTypeCode());
-        namedParameters.addValue("createdByUserID", content.getCreatedByUserId());
+        namedParameters.addValue("createdByUserID", content.getCreatedByUser().getUserId());
         namedParameters.addValue("createdOnDate", content.getCreatedOnDate());
         npJdbcTemplate.update(SQL_ADD_CONTENT_TO_POST, namedParameters);
         content.setContentId(jdbcTemplate.queryForObject("select LAST_INSERT_ID()", Integer.class));
@@ -149,6 +160,11 @@ public class ContentDbImpl implements ContentDaoInterface {
         return jdbcTemplate.queryForObject(SQL_GET_PUBLISHED_CONTENT_BY_POST_ID, new ContentMapper(), postID);
     }
 
+    @Override
+    public Content getMostRecentPostContent(int postID) {
+        return jdbcTemplate.queryForObject(SQL_GET_MOST_RECENT_CONTENT_BY_POST_ID, new ContentMapper(), postID);
+    }
+
     private static final class ContentMapper implements RowMapper<Content> {
 
         @Override
@@ -165,12 +181,10 @@ public class ContentDbImpl implements ContentDaoInterface {
             content.setContentStatusCode(rs.getString("ContentStatusCode"));
             content.setUrlPattern(rs.getString("UrlPattern"));
             content.setContentTypeCode(rs.getString("ContentTypeCode"));
-            content.setCreatedByUserId(rs.getInt("CreatedByUserId"));
             content.setCreatedOnDate(rs.getDate("CreatedOnDate"));
-            content.setUpdatedByUserId(rs.getInt("UpdatedByUserId"));
             content.setUpdatedOnDate(rs.getDate("UpdatedOnDate"));
-            content.setArchivedByUserId(rs.getInt("ArchivedByUserId"));
             content.setArchivedOnDate(rs.getDate("ArchivedOnDate"));
+            
             return content;
         }
     }

@@ -15,22 +15,23 @@ import com.sg.cutepuppies.daos.CategoryDaoInterface;
 import com.sg.cutepuppies.daos.ContentDaoInterface;
 import com.sg.cutepuppies.daos.PostDaoInterface;
 import com.sg.cutepuppies.daos.TagDaoInterface;
+import com.sg.cutepuppies.models.User;
 
 /**
  *
  * @author apprentice
  */
 public class PostDAOTest {
-    
+
     private PostDaoInterface postDAO;
     private ContentDaoInterface contentDAO;
     private CategoryDaoInterface categoryDAO;
     private TagDaoInterface tagDAO;
-    
+
     public PostDAOTest() {
-        
+
     }
-    
+
     @Before
     public void setUp() {
         ApplicationContext ctx
@@ -39,21 +40,30 @@ public class PostDAOTest {
         contentDAO = ctx.getBean("ContentDBImplTest", ContentDaoInterface.class);
         categoryDAO = ctx.getBean("CategoryDBImplTest", CategoryDaoInterface.class);
         tagDAO = ctx.getBean("TagDBImplTest", TagDaoInterface.class);
-        
+
         JdbcTemplate template = (JdbcTemplate) ctx.getBean("jdbcTemplate");
-        
+
     }
-    
+
     @Test
     public void testAddPost() {
+        String date = "2000-11-01";
+        java.sql.Date adminCreateDate = java.sql.Date.valueOf(date);
+
+        User admin = new User();
+        admin.setUserId(1);
+        admin.setRoleCode("ADMIN");
+        admin.setCreatedDate(adminCreateDate);
+        admin.setUserName("sadukie");
+
         Post post = new Post();
-        post.setCreatedByUserId(1);
-        
+        post.setCreatedByUser(admin);
+
         int numPosts = postDAO.getAllPosts(true).size();
         assertEquals(0, post.getPostId());
-        
+
         postDAO.addPost(post);
-        
+
         assertEquals(numPosts + 1, postDAO.getAllPosts(true).size());
         assertNotEquals(0, post.getPostId());
     }

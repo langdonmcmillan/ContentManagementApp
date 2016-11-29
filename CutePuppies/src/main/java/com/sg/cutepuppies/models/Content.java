@@ -16,6 +16,7 @@ public class Content {
 
     private int contentId;
     private int postId;
+
     private String title;
     private String contentImgLink;
     private String contentImgAltTxt;
@@ -24,13 +25,16 @@ public class Content {
     private String contentStatusCode;
     private String urlPattern;
     private String contentTypeCode;
-    private int createdByUserId;
-    private Date createdOnDate;
+
     private User createdByUser;
-    private int updatedByUserId;
+    private Date createdOnDate;
+
+    private User updatedByUser;
     private Date updatedOnDate;
-    private int archivedByUserId;
+
+    private User archivedByUser;
     private Date archivedOnDate;
+
     private List<Tag> listOfTags;
     private List<Category> listOfCategories;
 
@@ -114,14 +118,6 @@ public class Content {
         this.contentTypeCode = contentTypeCode;
     }
 
-    public int getCreatedByUserId() {
-        return createdByUserId;
-    }
-
-    public void setCreatedByUserId(int createdByUserId) {
-        this.createdByUserId = createdByUserId;
-    }
-
     public Date getCreatedOnDate() {
         return createdOnDate;
     }
@@ -130,28 +126,12 @@ public class Content {
         this.createdOnDate = createdOnDate;
     }
 
-    public int getUpdatedByUserId() {
-        return updatedByUserId;
-    }
-
-    public void setUpdatedByUserId(int updatedByUserId) {
-        this.updatedByUserId = updatedByUserId;
-    }
-
     public Date getUpdatedOnDate() {
         return updatedOnDate;
     }
 
     public void setUpdatedOnDate(Date updatedOnDate) {
         this.updatedOnDate = updatedOnDate;
-    }
-
-    public int getArchivedByUserId() {
-        return archivedByUserId;
-    }
-
-    public void setArchivedByUserId(int archivedByUserId) {
-        this.archivedByUserId = archivedByUserId;
     }
 
     public Date getArchivedOnDate() {
@@ -184,5 +164,21 @@ public class Content {
 
     public void setCreatedByUser(User createdByUser) {
         this.createdByUser = createdByUser;
+    }
+
+    public User getUpdatedByUser() {
+        return updatedByUser;
+    }
+
+    public void setUpdatedByUser(User updatedByUser) {
+        this.updatedByUser = updatedByUser;
+    }
+
+    public User getArchivedByUser() {
+        return archivedByUser;
+    }
+
+    public void setArchivedByUser(User archivedByUser) {
+        this.archivedByUser = archivedByUser;
     }
 }

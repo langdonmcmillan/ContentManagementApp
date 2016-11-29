@@ -26,6 +26,7 @@ import com.sg.cutepuppies.daos.ContentDaoInterface;
 import com.sg.cutepuppies.daos.PostDaoInterface;
 import com.sg.cutepuppies.daos.TagDaoInterface;
 import com.sg.cutepuppies.daos.UserDaoInterface;
+import com.sg.cutepuppies.models.User;
 
 /**
  *
@@ -62,13 +63,16 @@ public class DashboardController {
         List<Post> listOfAllPosts = postDao.getAllPosts(showArchived);
         listOfAllPosts.forEach(post -> {
             int postId = post.getPostId();
-            int userIdWhoCreatedPost = post.getCreatedByUserId();
-            post.setCreatedByUser(userDao.getUserWhoCreatedPost(userIdWhoCreatedPost));
-            List<Content> listOfAllContentsPerPost = contentDao.getAllContentsByPostId(postId);
-            listOfAllContentsPerPost.forEach(content -> {
-                content.setCreatedByUser(userDao.getUserWhoCreatedContent(content.getCreatedByUserId()));
-            });
-            post.setAllContentRevisions(listOfAllContentsPerPost);
+            post.setCreatedByUser(userDao.getUserWhoCreatedPost(postId));
+            post.setUpdatedByUser(userDao.getUserWhoUpdatedPost(postId));
+            post.setArchivedByUser(userDao.getUserWhoArchivedPost(postId)); 
+           
+            Content mostRecentPostContent = contentDao.getMostRecentPostContent(postId);
+            int contentId = mostRecentPostContent.getContentId();
+            mostRecentPostContent.setCreatedByUser(userDao.getUserWhoCreatedContent(contentId));
+            mostRecentPostContent.setListOfCategories(categoryDao.getCategoriesByContentId(contentId));
+            mostRecentPostContent.setListOfTags(tagDao.getTagsByContentId(contentId));
+            post.setMostRecentContent(mostRecentPostContent);
         });
         return listOfAllPosts;
     }

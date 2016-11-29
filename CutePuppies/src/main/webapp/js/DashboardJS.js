@@ -12,12 +12,7 @@ $(document).ready(function () {
 
 $("#showArchivedPosts").change(function () {
     var archiveBoxChecked = $('#showArchivedPosts').is(':checked');
-
-    if (this.checked) {
-        loadAllPosts(archiveBoxChecked);
-    } else {
-        loadAllPosts(archiveBoxChecked);
-    }
+    loadAllPosts(archiveBoxChecked);
 
 });
 
@@ -28,7 +23,7 @@ function loadAllPosts(archiveBoxChecked) {
     }).success(function (data, status) {
         fillTableWithAllPosts(data);
     }).error(function (data, status) {
-        // some error window pop-up?
+        // some error window pop-up, or perhaps a redirect to custom error page...
     });
 }
 
@@ -37,17 +32,23 @@ function fillTableWithAllPosts(listOfAllPosts) {
     tbody.empty();
 
     $.each(listOfAllPosts, function (index, post) {
-        var arrayOfContent = post.allContentRevisions;
-        var contentToDisplay = arrayOfContent[arrayOfContent.length - 1];
+        var contentToDisplay = post.mostRecentContent;
+        // show '-' for contributing author and date last updated
+        // if content's createdUser and createdDate is the same
+        // as posts' createdUser and createdDate
         tbody.append($('<tr>')
-                .append($('<td>').append($('<a>').attr('href', 'admin/edit/'+ post.postId)
+                .append($('<td>').append($('<a>').attr('href', 'admin/edit/' + post.postId)
                         .text(contentToDisplay.title)))
                 .append($('<td>').text(post.createdByUser.userName))
                 .append($('<td>').text(post.createdOnDate))
+        
                 .append($('<td>').text(contentToDisplay.createdByUser.userName))
-                .append($('<td>').text(contentToDisplay.createdOnDate))
-                .append($('<td>').text(contentToDisplay.contentStatusCode))
-                );
+                .append($('<td>').text(contentToDisplay.createdOnDate)));
+//                .append($('<td>').append($('<a>').attr({
+//                    'id': 'archivePost',
+//                    'class': 'btn btn-primary active',
+//                    'href': 'someLink'
+//                }).text('Archive Post')))
     });
     $("tr").click(function () {
         window.location.href = $(this).find("a").attr("href");

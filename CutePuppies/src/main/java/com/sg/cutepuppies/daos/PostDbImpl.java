@@ -6,6 +6,7 @@
 package com.sg.cutepuppies.daos;
 
 import com.sg.cutepuppies.models.Post;
+import com.sg.cutepuppies.models.User;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
@@ -52,7 +53,7 @@ public class PostDbImpl implements PostDaoInterface {
             + ", set ArchivedByUserId = ?"
             + ", set ArchivedByDate = ?"
             + "where PostId = ?";
-    
+
     private static final String SQL_ADD_POST = "insert into Post (CreatedByUserId) "
             + "values(:createdByUserId)";
 
@@ -60,10 +61,9 @@ public class PostDbImpl implements PostDaoInterface {
     public List<Post> getAllPosts(boolean showArchived) {
         String SQL_BASE = SQL_SELECT_ALL_POSTS;
         if (showArchived == false) {
-            SQL_BASE += " and p.archivedOnDate is null order by p.CreatedOnDate desc";
-        } else {
-            SQL_BASE += " order by p.CreatedOnDate";
+            SQL_BASE += " and p.archivedOnDate is null";
         }
+        SQL_BASE += " order by p.CreatedOnDate desc";
         return jdbcTemplate.query(SQL_BASE, new PostMapper());
 
     }
@@ -97,7 +97,7 @@ public class PostDbImpl implements PostDaoInterface {
     @Override
     public Post addPost(Post post) {
         MapSqlParameterSource namedParameters = new MapSqlParameterSource();
-        namedParameters.addValue("createdByUserId", post.getCreatedByUserId());
+        namedParameters.addValue("createdByUserId", post.getCreatedByUser().getUserId());
         namedParameters.addValue("createdOnDate", post.getCreatedOnDate());
         npJdbcTemplate.update(SQL_ADD_POST, namedParameters);
         post.setPostId(jdbcTemplate.queryForObject("select LAST_INSERT_ID()", Integer.class));
@@ -112,17 +112,6 @@ public class PostDbImpl implements PostDaoInterface {
 
     @Override
     public Post updatePost(Post post) {
-//        jdbcTemplate.update(SQL_UPDATE_POST,
-//                post.getCreatedByUserId(),
-//                post.getCreatedOnDate(),
-//                post.getUpdatedByUserId(),
-//                post.getUpdatedOnDate(),
-//                post.getArchivedByUserId(),
-//                post.getArchivedOnDate(),
-//                post.getPostId()
-//        );
-//        
-//        return post;
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
 
     }
@@ -145,7 +134,7 @@ public class PostDbImpl implements PostDaoInterface {
         // always order by date and limit to selected posts per page
         SQL_QUERY += " order by p.CreatedOnDate desc limit :postsPerPage offset :postOffset";
         namedParameters.addValue("postsPerPage", postsPerPageInt);
-        namedParameters.addValue("postOffset", postsPerPageInt*(pageNumberInt-1));
+        namedParameters.addValue("postOffset", postsPerPageInt * (pageNumberInt - 1));
         return npJdbcTemplate.query(SQL_QUERY, namedParameters, new PostMapper());
 
     }
@@ -157,12 +146,10 @@ public class PostDbImpl implements PostDaoInterface {
 
             Post post = new Post();
             post.setPostId(rs.getInt("PostId"));
-            post.setCreatedByUserId(rs.getInt("CreatedByUserId"));
             post.setCreatedOnDate(rs.getDate("CreatedOnDate"));
-            post.setUpdatedByUserId(rs.getInt("UpdatedByUserId"));
             post.setUpdatedOnDate(rs.getDate("UpdatedOnDate"));
-            post.setArchivedByUserId(rs.getInt("ArchivedByUserId"));
             post.setArchivedOnDate(rs.getDate("ArchivedOnDate"));
+            
             return post;
 
         }

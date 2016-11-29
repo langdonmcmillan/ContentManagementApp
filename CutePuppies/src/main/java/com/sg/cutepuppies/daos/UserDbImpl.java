@@ -8,6 +8,7 @@ package com.sg.cutepuppies.daos;
 import com.sg.cutepuppies.models.User;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 
@@ -23,20 +24,83 @@ public class UserDbImpl implements UserDaoInterface {
     public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
-    
+
     // SQL PREPARED STATEMENTS
-    private static final String SQL_GET_USER_FOR_USER_ID = "select * from User u where UserId = ?";
-    
+    private static final String SQL_GET_USER_WHO_CREATED_CONTENT
+            = "select * from User u "
+            + " join Content c "
+            + " on u.UserId = c.CreatedByUserId "
+            + " where c.ContentId = ?";
+
+    private static final String SQL_GET_USER_WHO_CREATED_POST
+            = "select * from User u "
+            + " join Post p "
+            + " on u.UserId = p.CreatedByUserId "
+            + " where p.PostId = ?";
+
+    private static final String SQL_GET_USER_WHO_UPDATED_CONTENT
+            = "select * from User u "
+            + " join Content c "
+            + " on u.UserId = c.UpdatedByUserId "
+            + " where c.ContentId = ?";
+
+    private static final String SQL_GET_USER_WHO_UPDATED_POST
+            = "select * from User u "
+            + " join Post p "
+            + " on u.UserId = p.UpdatedByUserId "
+            + " where p.PostId = ?";
+
+    private static final String SQL_GET_USER_WHO_ARCHIVED_CONTENT
+            = "select * from User u "
+            + " join Content c "
+            + " on u.UserId = c.ArchivedByUserId "
+            + " where c.ContentId = ?";
+
+    private static final String SQL_GET_USER_WHO_ARCHIVED_POST
+            = "select * from User u "
+            + " join Post p "
+            + " on u.UserId = p.ArchivedByUserId "
+            + " where p.PostId = ?";
+
     @Override
-    public User getUserWhoCreatedPost(int createdByUserId) {
-        return jdbcTemplate.queryForObject(SQL_GET_USER_FOR_USER_ID, new UserMapper(), createdByUserId);
+    public User getUserWhoCreatedPost(int postId) {
+        return jdbcTemplate.queryForObject(SQL_GET_USER_WHO_CREATED_POST, new UserMapper(), postId);
     }
 
     @Override
-    public User getUserWhoCreatedContent(int updatedByUserId) {
-        return jdbcTemplate.queryForObject(SQL_GET_USER_FOR_USER_ID, new UserMapper(), updatedByUserId);
+    public User getUserWhoCreatedContent(int contentId) {
+        return jdbcTemplate.queryForObject(SQL_GET_USER_WHO_CREATED_CONTENT, new UserMapper(), contentId);
+
     }
-    
+
+    @Override
+    public User getUserWhoUpdatedPost(int postId) {
+        try {
+            return jdbcTemplate.queryForObject(SQL_GET_USER_WHO_UPDATED_POST, new UserMapper(), postId);
+        } catch (EmptyResultDataAccessException ex) {
+            return null;
+        }
+    }
+
+    @Override
+    public User getUserWhoUpdatedContent(int contentId) {
+        return jdbcTemplate.queryForObject(SQL_GET_USER_WHO_UPDATED_CONTENT, new UserMapper(), contentId);
+    }
+
+    @Override
+    public User getUserWhoArchivedPost(int postId) {
+        try {
+            return jdbcTemplate.queryForObject(SQL_GET_USER_WHO_ARCHIVED_POST, new UserMapper(), postId);
+        } catch (EmptyResultDataAccessException ex) {
+            return null;
+        }
+    }
+
+    @Override
+    public User getUserWhoArchivedContent(int contentId) {
+        return jdbcTemplate.queryForObject(SQL_GET_USER_WHO_ARCHIVED_CONTENT, new UserMapper(), contentId);
+    }
+
     private static final class UserMapper implements RowMapper<User> {
 
         @Override
@@ -45,12 +109,12 @@ public class UserDbImpl implements UserDaoInterface {
             user.setUserId(rs.getInt("UserId"));
             user.setRoleCode(rs.getString("RoleCode"));
             user.setCreatedDate(rs.getDate("CreatedDate"));
-            user.setUpdateDate(rs.getDate("UpdatedDate"));
+            user.setUpdatedDate(rs.getDate("UpdatedDate"));
             user.setDeletedDate(rs.getDate("DeletedDate"));
             user.setUserName(rs.getString("UserName"));
             user.setUserPassword(rs.getString("UserPassword"));
             user.setUserEmail(rs.getString("UserEmail"));
-            
+
             return user;
         }
     }
