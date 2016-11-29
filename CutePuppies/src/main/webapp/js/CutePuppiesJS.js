@@ -6,6 +6,7 @@
 
 $(document).ready(function () {
     setSessionProperties();
+    updatePageNav(sessionStorage.getItem('pageNumber'));
     loadPagePosts();
     $('#itemsPerPageSelect').val(sessionStorage.getItem('postsPerPage'));
 

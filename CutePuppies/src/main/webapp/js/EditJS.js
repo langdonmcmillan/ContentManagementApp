@@ -9,6 +9,7 @@ $(document).ready(function () {
     populateCategories();
     populateTags();
     postID = 0;
+    sessionStorage.setItem('pageNumber', 1);
 });
 
 function populateCategories() {

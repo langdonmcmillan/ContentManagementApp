@@ -21,6 +21,6 @@ public interface PostDaoInterface {
     public List<Post> getPostBySearch(String searchTerm);
     public Post getPostByID(int postID);
     public Post addPost(Post post);
-    public void deletePost(int postID);
+    public void archivePost(int postID, int userID);
     public Post updatePost(Post post);
 }

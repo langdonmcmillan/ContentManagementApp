@@ -14,6 +14,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.jdbc.core.JdbcTemplate;
 import com.sg.cutepuppies.daos.ContentDaoInterface;
 import com.sg.cutepuppies.models.User;
+import java.util.List;
 import org.junit.After;
 import org.springframework.jdbc.core.simple.SimpleJdbcCall;
 
@@ -25,7 +26,7 @@ public class ContentDAOTest {
 
     ApplicationContext ctx = new ClassPathXmlApplicationContext("test-applicationContext.xml");
     private ContentDaoInterface contentDao;
-    
+
     private JdbcTemplate jdbcTemplate;
     SimpleJdbcCall simpleJdbcCall;
 
@@ -35,20 +36,19 @@ public class ContentDAOTest {
 
     @Before
     public void setUp() {
-        jdbcTemplate = (JdbcTemplate)ctx.getBean("jdbcTemplate");
-        simpleJdbcCall = new SimpleJdbcCall(jdbcTemplate).withProcedureName("reset_addressbook_test");
+        jdbcTemplate = (JdbcTemplate) ctx.getBean("jdbcTemplate");
+        simpleJdbcCall = new SimpleJdbcCall(jdbcTemplate).withProcedureName("reset_CutePuppiesTest");
         simpleJdbcCall.execute();
-//        ApplicationContext ctx
-//                = new ClassPathXmlApplicationContext("test-applicationContext.xml");
+
         contentDao = ctx.getBean("ContentDBImplTest", ContentDaoInterface.class);
         JdbcTemplate template = (JdbcTemplate) ctx.getBean("jdbcTemplate");
 
     }
-    
+
     @After
     public void teardown() {
-        jdbcTemplate = (JdbcTemplate)ctx.getBean("jdbcTemplate");
-        simpleJdbcCall = new SimpleJdbcCall(jdbcTemplate).withProcedureName("reset_addressbook_test");
+        jdbcTemplate = (JdbcTemplate) ctx.getBean("jdbcTemplate");
+        simpleJdbcCall = new SimpleJdbcCall(jdbcTemplate).withProcedureName("reset_CutePuppiesTest");
         simpleJdbcCall.execute();
     }
 
@@ -59,7 +59,7 @@ public class ContentDAOTest {
 
         String date2 = "2016-11-01";
         java.sql.Date contentCreateDate = java.sql.Date.valueOf(date2);
-        
+
         User admin = new User();
         admin.setUserId(1);
         admin.setRoleCode("ADMIN");
@@ -95,7 +95,7 @@ public class ContentDAOTest {
 
         String date2 = "2016-11-01";
         java.sql.Date contentCreateDate = java.sql.Date.valueOf(date2);
-        
+
         User admin = new User();
         admin.setUserId(1);
         admin.setRoleCode("ADMIN");
@@ -126,6 +126,33 @@ public class ContentDAOTest {
         content2.setCreatedByUser(admin);
         content2.setCreatedOnDate(contentCreateDate);
 
+    }
+
+    @Test
+    public void testArchivePost() {
+        int userId = 1;
+        int postId = 5;
+
+        contentDao.archivePost(postId, userId);
+
+        for (Content content : contentDao.getAllContentsByPostId(postId)) {
+            assertEquals("ARCHIVED", content.getContentStatusCode());
+        }
+    }
+
+    @Test
+    public void testArchiveContent() {
+        int userId = 1;
+        Content contentToArchive = contentDao.getPublishedPostContent(5);
+        int contentId = contentToArchive.getContentId();
+
+        contentDao.archiveContent(contentId, userId);
+
+        for (Content content : contentDao.getAllContentsByPostId(5)) {
+            if (content.getContentId() == contentId) {
+                assertEquals("ARCHIVED", content.getContentStatusCode());
+            }
+        }
     }
 
 }

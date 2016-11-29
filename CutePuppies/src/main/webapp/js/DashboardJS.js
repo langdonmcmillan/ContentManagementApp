@@ -8,12 +8,12 @@
 $(document).ready(function () {
     var archiveBoxChecked = $('#showArchivedPosts').is(':checked');
     loadAllPosts(archiveBoxChecked);
+    sessionStorage.setItem('pageNumber', 1);
 });
 
 $("#showArchivedPosts").change(function () {
     var archiveBoxChecked = $('#showArchivedPosts').is(':checked');
     loadAllPosts(archiveBoxChecked);
-
 });
 
 function loadAllPosts(archiveBoxChecked) {

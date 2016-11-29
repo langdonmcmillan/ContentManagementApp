@@ -56,6 +56,9 @@ public class PostDbImpl implements PostDaoInterface {
 
     private static final String SQL_ADD_POST = "insert into Post (CreatedByUserId) "
             + "values(:createdByUserId)";
+    
+    private static final String SQL_ARCHIVE_POST = "update Post set ArchivedByUserId = :userId, "
+            + "UpdatedByUserId = :userId, ArchivedOnDate = Current_Timestamp where PostId = :postId";
 
     @Override
     public List<Post> getAllPosts(boolean showArchived) {
@@ -105,9 +108,11 @@ public class PostDbImpl implements PostDaoInterface {
     }
 
     @Override
-    public void deletePost(int postID) {
-        // this should 'archive the post, as well as set all associated
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void archivePost(int postId, int userId) {
+        MapSqlParameterSource namedParameters = new MapSqlParameterSource();
+        namedParameters.addValue("userId", userId);
+        namedParameters.addValue("postId", postId);
+        npJdbcTemplate.update(SQL_ARCHIVE_POST, namedParameters);
     }
 
     @Override
