@@ -17,18 +17,7 @@ $(document).ready(function () {
     $('.pagination li').click(function () {
         var selectedPage = $(this).data('value');
         if (selectedPage != 0) {
-            sessionStorage.setItem('pageNumber', selectedPage);
-            var prevPage = sessionStorage.getItem('pageNumber') - 1;
-            var nextPage = parseInt(sessionStorage.getItem('pageNumber')) + 1;
-            $('#prevPageButton').data('value', prevPage);
-            $('#nextPageButton').data('value', nextPage);
-            $('#prevPageButton').removeClass('disabled');
-            if (prevPage == 0) {
-                $('#prevPageButton').addClass('disabled');
-            }
-            $(this).siblings('li').removeClass('active');
-            $('.pgNum[data-value='+selectedPage+']').addClass('active');
-            loadPagePosts();
+            updatePageNav(selectedPage);
         }
     });
 
@@ -36,10 +25,10 @@ $(document).ready(function () {
         sessionStorage.setItem('postsPerPage', $('#itemsPerPageSelect option:selected').val());
         loadPagePosts();
     });
-    
+
     $('#tagList').height($('#tagWell').height());
     $('#tagList').width($('#tagWell').width());
-    
+
     populateCategories();
     populateTags();
 });
@@ -149,7 +138,21 @@ function setSessionProperties() {
     sessionStorage.setItem('selectedTagId', 'null');
     sessionStorage.setItem('selectedCategoryId', 'null');
 }
-;
+
+function updatePageNav(selectedPage) {
+    sessionStorage.setItem('pageNumber', selectedPage);
+    var prevPage = sessionStorage.getItem('pageNumber') - 1;
+    var nextPage = parseInt(sessionStorage.getItem('pageNumber')) + 1;
+    $('#prevPageButton').data('value', prevPage);
+    $('#nextPageButton').data('value', nextPage);
+    $('#prevPageButton').removeClass('disabled');
+    if (prevPage == 0) {
+        $('#prevPageButton').addClass('disabled');
+    }
+    $('.pagination').children('li').removeClass('active');
+    $('.pgNum[data-value=' + selectedPage + ']').addClass('active');
+    loadPagePosts();
+}
 
 function populateCategories() {
     $.ajax({
@@ -177,7 +180,7 @@ function populateTags() {
                         'data-tagDescription': tag.tagDescription,
                         'data-tagID': tag.tagID
                     }).append());
-            });
+        });
         $("#tagList").tx3TagCloud({
             multiplier: 1
         });
@@ -188,7 +191,7 @@ $(document).on('click', '.category', function () {
     var categoryId = $(this).data('categoryid');
     sessionStorage.setItem('selectedTagId', 'null');
     sessionStorage.setItem('selectedCategoryId', $(this).data('categoryid'));
-    sessionStorage.setItem('pageNumber', 1);
+    updatePageNav(1);
     loadPagePosts();
 });
 
@@ -196,6 +199,6 @@ $(document).on('click', '.tag', function () {
     var tagId = $(this).data('tagid');
     sessionStorage.setItem('selectedTagId', $(this).data('tagid'));
     sessionStorage.setItem('selectedCategoryId', 'null');
-    sessionStorage.setItem('pageNumber', 1);
+    updatePageNav(1);
     loadPagePosts();
 });
