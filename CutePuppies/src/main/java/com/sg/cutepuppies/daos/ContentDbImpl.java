@@ -59,7 +59,11 @@ public class ContentDbImpl implements ContentDaoInterface {
             + ":urlPattern, :contentTypeCode, :createdByUserID)";
     private static final String SQL_ARCHIVE_OLD_CONTENT = "update Content set ContentStatusCode = 'ARCHIVED' "
             + "where ContentStatusCode = 'PUBLISHED' and postID = :postID";
-
+    private static final String SQL_UPDATE_CONTENT_CATEGORIES = "insert into content_category (ContentId, CategoryId) "
+            + "values (?, ?)";
+    private static final String SQL_UPDATE_CONTENT_TAGS = "insert into content_tag (ContentId, TagId) "
+            + "values (?, ?)";
+    
     @Override
     public List<Content> getAllContentsByPostId(int postID) {
         return jdbcTemplate.query(SQL_GET_ALL_REVISIONS_BY_POST_ID, new ContentMapper(), postID);
@@ -98,7 +102,7 @@ public class ContentDbImpl implements ContentDaoInterface {
 
     private void updateContentCategories(Content content) {
         try {
-            jdbcTemplate.batchUpdate("", new BatchPreparedStatementSetter() {
+            jdbcTemplate.batchUpdate(SQL_UPDATE_CONTENT_CATEGORIES, new BatchPreparedStatementSetter() {
 
                 @Override
                 public void setValues(PreparedStatement ps, int i) throws SQLException {
@@ -117,7 +121,7 @@ public class ContentDbImpl implements ContentDaoInterface {
 
     private void updateContentTags(Content content) {
         try {
-            jdbcTemplate.batchUpdate("", new BatchPreparedStatementSetter() {
+            jdbcTemplate.batchUpdate(SQL_UPDATE_CONTENT_TAGS, new BatchPreparedStatementSetter() {
 
                 @Override
                 public void setValues(PreparedStatement ps, int i) throws SQLException {

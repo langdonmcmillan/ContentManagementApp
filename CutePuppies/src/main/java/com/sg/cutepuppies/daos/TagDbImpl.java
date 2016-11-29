@@ -27,11 +27,19 @@ public class TagDbImpl implements TagDaoInterface {
     
     // SQL PREPARED STATEMENTS
     private static final String SQL_GET_TAGS_BY_CONTENT_ID = "select t.* from Tag t join content_tag ct on t.TagId = ct.TagId where ct.ContentId = ?";
-    private static final String SQL_GET_ALL_TAGS = "select * from Tag";
+    private static final String SQL_GET_PUBLISHED_TAGS = "select t.TagId, t.TagDescription, count(ct.TagId) as useNum from content_tag ct "
+            + "join Content c on c.ContentId = ct.ContentId "
+            + "join Tag t on t.TagId = ct.TagId "
+            + "where c.ContentStatusCode = 'PUBLISHED' "
+            + "group by t.TagId, t.TagDescription";
+    private static final String SQL_GET_ALL_TAGS = "select t.TagId, t.TagDescription, count(ct.TagId) as useNum from content_tag ct "
+            + "join Content c on c.ContentId = ct.ContentId "
+            + "join Tag t on t.TagId = ct.TagId "
+            + "group by t.TagId, t.TagDescription";
     
     @Override
-    public List<Tag> getAllTags() {
-        return jdbcTemplate.query(SQL_GET_ALL_TAGS, new TagMapper());
+    public List<Tag> getAllTags(boolean onlyPublished) {
+        return (onlyPublished) ? jdbcTemplate.query(SQL_GET_PUBLISHED_TAGS, new TagMapper()) : jdbcTemplate.query(SQL_GET_ALL_TAGS, new TagMapper());
     }
 
     @Override
@@ -67,6 +75,11 @@ public class TagDbImpl implements TagDaoInterface {
             Tag tag = new Tag();
             tag.setTagID(rs.getInt("TagId"));
             tag.setTagDescription(rs.getString("TagDescription"));
+            try {
+                tag.setNumUsed(rs.getInt("useNum"));
+            } catch (Exception e) {
+                tag.setNumUsed(0);
+            }
 
             return tag;
         }

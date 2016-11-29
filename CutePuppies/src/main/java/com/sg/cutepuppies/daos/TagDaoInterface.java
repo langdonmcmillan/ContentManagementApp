@@ -13,8 +13,7 @@ import java.util.List;
  * @author apprentice
  */
 public interface TagDaoInterface {
-    public List<Tag> getAllTags();
-
+    public List<Tag> getAllTags(boolean onlyPublished);
     public List<Tag> getTagsByContentId(int contentId);
     public Tag getTagByName(String tag);
     public Tag addTag(String tag);
