@@ -5,9 +5,7 @@
  */
 package com.sg.cutepuppies.daos;
 
-import com.sg.cutepuppies.models.Category;
 import com.sg.cutepuppies.models.Content;
-import com.sg.cutepuppies.models.Tag;
 import java.util.List;
 
 /**
