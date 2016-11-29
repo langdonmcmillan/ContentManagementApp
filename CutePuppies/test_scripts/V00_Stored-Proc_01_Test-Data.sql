@@ -1,4 +1,5 @@
 USE CutePuppiesTest;
+DROP PROCEDURE `reset_CutePuppiesTest`;
 DELIMITER $$
 CREATE PROCEDURE `reset_CutePuppiesTest` ()
 BEGIN
