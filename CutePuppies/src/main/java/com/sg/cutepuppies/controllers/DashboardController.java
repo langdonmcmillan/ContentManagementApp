@@ -101,8 +101,8 @@ public class DashboardController {
     @ResponseBody
     public Post addPost(@Valid @RequestBody Post post) {
         post = postDao.addPost(post);
-        post.getAllContentRevisions().get(0).setPostId(post.getPostId());
-        contentDao.updatePostContent(post.getAllContentRevisions().get(0));
+        post.getMostRecentContent().setPostId(post.getPostId());
+        contentDao.updatePostContent(post.getMostRecentContent());
         return post;
     }
 }
