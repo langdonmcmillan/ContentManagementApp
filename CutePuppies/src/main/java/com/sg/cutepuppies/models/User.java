@@ -16,7 +16,7 @@ public class User {
     private int userId;
     private String roleCode;
     private Date createdDate;
-    private Date updateDate;
+    private Date updatedDate;
     private Date deletedDate;
     private String userName;
     private String userPassword;
@@ -46,12 +46,12 @@ public class User {
         this.createdDate = createdDate;
     }
 
-    public Date getUpdateDate() {
-        return updateDate;
+    public Date getUpdatedDate() {
+        return updatedDate;
     }
 
-    public void setUpdateDate(Date updateDate) {
-        this.updateDate = updateDate;
+    public void setUpdatedDate(Date updatedDate) {
+        this.updatedDate = updatedDate;
     }
 
     public Date getDeletedDate() {

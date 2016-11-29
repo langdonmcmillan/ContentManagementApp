@@ -18,6 +18,7 @@ public interface ContentDaoInterface {
     
     public List<Content> getAllContentsByPostId(int postID);
     public Content getPublishedPostContent(int postID);
+    public Content getMostRecentPostContent(int postID);
     public Content updatePostContent(Content content);
     public List<Content> getAllStaticPages();
     public Content getStaticPageByURL(String urlPattern);

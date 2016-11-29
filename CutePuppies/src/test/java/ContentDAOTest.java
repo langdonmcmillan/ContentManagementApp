@@ -16,6 +16,9 @@ import com.sg.cutepuppies.daos.CategoryDaoInterface;
 import com.sg.cutepuppies.daos.ContentDaoInterface;
 import com.sg.cutepuppies.daos.PostDaoInterface;
 import com.sg.cutepuppies.daos.TagDaoInterface;
+import com.sg.cutepuppies.daos.UserDaoInterface;
+import com.sg.cutepuppies.models.User;
+import java.text.SimpleDateFormat;
 import java.util.GregorianCalendar;
 
 /**
@@ -24,10 +27,11 @@ import java.util.GregorianCalendar;
  */
 public class ContentDAOTest {
 
-    private PostDaoInterface postDAO;
-    private ContentDaoInterface contentDAO;
-    private CategoryDaoInterface categoryDAO;
-    private TagDaoInterface tagDAO;
+    private PostDaoInterface postDao;
+    private ContentDaoInterface contentDao;
+    private CategoryDaoInterface categoryDao;
+    private TagDaoInterface tagDao;
+    private UserDaoInterface userDao;
 
     public ContentDAOTest() {
 
@@ -37,17 +41,29 @@ public class ContentDAOTest {
     public void setUp() {
         ApplicationContext ctx
                 = new ClassPathXmlApplicationContext("test-applicationContext.xml");
-        postDAO = ctx.getBean("PostDBImplTest", PostDaoInterface.class);
-        contentDAO = ctx.getBean("ContentDBImplTest", ContentDaoInterface.class);
-        categoryDAO = ctx.getBean("CategoryDBImplTest", CategoryDaoInterface.class);
-        tagDAO = ctx.getBean("TagDBImplTest", TagDaoInterface.class);
-
+        postDao = ctx.getBean("PostDBImplTest", PostDaoInterface.class);
+        contentDao = ctx.getBean("ContentDBImplTest", ContentDaoInterface.class);
+        categoryDao = ctx.getBean("CategoryDBImplTest", CategoryDaoInterface.class);
+        tagDao = ctx.getBean("TagDBImplTest", TagDaoInterface.class);
+        userDao = ctx.getBean("UserDBImplTest", UserDaoInterface.class);
         JdbcTemplate template = (JdbcTemplate) ctx.getBean("jdbcTemplate");
 
     }
 
     @Test
     public void testAddPostContent() {
+        String date = "2000-11-01";
+        java.sql.Date adminCreateDate = java.sql.Date.valueOf(date);
+
+        String date2 = "2016-11-01";
+        java.sql.Date contentCreateDate = java.sql.Date.valueOf(date2);
+        
+        User admin = new User();
+        admin.setUserId(1);
+        admin.setRoleCode("ADMIN");
+        admin.setCreatedDate(adminCreateDate);
+        admin.setUserName("sadukie");
+
         Content content = new Content();
         content.setPostId(1);
         content.setTitle("Title");
@@ -56,14 +72,15 @@ public class ContentDAOTest {
         content.setBody("Body");
         content.setSnippet("Snippet");
         content.setContentTypeCode("POST");
-        content.setCreatedByUserId(1);
+        content.setCreatedByUser(admin);
+        content.setCreatedOnDate(contentCreateDate);
         content.setUrlPattern("URL Pattern");
         content.setContentStatusCode("PUBLISHED");
 
         // int numRevisions = contentDAO.getContentByPostID(0).size();
         assertEquals(0, content.getContentId());
 
-        contentDAO.updatePostContent(content);
+        contentDao.updatePostContent(content);
 
         // assertEquals(numRevisions + 1, contentDAO.getContentByPostID(0).size());
         assertNotEquals(0, content.getContentId());
@@ -71,9 +88,21 @@ public class ContentDAOTest {
 
     @Test
     public void testGetAllContentsByPostId() {
+        String date = "2000-11-01";
+        java.sql.Date adminCreateDate = java.sql.Date.valueOf(date);
+
+        String date2 = "2016-11-01";
+        java.sql.Date contentCreateDate = java.sql.Date.valueOf(date2);
+        
+        User admin = new User();
+        admin.setUserId(1);
+        admin.setRoleCode("ADMIN");
+        admin.setCreatedDate(adminCreateDate);
+        admin.setUserName("sadukie");
+
         Post post = new Post();
         post.setPostId(1);
-        post.setCreatedByUserId(1);
+        post.setCreatedByUser(admin);
 
         Content content1 = new Content();
         content1.setContentId(1);
@@ -82,7 +111,8 @@ public class ContentDAOTest {
         content1.setContentStatusCode("PUBLISHED");
         content1.setUrlPattern("someUrlForContent1");
         content1.setContentTypeCode("POST");
-        content1.setCreatedByUserId(1);
+        content1.setCreatedByUser(admin);
+        content1.setCreatedOnDate(contentCreateDate);
 
         Content content2 = new Content();
         content2.setContentId(2);
@@ -91,8 +121,8 @@ public class ContentDAOTest {
         content2.setContentStatusCode("ARCHIVED");
         content2.setUrlPattern("someUrlForContent2");
         content2.setContentTypeCode("POST");
-        content2.setCreatedByUserId(1);
-//        content2.setCreatedOnDate(java.sql.Date.valueOf('2016-11-27'));
+        content2.setCreatedByUser(admin);
+        content2.setCreatedOnDate(contentCreateDate);
 
     }
 

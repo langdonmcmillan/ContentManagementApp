@@ -79,8 +79,8 @@ public class CutePuppiesController {
             Content postContent = contentDao.getPublishedPostContent(postId);
             postContent.setListOfTags(tagDao.getTagsByContentId(postContent.getContentId()));
             postContent.setListOfCategories(categoryDao.getCategoriesByContentId(postContent.getContentId()));
-            postContent.setCreatedByUser(userDao.getUserWhoCreatedContent(postContent.getCreatedByUserId()));
-            post.setCreatedByUser(userDao.getUserWhoCreatedPost(post.getCreatedByUserId()));
+            postContent.setCreatedByUser(userDao.getUserWhoCreatedContent(postContent.getContentId()));
+            post.setCreatedByUser(userDao.getUserWhoCreatedPost(postId));
             post.setPublishedContent(postContent);
         });
         return listOfPosts;
@@ -91,10 +91,12 @@ public class CutePuppiesController {
     public Post displayPost(@PathVariable("postId") int postId) {
         Post post = postDao.getPostByID(postId);
         Content postContent = contentDao.getPublishedPostContent(postId);
+        
         postContent.setListOfTags(tagDao.getTagsByContentId(postContent.getContentId()));
         postContent.setListOfCategories(categoryDao.getCategoriesByContentId(postContent.getContentId()));
-        postContent.setCreatedByUser(userDao.getUserWhoCreatedContent(postContent.getCreatedByUserId()));
-        post.setCreatedByUser(userDao.getUserWhoCreatedPost(post.getCreatedByUserId()));
+        postContent.setCreatedByUser(userDao.getUserWhoCreatedContent(postContent.getContentId()));
+        post.setCreatedByUser(userDao.getUserWhoCreatedPost(postId));
+        
         post.setPublishedContent(postContent);
         return post;
     }

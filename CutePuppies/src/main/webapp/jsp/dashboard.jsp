@@ -59,7 +59,7 @@
                                         <th>Date Created</th>
                                         <th>Contributing Author</th>
                                         <th>Date Last Updated</th>
-                                        <th>Content Status</th>
+                                        <th>Archive?</th>
                                     </tr>
                                 </thead>
                                 <tbody id ="populateTable"></tbody>
