@@ -6,36 +6,25 @@
 
 $(document).ready(function () {
     setSessionProperties();
-    loadPagePosts();
-    $('#itemsPerPageSelect').val(sessionStorage.getItem('postsPerPage'));
-
-    $('#allPosts').on("click", '.readMoreLink', function () {
-        var postId = $(this).data('postid');
-        displayPost(postId);
-    });
-
-    $('.pagination li').click(function () {
-        var selectedPage = $(this).data('value');
-        if (selectedPage != 0) {
-            sessionStorage.setItem('pageNumber', selectedPage);
-            var prevPage = sessionStorage.getItem('pageNumber') - 1;
-            var nextPage = parseInt(sessionStorage.getItem('pageNumber')) + 1;
-            $('#prevPageButton').data('value', prevPage);
-            $('#nextPageButton').data('value', nextPage);
-            $('#prevPageButton').removeClass('disabled');
-            if (prevPage == 0) {
-                $('#prevPageButton').addClass('disabled');
-            }
-            $(this).siblings('li').removeClass('active');
-            $('.pgNum[data-value=' + selectedPage + ']').addClass('active');
-            loadPagePosts();
-        }
-    });
-
-    $('#itemsPerPageSelect').change(function () {
-        sessionStorage.setItem('postsPerPage', $('#itemsPerPageSelect option:selected').val());
+    updatePageNav(sessionStorage.getItem('pageNumber'));
+    if(!$.trim($("#allPosts").html())) {
         loadPagePosts();
-    });
+
+        $('#itemsPerPageSelect').val(sessionStorage.getItem('postsPerPage'));
+
+        $('.pagination li').click(function () {
+            var selectedPage = $(this).data('value');
+            if (selectedPage != 0) {
+                updatePageNav(selectedPage);
+                loadPagePosts();
+            }
+        });
+
+        $('#itemsPerPageSelect').change(function () {
+            sessionStorage.setItem('postsPerPage', $('#itemsPerPageSelect option:selected').val());
+            loadPagePosts();
+        });
+    }
 
     $('#tagList').height($('#tagWell').height());
     $('#tagList').width($('#tagWell').width());
@@ -52,33 +41,6 @@ $(document).ajaxComplete(function () {
         after: "a.readmore"
     });
 });
-
-function displayPost(postId) {
-    $.ajax({
-        type: 'GET',
-        url: 'displayPost/' + postId
-    }).success(function (data, status) {
-        var postSnippetContainer = $('#allPosts');
-        postSnippetContainer.empty();
-        var appendInput = '';
-        if (!data.createdByUser.userName === data.publishedContent.createdByUser.userName) {
-            appendInput = $('<p class = "lead userName">').html('updated by <a href="#">' + data.publishedContent.createdByUser.userName + '</a>');
-        }
-        postSnippetContainer.append($('<div class="singlePost">'))
-                .append($('<h1 class="title">').text(data.publishedContent.title))
-                .append($('<p class = "lead userName">').html('created by <a href="#">' + data.createdByUser.userName + '</a>'))
-                .append(appendInput)
-                .append('<hr>')
-                .append($('<p>').html('<span class="glyphicon glyphicon-time createdOnDate"></span><span>' + data.createdOnDate + '</span>'))
-                .append('<hr>')
-                .append($('<img class="img-responsive contentImgLink">').attr({'src': data.publishedContent.contentImgLink, 'alt': data.publishedContent.contentImgAltTxt}))
-                .append('<hr>')
-                .append($('<p class = "body">').html(data.publishedContent.body))
-                .append('<hr>');
-    }).error(function (data, status) {
-        // TODO: display eror loading post
-    });
-}
 
 function loadPagePosts() {
     $.ajax({
@@ -105,13 +67,12 @@ function fillPostSnippetsContainer(posts) {
         if (!post.createdByUser.userName === post.publishedContent.createdByUser.userName) {
             appendInput = $('<p class = "lead userName">').html('updated by <a href="#">' + post.publishedContent.createdByUser.userName + '</a>');
         }
-
         postSnippetContainer.append($('<div class="singlePost">')
-                .append($('<h1 class="title readMoreLink">')
-                        .text(post.publishedContent.title)
-                        .attr({'data-postId': post.postId}))
-                .append($('<p class = "lead userName">')
-                        .html('created by <a href="#">' + post.createdByUser.userName + '</a>'))
+                .append($('<a href="post/' + post.postId + '">')
+                        .append($('<h1 class="title readMoreLink">')
+                                .text(post.publishedContent.title)
+                                .attr({'data-postId': post.postId})))
+                .append($('<p class = "lead userName">').html('created by <a href="#">' + post.createdByUser.userName + '</a>'))
                 .append(appendInput)
                 .append('<hr>')
                 .append($('<p>')
@@ -127,16 +88,16 @@ function fillPostSnippetsContainer(posts) {
                                     'id': 'folderImg'
                                 })))
                 .append('<hr>')
-                .append($('<img class="img-responsive contentImgLink readMoreLink">')
-                        .attr({
-                            'src': post.publishedContent.contentImgLink,
-                            'alt': post.publishedContent.contentImgAltTxt,
-                            'data-postId': post.postId
-                        }))
+                .append($('<a href="post/' + post.postId + '">')
+                        .append($('<img class="img-responsive contentImgLink readMoreLink">')
+                                .attr({
+                                    'src': post.publishedContent.contentImgLink,
+                                    'alt': post.publishedContent.contentImgAltTxt,
+                                    'data-postId': post.postId
+                                })))
                 .append('<hr>')
-                .append($('<p class = "body ellipsis">')
-                        .html(post.publishedContent.body))
-                .append($('<a title="read more" class="readmore readMoreLink">')
+                .append($('<p class = "body ellipsis">').html(post.publishedContent.body))
+                .append($('<a title="read more" class="readmore readMoreLink" href="post/' + post.postId + '">')
                         .text('Read more »')
                         .attr({'data-postId': post.postId})
                         )
@@ -182,7 +143,21 @@ function setSessionProperties() {
     sessionStorage.setItem('selectedTagId', 'null');
     sessionStorage.setItem('selectedCategoryId', 'null');
 }
-;
+
+function updatePageNav(selectedPage) {
+    sessionStorage.setItem('pageNumber', selectedPage);
+    var prevPage = sessionStorage.getItem('pageNumber') - 1;
+    var nextPage = parseInt(sessionStorage.getItem('pageNumber')) + 1;
+    $('#prevPageButton').data('value', prevPage);
+    $('#nextPageButton').data('value', nextPage);
+    $('#prevPageButton').removeClass('disabled');
+    if (prevPage == 0) {
+        $('#prevPageButton').addClass('disabled');
+    }
+    $('.pagination').children('li').removeClass('active');
+    $('.pgNum[data-value=' + selectedPage + ']').addClass('active');
+//    loadPagePosts();
+}
 
 function populateCategories() {
     $.ajax({
@@ -221,7 +196,7 @@ $(document).on('click', '.category', function () {
     var categoryId = $(this).data('categoryid');
     sessionStorage.setItem('selectedTagId', 'null');
     sessionStorage.setItem('selectedCategoryId', $(this).data('categoryid'));
-    sessionStorage.setItem('pageNumber', 1);
+    updatePageNav(1);
     loadPagePosts();
 });
 
@@ -229,6 +204,6 @@ $(document).on('click', '.tag', function () {
     var tagId = $(this).data('tagid');
     sessionStorage.setItem('selectedTagId', $(this).data('tagid'));
     sessionStorage.setItem('selectedCategoryId', 'null');
-    sessionStorage.setItem('pageNumber', 1);
+    updatePageNav(1);
     loadPagePosts();
 });
