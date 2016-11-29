@@ -36,7 +36,7 @@ public class PostDbImpl implements PostDaoInterface {
             = "select p.* from Post p"
             + " where 1 = 1";
     private static final String SQL_GET_POSTS_BY_ALL_CRITERIA
-            = "select p.* from Post p "
+            = "select distinct p.* from Post p "
             + " join Content c on c.PostId = p.PostId"
             + " left join content_tag ct on c.ContentId = ct.ContentId"
             + " left join Tag t on ct.TagId = t.TagId"

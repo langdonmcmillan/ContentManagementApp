@@ -27,7 +27,7 @@ $(document).ready(function () {
                 $('#prevPageButton').addClass('disabled');
             }
             $(this).siblings('li').removeClass('active');
-            $('.pgNum[data-value='+selectedPage+']').addClass('active');
+            $('.pgNum[data-value=' + selectedPage + ']').addClass('active');
             loadPagePosts();
         }
     });
@@ -36,10 +36,10 @@ $(document).ready(function () {
         sessionStorage.setItem('postsPerPage', $('#itemsPerPageSelect option:selected').val());
         loadPagePosts();
     });
-    
+
     $('#tagList').height($('#tagWell').height());
     $('#tagList').width($('#tagWell').width());
-    
+
     populateCategories();
     populateTags();
 });
@@ -105,14 +105,27 @@ function fillPostSnippetsContainer(posts) {
         if (!post.createdByUser.userName === post.publishedContent.createdByUser.userName) {
             appendInput = $('<p class = "lead userName">').html('updated by <a href="#">' + post.publishedContent.createdByUser.userName + '</a>');
         }
-        postSnippetContainer.append($('<div class="singlePost">'))
+
+        postSnippetContainer.append($('<div class="singlePost">')
                 .append($('<h1 class="title readMoreLink">')
                         .text(post.publishedContent.title)
                         .attr({'data-postId': post.postId}))
-                .append($('<p class = "lead userName">').html('created by <a href="#">' + post.createdByUser.userName + '</a>'))
+                .append($('<p class = "lead userName">')
+                        .html('created by <a href="#">' + post.createdByUser.userName + '</a>'))
                 .append(appendInput)
                 .append('<hr>')
-                .append($('<p>').html('<span class="glyphicon glyphicon-time createdOnDate"></span><span>' + post.createdOnDate + '</span>'))
+                .append($('<p>')
+                        .html('<span class="glyphicon glyphicon-time createdOnDate"></span><span>' + post.createdOnDate + '</span>'))
+                .append($('<div>')
+                        .attr('id', 'tags' + post.publishedContent.contentId)
+                        .append($('<img>').attr('src', 'img/tag.png')))
+                .append($('<div>')
+                        .attr('id', 'categories' + post.publishedContent.contentId)
+                        .append($('<img>')
+                                .attr({
+                                    'src': 'img/folder.png',
+                                    'id': 'folderImg'
+                                })))
                 .append('<hr>')
                 .append($('<img class="img-responsive contentImgLink readMoreLink">')
                         .attr({
@@ -121,13 +134,33 @@ function fillPostSnippetsContainer(posts) {
                             'data-postId': post.postId
                         }))
                 .append('<hr>')
-                .append($('<p class = "body ellipsis">').html(post.publishedContent.body))
+                .append($('<p class = "body ellipsis">')
+                        .html(post.publishedContent.body))
                 .append($('<a title="read more" class="readmore readMoreLink">')
                         .text('Read more »')
                         .attr({'data-postId': post.postId})
                         )
-                .append('<hr>');
+                .append('<hr>'));
+        $.each(post.publishedContent.listOfTags, function (index, tag) {
+            $('#tags' + post.publishedContent.contentId)
+                    .append($('<a href="#">' + tag.tagDescription + '</a>')
+                            .attr({
+                                'class': 'tag',
+                                'data-tagDescription': tag.tagDescription,
+                                'data-tagID': tag.tagID
+                            }).append(' '));
+        });
+        $.each(post.publishedContent.listOfCategories, function (index, category) {
+            $('#categories' + post.publishedContent.contentId)
+                    .append($('<a href="#">' + category.categoryDescription + '</a>')
+                            .attr({
+                                'class': 'category',
+                                'data-categoryDescription': category.categoryDescription,
+                                'data-categoryID': category.categoryID
+                            }).append(' '));
+        });
     });
+
 
 }
 ;
@@ -177,7 +210,7 @@ function populateTags() {
                         'data-tagDescription': tag.tagDescription,
                         'data-tagID': tag.tagID
                     }).append());
-            });
+        });
         $("#tagList").tx3TagCloud({
             multiplier: 1
         });
