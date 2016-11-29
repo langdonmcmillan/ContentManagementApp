@@ -14,7 +14,6 @@ $(document).ready(function () {
 $("#showArchivedPosts").change(function () {
     var archiveBoxChecked = $('#showArchivedPosts').is(':checked');
     loadAllPosts(archiveBoxChecked);
-
 });
 
 function loadAllPosts(archiveBoxChecked) {

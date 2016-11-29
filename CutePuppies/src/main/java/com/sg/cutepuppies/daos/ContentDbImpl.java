@@ -63,6 +63,10 @@ public class ContentDbImpl implements ContentDaoInterface {
             + "values (?, ?)";
     private static final String SQL_UPDATE_CONTENT_TAGS = "insert into content_tag (ContentId, TagId) "
             + "values (?, ?)";
+    private static final String SQL_ARCHIVE_POST = "update Content set ArchivedByUserId = :userId, "
+            + "UpdatedByUserId = :userId, ArchivedOnDate = Current_Timestamp, ContentStatusCode = 'ARCHIVED' where PostId = :postId";
+    private static final String SQL_ARCHIVE_CONTENT = "update Content set ArchivedByUserId = :userId, "
+            + "UpdatedByUserId = :userId, ArchivedOnDate = Current_Timestamp, ContentStatusCode = 'ARCHIVED' where ContentId = :contentId";
     
     @Override
     public List<Content> getAllContentsByPostId(int postID) {
@@ -167,6 +171,22 @@ public class ContentDbImpl implements ContentDaoInterface {
     @Override
     public Content getMostRecentPostContent(int postID) {
         return jdbcTemplate.queryForObject(SQL_GET_MOST_RECENT_CONTENT_BY_POST_ID, new ContentMapper(), postID);
+    }
+
+    @Override
+    public void archiveContent(int contentId, int userId) {
+        MapSqlParameterSource namedParameters = new MapSqlParameterSource();
+        namedParameters.addValue("userId", userId);
+        namedParameters.addValue("contentId", contentId);
+        npJdbcTemplate.update(SQL_ARCHIVE_CONTENT, namedParameters);
+    }
+
+    @Override
+    public void archivePost(int postId, int userId) {
+        MapSqlParameterSource namedParameters = new MapSqlParameterSource();
+        namedParameters.addValue("userId", userId);
+        namedParameters.addValue("postId", postId);
+        npJdbcTemplate.update(SQL_ARCHIVE_POST, namedParameters);
     }
 
     private static final class ContentMapper implements RowMapper<Content> {

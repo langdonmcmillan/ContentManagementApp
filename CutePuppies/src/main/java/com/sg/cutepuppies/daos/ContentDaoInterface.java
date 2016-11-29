@@ -22,5 +22,6 @@ public interface ContentDaoInterface {
     public Content getStaticPageByURL(String urlPattern);
     public Content addStaticPage(Content content);
     public Content updateStaticPage(Content content);
-    
+    public void archiveContent(int contentID, int userID);
+    public void archivePost(int postID, int userID);
 }

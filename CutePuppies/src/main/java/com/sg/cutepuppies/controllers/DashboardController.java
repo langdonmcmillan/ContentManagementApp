@@ -105,4 +105,18 @@ public class DashboardController {
         contentDao.updatePostContent(post.getMostRecentContent());
         return post;
     }
+    
+    @RequestMapping(value = "admin/post/{postId}/{userId}", method = RequestMethod.DELETE)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public String archivePost(@PathVariable("postId") int postID, @PathVariable("userId") int userId) {
+        postDao.archivePost(postID, userId);
+        contentDao.archivePost(postID, userId);
+        return "dashboard";
+    }
+    
+    @RequestMapping(value = "admin/content/{contentId}/{userId}", method = RequestMethod.DELETE)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void archiveContent(@PathVariable("contentId") int contentID, @PathVariable("userId") int userId) {
+        contentDao.archiveContent(contentID, userId);
+    }
 }
