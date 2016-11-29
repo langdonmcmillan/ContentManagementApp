@@ -63,7 +63,7 @@ function displayPost(postId) {
                 .append('<hr>')
                 .append($('<img class="img-responsive contentImgLink">').attr({'src': data.publishedContent.contentImgLink, 'alt': data.publishedContent.contentImgAltTxt}))
                 .append('<hr>')
-                .append($('<p class = "body">').html(data.publishedContent.body))
+                .append($('<div class = "body">').html(data.publishedContent.body))
                 .append('<hr>');
     }).error(function (data, status) {
         // TODO: display eror loading post

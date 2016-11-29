@@ -12,14 +12,10 @@ import org.junit.Before;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.jdbc.core.JdbcTemplate;
-import com.sg.cutepuppies.daos.CategoryDaoInterface;
 import com.sg.cutepuppies.daos.ContentDaoInterface;
-import com.sg.cutepuppies.daos.PostDaoInterface;
-import com.sg.cutepuppies.daos.TagDaoInterface;
-import com.sg.cutepuppies.daos.UserDaoInterface;
 import com.sg.cutepuppies.models.User;
-import java.text.SimpleDateFormat;
-import java.util.GregorianCalendar;
+import org.junit.After;
+import org.springframework.jdbc.core.simple.SimpleJdbcCall;
 
 /**
  *
@@ -27,11 +23,11 @@ import java.util.GregorianCalendar;
  */
 public class ContentDAOTest {
 
-    private PostDaoInterface postDao;
+    ApplicationContext ctx = new ClassPathXmlApplicationContext("test-applicationContext.xml");
     private ContentDaoInterface contentDao;
-    private CategoryDaoInterface categoryDao;
-    private TagDaoInterface tagDao;
-    private UserDaoInterface userDao;
+    
+    private JdbcTemplate jdbcTemplate;
+    SimpleJdbcCall simpleJdbcCall;
 
     public ContentDAOTest() {
 
@@ -39,15 +35,21 @@ public class ContentDAOTest {
 
     @Before
     public void setUp() {
-        ApplicationContext ctx
-                = new ClassPathXmlApplicationContext("test-applicationContext.xml");
-        postDao = ctx.getBean("PostDBImplTest", PostDaoInterface.class);
+        jdbcTemplate = (JdbcTemplate)ctx.getBean("jdbcTemplate");
+        simpleJdbcCall = new SimpleJdbcCall(jdbcTemplate).withProcedureName("reset_addressbook_test");
+        simpleJdbcCall.execute();
+//        ApplicationContext ctx
+//                = new ClassPathXmlApplicationContext("test-applicationContext.xml");
         contentDao = ctx.getBean("ContentDBImplTest", ContentDaoInterface.class);
-        categoryDao = ctx.getBean("CategoryDBImplTest", CategoryDaoInterface.class);
-        tagDao = ctx.getBean("TagDBImplTest", TagDaoInterface.class);
-        userDao = ctx.getBean("UserDBImplTest", UserDaoInterface.class);
         JdbcTemplate template = (JdbcTemplate) ctx.getBean("jdbcTemplate");
 
+    }
+    
+    @After
+    public void teardown() {
+        jdbcTemplate = (JdbcTemplate)ctx.getBean("jdbcTemplate");
+        simpleJdbcCall = new SimpleJdbcCall(jdbcTemplate).withProcedureName("reset_addressbook_test");
+        simpleJdbcCall.execute();
     }
 
     @Test
