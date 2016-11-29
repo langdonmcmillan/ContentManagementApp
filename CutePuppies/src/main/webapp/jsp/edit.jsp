@@ -16,6 +16,11 @@
         <link href="${pageContext.request.contextPath}/css/navbar-fixed-side.css" rel="stylesheet">
     </head>
     <body>
+        <c:if test="${not empty postId}">
+              
+            <input type="hidden" id="post-id" value=${postId}>
+              
+        </c:if>
         <div class="container-fluid">
             <div class="row">
                 <div class="col-sm-3 col-lg-2">
@@ -51,6 +56,7 @@
                                         <th class="text-center">Date Modified</th>
                                         <th class="text-center">Author</th>
                                     </tr>
+                                    <tbody id="contentRows"></tbody>
                                 </table>
                             </div>
                         </div>
@@ -105,6 +111,7 @@
                 </footer>
 
             </div>
+        </div>
             <script src="${pageContext.request.contextPath}/js/jquery-2.2.4.min.js"></script>
             <script src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>
             <script src="${pageContext.request.contextPath}/js/EditJS.js"></script>  

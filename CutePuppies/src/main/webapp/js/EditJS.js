@@ -6,10 +6,53 @@
 var postID;
 
 $(document).ready(function () {
+    populateEdit();
     populateCategories();
     populateTags();
     postID = 0;
 });
+
+function populateEdit() {
+
+    if ($('#post-id').length) {
+
+        $.ajax({
+            type: 'GET',
+            url: 'post/' + $('#post-id').val()
+        }).success(function (thisPost) {
+
+            clearContentTable();
+
+            var summaryTable = $('#contentRows');
+
+            $.each(thisPost.allContentRevisions, function (arrayPosition, content) {
+                summaryTable.append($('<tr>')
+                        .append($('<td>')
+                                .append($('<a>')
+                                        .attr({
+                                            'data-contact-id': content.contentId
+                                        })
+                                        .text(content.title)))
+                        .append($('<td>').text(content.createdOnDate))
+                        .append($('<td>').text(content.createdByUser.userName))
+                        );
+            });
+
+            $('#postTitle').val(thisPost.mostRecentContent.title);
+            $('#postURL').val(thisPost.mostRecentContent.urlPattern);
+            $('#imageName').val(thisPost.mostRecentContent.contentImgAltTxt);
+            $('#imageURL').val(thisPost.mostRecentContent.contentImgLink);
+            tinyMCE.activeEditor.setContent(thisPost.mostRecentContent.body);
+
+        });
+
+    }
+
+}
+
+function clearContentTable() {
+    $('#contentRows').empty();
+}
 
 function populateCategories() {
     $.ajax({

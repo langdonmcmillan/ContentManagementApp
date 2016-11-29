@@ -37,7 +37,7 @@ function fillTableWithAllPosts(listOfAllPosts) {
         // if content's createdUser and createdDate is the same
         // as posts' createdUser and createdDate
         tbody.append($('<tr>')
-                .append($('<td>').append($('<a>').attr('href', 'admin/edit/' + post.postId)
+                .append($('<td>').append($('<a>').attr('href', 'edit/' + post.postId)
                         .text(contentToDisplay.title)))
                 .append($('<td>').text(post.createdByUser.userName))
                 .append($('<td>').text(post.createdOnDate))

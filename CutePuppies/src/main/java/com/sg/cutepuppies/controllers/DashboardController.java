@@ -27,6 +27,7 @@ import com.sg.cutepuppies.daos.PostDaoInterface;
 import com.sg.cutepuppies.daos.TagDaoInterface;
 import com.sg.cutepuppies.daos.UserDaoInterface;
 import com.sg.cutepuppies.models.User;
+import org.springframework.ui.Model;
 
 /**
  *
@@ -65,8 +66,8 @@ public class DashboardController {
             int postId = post.getPostId();
             post.setCreatedByUser(userDao.getUserWhoCreatedPost(postId));
             post.setUpdatedByUser(userDao.getUserWhoUpdatedPost(postId));
-            post.setArchivedByUser(userDao.getUserWhoArchivedPost(postId)); 
-           
+            post.setArchivedByUser(userDao.getUserWhoArchivedPost(postId));
+
             Content mostRecentPostContent = contentDao.getMostRecentPostContent(postId);
             int contentId = mostRecentPostContent.getContentId();
             mostRecentPostContent.setCreatedByUser(userDao.getUserWhoCreatedContent(contentId));
@@ -76,19 +77,60 @@ public class DashboardController {
         });
         return listOfAllPosts;
     }
-    
+
+    @RequestMapping(value = "admin/edit/post/{postId}", method = RequestMethod.GET)
+    @ResponseBody
+    public Post getPostById(@PathVariable("postId") int postId) {
+
+        Post post = postDao.getPostByID(postId);
+        post.setCreatedByUser(userDao.getUserWhoCreatedPost(postId));
+        post.setUpdatedByUser(userDao.getUserWhoUpdatedPost(postId));
+        post.setArchivedByUser(userDao.getUserWhoArchivedPost(postId));
+
+        Content mostRecentPostContent = contentDao.getMostRecentPostContent(postId);
+        int contentId = mostRecentPostContent.getContentId();
+        mostRecentPostContent.setCreatedByUser(userDao.getUserWhoCreatedContent(contentId));
+        mostRecentPostContent.setListOfCategories(categoryDao.getCategoriesByContentId(contentId));
+        mostRecentPostContent.setListOfTags(tagDao.getTagsByContentId(contentId));
+        post.setMostRecentContent(mostRecentPostContent);
+
+        List<Content> allContent = contentDao.getAllContentsByPostId(postId);
+
+        allContent.forEach(content -> {
+            int conId = content.getContentId();
+            content.setCreatedByUser(userDao.getUserWhoCreatedContent(conId));
+
+           
+
+            //content.setListOfCategories(categoryDao.getCategoriesByContentId(conId));
+            //content.setListOfTags(tagDao.getTagsByContentId(conId));
+        });
+
+        post.setAllContentRevisions(allContent);
+
+        return post;
+    }
+
     @RequestMapping(value = "admin/edit", method = RequestMethod.GET)
     public String displayAddPostPage() {
         return "edit";
     }
-    
+
+    @RequestMapping(value = "admin/edit/{postId}", method = RequestMethod.GET)
+    public String displayEditPostPage(@PathVariable("postId") int postId, Model model) {
+
+        model.addAttribute(postId);
+
+        return "edit";
+    }
+
     @RequestMapping(value = "/admin/categories", method = RequestMethod.GET)
     @ResponseBody
     public List<Category> populateCategories() {
         List<Category> listOfCategories = categoryDao.getAllCategories();
         return listOfCategories;
     }
-    
+
     @RequestMapping(value = "/admin/tags", method = RequestMethod.GET)
     @ResponseBody
     public List<Tag> populateTags() {
