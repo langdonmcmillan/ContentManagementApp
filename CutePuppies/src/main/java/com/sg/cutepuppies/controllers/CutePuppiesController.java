@@ -21,6 +21,7 @@ import com.sg.cutepuppies.daos.TagDaoInterface;
 import com.sg.cutepuppies.daos.UserDaoInterface;
 import com.sg.cutepuppies.models.Category;
 import com.sg.cutepuppies.models.Tag;
+import org.springframework.ui.Model;
 
 /**
  *
@@ -86,9 +87,23 @@ public class CutePuppiesController {
         return listOfPosts;
     }
 
-    @RequestMapping(value = "displayPost/{postId}", method = RequestMethod.GET)
-    @ResponseBody
-    public Post displayPost(@PathVariable("postId") int postId) {
+//    @RequestMapping(value = "displayPost/{postId}", method = RequestMethod.GET)
+//    @ResponseBody
+//    public Post displayPost(@PathVariable("postId") int postId) {
+//        Post post = postDao.getPostByID(postId);
+//        Content postContent = contentDao.getPublishedPostContent(postId);
+//        
+//        postContent.setListOfTags(tagDao.getTagsByContentId(postContent.getContentId()));
+//        postContent.setListOfCategories(categoryDao.getCategoriesByContentId(postContent.getContentId()));
+//        postContent.setCreatedByUser(userDao.getUserWhoCreatedContent(postContent.getContentId()));
+//        post.setCreatedByUser(userDao.getUserWhoCreatedPost(postId));
+//        
+//        post.setPublishedContent(postContent);
+//        return post;
+//    }
+    
+    @RequestMapping(value = "post/{postId}", method = RequestMethod.GET)
+    public String displayPost(@PathVariable("postId") int postId, Model model) {
         Post post = postDao.getPostByID(postId);
         Content postContent = contentDao.getPublishedPostContent(postId);
         
@@ -98,7 +113,8 @@ public class CutePuppiesController {
         post.setCreatedByUser(userDao.getUserWhoCreatedPost(postId));
         
         post.setPublishedContent(postContent);
-        return post;
+        model.addAttribute("post", post);
+        return "/blog";
     }
     
     @RequestMapping(value = "categories", method = RequestMethod.GET)

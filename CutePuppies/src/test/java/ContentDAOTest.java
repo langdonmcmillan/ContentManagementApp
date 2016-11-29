@@ -12,14 +12,11 @@ import org.junit.Before;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.jdbc.core.JdbcTemplate;
-import com.sg.cutepuppies.daos.CategoryDaoInterface;
 import com.sg.cutepuppies.daos.ContentDaoInterface;
-import com.sg.cutepuppies.daos.PostDaoInterface;
-import com.sg.cutepuppies.daos.TagDaoInterface;
-import com.sg.cutepuppies.daos.UserDaoInterface;
 import com.sg.cutepuppies.models.User;
-import java.text.SimpleDateFormat;
-import java.util.GregorianCalendar;
+import java.util.List;
+import org.junit.After;
+import org.springframework.jdbc.core.simple.SimpleJdbcCall;
 
 /**
  *
@@ -27,11 +24,11 @@ import java.util.GregorianCalendar;
  */
 public class ContentDAOTest {
 
-    private PostDaoInterface postDao;
+    ApplicationContext ctx = new ClassPathXmlApplicationContext("test-applicationContext.xml");
     private ContentDaoInterface contentDao;
-    private CategoryDaoInterface categoryDao;
-    private TagDaoInterface tagDao;
-    private UserDaoInterface userDao;
+
+    private JdbcTemplate jdbcTemplate;
+    SimpleJdbcCall simpleJdbcCall;
 
     public ContentDAOTest() {
 
@@ -39,15 +36,20 @@ public class ContentDAOTest {
 
     @Before
     public void setUp() {
-        ApplicationContext ctx
-                = new ClassPathXmlApplicationContext("test-applicationContext.xml");
-        postDao = ctx.getBean("PostDBImplTest", PostDaoInterface.class);
+        jdbcTemplate = (JdbcTemplate) ctx.getBean("jdbcTemplate");
+        simpleJdbcCall = new SimpleJdbcCall(jdbcTemplate).withProcedureName("reset_CutePuppiesTest");
+        simpleJdbcCall.execute();
+
         contentDao = ctx.getBean("ContentDBImplTest", ContentDaoInterface.class);
-        categoryDao = ctx.getBean("CategoryDBImplTest", CategoryDaoInterface.class);
-        tagDao = ctx.getBean("TagDBImplTest", TagDaoInterface.class);
-        userDao = ctx.getBean("UserDBImplTest", UserDaoInterface.class);
         JdbcTemplate template = (JdbcTemplate) ctx.getBean("jdbcTemplate");
 
+    }
+
+    @After
+    public void teardown() {
+        jdbcTemplate = (JdbcTemplate) ctx.getBean("jdbcTemplate");
+        simpleJdbcCall = new SimpleJdbcCall(jdbcTemplate).withProcedureName("reset_CutePuppiesTest");
+        simpleJdbcCall.execute();
     }
 
     @Test
@@ -57,7 +59,7 @@ public class ContentDAOTest {
 
         String date2 = "2016-11-01";
         java.sql.Date contentCreateDate = java.sql.Date.valueOf(date2);
-        
+
         User admin = new User();
         admin.setUserId(1);
         admin.setRoleCode("ADMIN");
@@ -93,7 +95,7 @@ public class ContentDAOTest {
 
         String date2 = "2016-11-01";
         java.sql.Date contentCreateDate = java.sql.Date.valueOf(date2);
-        
+
         User admin = new User();
         admin.setUserId(1);
         admin.setRoleCode("ADMIN");
@@ -124,6 +126,33 @@ public class ContentDAOTest {
         content2.setCreatedByUser(admin);
         content2.setCreatedOnDate(contentCreateDate);
 
+    }
+
+    @Test
+    public void testArchivePost() {
+        int userId = 1;
+        int postId = 5;
+
+        contentDao.archivePost(postId, userId);
+
+        for (Content content : contentDao.getAllContentsByPostId(postId)) {
+            assertEquals("ARCHIVED", content.getContentStatusCode());
+        }
+    }
+
+    @Test
+    public void testArchiveContent() {
+        int userId = 1;
+        Content contentToArchive = contentDao.getPublishedPostContent(5);
+        int contentId = contentToArchive.getContentId();
+
+        contentDao.archiveContent(contentId, userId);
+
+        for (Content content : contentDao.getAllContentsByPostId(5)) {
+            if (content.getContentId() == contentId) {
+                assertEquals("ARCHIVED", content.getContentStatusCode());
+            }
+        }
     }
 
 }

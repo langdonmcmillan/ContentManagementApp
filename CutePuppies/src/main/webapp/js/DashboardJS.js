@@ -8,12 +8,12 @@
 $(document).ready(function () {
     var archiveBoxChecked = $('#showArchivedPosts').is(':checked');
     loadAllPosts(archiveBoxChecked);
+    sessionStorage.setItem('pageNumber', 1);
 });
 
 $("#showArchivedPosts").change(function () {
     var archiveBoxChecked = $('#showArchivedPosts').is(':checked');
     loadAllPosts(archiveBoxChecked);
-
 });
 
 function loadAllPosts(archiveBoxChecked) {
@@ -32,23 +32,24 @@ function fillTableWithAllPosts(listOfAllPosts) {
     tbody.empty();
 
     $.each(listOfAllPosts, function (index, post) {
-        var contentToDisplay = post.mostRecentContent;
-        // show '-' for contributing author and date last updated
-        // if content's createdUser and createdDate is the same
-        // as posts' createdUser and createdDate
-        tbody.append($('<tr>')
-                .append($('<td>').append($('<a>').attr('href', 'edit/' + post.postId)
-                        .text(contentToDisplay.title)))
-                .append($('<td>').text(post.createdByUser.userName))
-                .append($('<td>').text(post.createdOnDate))
+        var postCreateName = post.createdByUser.userName;
+        var postCreateDate = post.createdOnDate;
+        var contentTitle = post.mostRecentContent.title;
+        var contentCreateName = post.mostRecentContent.createdByUser.userName;
+        var contentCreateDate = post.mostRecentContent.createdOnDate;
         
-                .append($('<td>').text(contentToDisplay.createdByUser.userName))
-                .append($('<td>').text(contentToDisplay.createdOnDate)));
-//                .append($('<td>').append($('<a>').attr({
-//                    'id': 'archivePost',
-//                    'class': 'btn btn-primary active',
-//                    'href': 'someLink'
-//                }).text('Archive Post')))
+        if ((postCreateName === contentCreateName) && (postCreateDate === contentCreateDate)) {
+            $("td.contentUser").text('-');
+            $("td.contentDate").text('-');
+        }
+        tbody.append($('<tr>')
+
+                .append($('<td>').append($('<a>').attr('href', 'admin/edit/' + post.postId)
+                        .text(contentTitle)))
+                .append($('<td>').addClass('postUser').text(postCreateName))
+                .append($('<td>').addClass('postDate').text(postCreateDate))
+                .append($('<td>').addClass('contentUser').text(contentCreateName))
+                .append($('<td>').addClass('contentDate').text(contentCreateDate)));
     });
     $("tr").click(function () {
         window.location.href = $(this).find("a").attr("href");

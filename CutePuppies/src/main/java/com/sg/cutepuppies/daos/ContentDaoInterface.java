@@ -5,9 +5,7 @@
  */
 package com.sg.cutepuppies.daos;
 
-import com.sg.cutepuppies.models.Category;
 import com.sg.cutepuppies.models.Content;
-import com.sg.cutepuppies.models.Tag;
 import java.util.List;
 
 /**
@@ -24,5 +22,6 @@ public interface ContentDaoInterface {
     public Content getStaticPageByURL(String urlPattern);
     public Content addStaticPage(Content content);
     public Content updateStaticPage(Content content);
-    
+    public void archiveContent(int contentID, int userID);
+    public void archivePost(int postID, int userID);
 }
