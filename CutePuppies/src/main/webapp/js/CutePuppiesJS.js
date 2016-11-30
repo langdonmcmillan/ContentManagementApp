@@ -26,7 +26,6 @@ $(document).ready(function () {
         });
     }
 
-
     $('#tagList').height($('#tagWell').height());
     $('#tagList').width($('#tagWell').width());
 
@@ -42,33 +41,6 @@ $(document).ajaxComplete(function () {
         after: "a.readmore"
     });
 });
-
-//function displayPost(postId) {
-//    $.ajax({
-//        type: 'GET',
-//        url: 'displayPost/' + postId
-//    }).success(function (data, status) {
-//        var postSnippetContainer = $('#allPosts');
-//        postSnippetContainer.empty();
-//        var appendInput = '';
-//        if (!data.createdByUser.userName === data.publishedContent.createdByUser.userName) {
-//            appendInput = $('<p class = "lead userName">').html('updated by <a href="#">' + data.publishedContent.createdByUser.userName + '</a>');
-//        }
-//        postSnippetContainer.append($('<div class="singlePost">')
-//                .append($('<h1 class="title">').text(data.publishedContent.title))
-//                .append($('<p class = "lead userName">').html('created by <a href="#">' + data.createdByUser.userName + '</a>'))
-//                .append(appendInput)
-//                .append('<hr>')
-//                .append($('<p>').html('<span class="glyphicon glyphicon-time createdOnDate"></span><span>' + data.createdOnDate + '</span>'))
-//                .append('<hr>')
-//                .append($('<img class="img-responsive contentImgLink">').attr({'src': data.publishedContent.contentImgLink, 'alt': data.publishedContent.contentImgAltTxt}))
-//                .append('<hr>')
-//                .append($('<div class = "body">').html(data.publishedContent.body))
-//                .append('<hr>'));
-//    }).error(function (data, status) {
-//        // TODO: display eror loading post
-//    });
-//}
 
 function loadPagePosts() {
     $.ajax({
@@ -103,7 +75,18 @@ function fillPostSnippetsContainer(posts) {
                 .append($('<p class = "lead userName">').html('created by <a href="#">' + post.createdByUser.userName + '</a>'))
                 .append(appendInput)
                 .append('<hr>')
-                .append($('<p>').html('<span class="glyphicon glyphicon-time createdOnDate"></span><span>' + post.createdOnDate + '</span>'))
+                .append($('<p>')
+                        .html('<span class="glyphicon glyphicon-time createdOnDate"></span><span>' + post.createdOnDate + '</span>'))
+                .append($('<div>')
+                        .attr('id', 'tags' + post.publishedContent.contentId)
+                        .append($('<img>').attr('src', 'img/tag.png')))
+                .append($('<div>')
+                        .attr('id', 'categories' + post.publishedContent.contentId)
+                        .append($('<img>')
+                                .attr({
+                                    'src': 'img/folder.png',
+                                    'id': 'folderImg'
+                                })))
                 .append('<hr>')
                 .append($('<a href="post/' + post.postId + '">')
                         .append($('<img class="img-responsive contentImgLink readMoreLink">')
@@ -119,7 +102,26 @@ function fillPostSnippetsContainer(posts) {
                         .attr({'data-postId': post.postId})
                         )
                 .append('<hr>'));
+        $.each(post.publishedContent.listOfTags, function (index, tag) {
+            $('#tags' + post.publishedContent.contentId)
+                    .append($('<a href="#">' + tag.tagDescription + '</a>')
+                            .attr({
+                                'class': 'tag',
+                                'data-tagDescription': tag.tagDescription,
+                                'data-tagID': tag.tagID
+                            }).append(' '));
+        });
+        $.each(post.publishedContent.listOfCategories, function (index, category) {
+            $('#categories' + post.publishedContent.contentId)
+                    .append($('<a href="#">' + category.categoryDescription + '</a>')
+                            .attr({
+                                'class': 'category',
+                                'data-categoryDescription': category.categoryDescription,
+                                'data-categoryID': category.categoryID
+                            }).append(' '));
+        });
     });
+
 
 }
 ;

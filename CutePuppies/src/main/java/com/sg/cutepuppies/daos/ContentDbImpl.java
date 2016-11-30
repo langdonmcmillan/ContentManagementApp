@@ -68,6 +68,9 @@ public class ContentDbImpl implements ContentDaoInterface {
     private static final String SQL_ARCHIVE_CONTENT = "update Content set ArchivedByUserId = :userId, "
             + "UpdatedByUserId = :userId, ArchivedOnDate = Current_Timestamp, ContentStatusCode = 'ARCHIVED' where ContentId = :contentId";
     
+    private static final String SQL_ARCHIVE_CONTENT_BY_STATUS = "update Content set ContentStatusCode = 'ARCHIVED'"
+            + "where ContentStatusCode =:contentStatusCode and postID = :postID";
+    
     @Override
     public List<Content> getAllContentsByPostId(int postID) {
         return jdbcTemplate.query(SQL_GET_ALL_REVISIONS_BY_POST_ID, new ContentMapper(), postID);
@@ -91,11 +94,23 @@ public class ContentDbImpl implements ContentDaoInterface {
         namedParameters.addValue("contentTypeCode", content.getContentTypeCode());
         namedParameters.addValue("createdByUserID", content.getCreatedByUser().getUserId());
         namedParameters.addValue("createdOnDate", content.getCreatedOnDate());
+        
+       archiveContentByStatus(content.getPostId(), content.getContentStatusCode());
+        
         npJdbcTemplate.update(SQL_ADD_CONTENT_TO_POST, namedParameters);
         content.setContentId(jdbcTemplate.queryForObject("select LAST_INSERT_ID()", Integer.class));
         updateContentCategories(content);
         updateContentTags(content);
         return content;
+    }
+    
+     private void archiveContentByStatus(int postId, String contentStatusCode) {
+        
+        MapSqlParameterSource namedParameters = new MapSqlParameterSource();
+        namedParameters.addValue("postID", postId);
+        namedParameters.addValue("contentStatusCode", contentStatusCode);
+        npJdbcTemplate.update(SQL_ARCHIVE_CONTENT_BY_STATUS, namedParameters);
+         
     }
 
     private void archiveOldContent(int postID) {
@@ -188,6 +203,8 @@ public class ContentDbImpl implements ContentDaoInterface {
         namedParameters.addValue("postId", postId);
         npJdbcTemplate.update(SQL_ARCHIVE_POST, namedParameters);
     }
+
+   
 
     private static final class ContentMapper implements RowMapper<Content> {
 

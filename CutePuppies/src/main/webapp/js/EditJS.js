@@ -6,10 +6,10 @@
 var postID;
 
 $(document).ready(function () {
+    postID = 0;
     populateEdit();
     populateCategories();
     populateTags();
-    postID = 0;
     sessionStorage.setItem('pageNumber', 1);
 });
 
@@ -17,6 +17,7 @@ function populateEdit() {
 
     if ($('#post-id').length) {
 
+        postID = $('#post-id').val();
         $.ajax({
             type: 'GET',
             url: 'post/' + $('#post-id').val()
@@ -98,7 +99,9 @@ $('#publishButton').click(function () {
     if (postID === null || postID === 0) {
         addPost(contentStatusCode);
     } else {
-        // editPost
+        
+        addContent(contentStatusCode);
+        
     }
 });
 
@@ -107,9 +110,63 @@ $('#saveButton').click(function () {
     if (postID === null || postID === 0) {
         addPost(contentStatusCode);
     } else {
-        // editPost
+        
+        addContent(contentStatusCode);
     }
 });
+
+function addContent(contentStatusCode) {
+    var categoryList = [];
+    $('.category.selected').each(function () {
+        categoryList.push({
+            'categoryID': $(this).data('categoryid'),
+            'categoryDescription': $(this).data('categorydescription')
+        });
+    });
+    var tagList = [];
+    $('.tag.selected').each(function () {
+        tagList.push({
+            'tagID': $(this).data('tagid'),
+            'tagDescription': $(this).data('tagdescription')
+        });
+    });
+    var body = tinyMCE.activeEditor.getContent();
+    var user = ({
+        'userId': 1
+    });
+    var newContent = ({
+        'title': $('#postTitle').val(),
+        'contentImgLink': $('#imageURL').val(),
+        'contentImgAltTxt': $('#imageName').val(),
+        'body': body,
+        'contentStatusCode': contentStatusCode,
+        'urlPattern': $('#postURL').val(),
+        'contentTypeCode': 'POST',
+        'createdByUser': user,
+        'listOfCategories': categoryList,
+        'listOfTags': tagList,
+        'postId': $('#post-id').val()
+    });
+    $.ajax({
+        type: 'POST',
+        url: 'content',
+        data: JSON.stringify({
+            createdByUser: user,
+            mostRecentContent: newContent
+        }),
+        contentType: 'application/json; charset=utf-8',
+        headers: {
+            'Accept': 'application/json',
+            'Content-type': 'application/json'
+        },
+        dataType: 'json'
+    }).success(function (post, status) {
+        postID = post.postId;
+        window.location.assign('/CutePuppies/admin/dashboard');
+    }).error(function (post, status) {
+
+    });
+}
 
 function addPost(contentStatusCode) {
     var categoryList = [];

@@ -15,6 +15,8 @@
         <link href="css/CutePuppiesCSS.css" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css?family=McLaren" rel="stylesheet">
         <link href="css/tx3-tag-cloud.css" rel="stylesheet">
+        <link rel="shortcut icon" href="${pageContext.request.contextPath}/img/icon.png">
+
     </head>
     <body>
         <nav class="navbar navbar-default navbar-fixed-top" role="navigation">

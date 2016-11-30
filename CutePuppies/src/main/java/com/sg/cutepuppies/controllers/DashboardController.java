@@ -148,6 +148,19 @@ public class DashboardController {
         return post;
     }
     
+    @RequestMapping(value = "admin/content", method = RequestMethod.POST)
+    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseBody
+    public Post addContent(@Valid @RequestBody Post post) {
+        
+        //need to post new content
+        //need to change the updated by user/date
+        
+        contentDao.updatePostContent(post.getMostRecentContent());
+        
+        return post;
+    }
+    
     @RequestMapping(value = "admin/post/{postId}/{userId}", method = RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public String archivePost(@PathVariable("postId") int postID, @PathVariable("userId") int userId) {
