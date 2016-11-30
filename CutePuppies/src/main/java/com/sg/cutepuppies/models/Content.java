@@ -5,7 +5,7 @@
  */
 package com.sg.cutepuppies.models;
 
-import java.sql.Date;
+import java.util.Date;
 import java.util.List;
 
 /**

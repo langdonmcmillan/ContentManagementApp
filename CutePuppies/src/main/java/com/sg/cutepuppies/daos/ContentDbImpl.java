@@ -222,9 +222,9 @@ public class ContentDbImpl implements ContentDaoInterface {
             content.setContentStatusCode(rs.getString("ContentStatusCode"));
             content.setUrlPattern(rs.getString("UrlPattern"));
             content.setContentTypeCode(rs.getString("ContentTypeCode"));
-            content.setCreatedOnDate(rs.getDate("CreatedOnDate"));
-            content.setUpdatedOnDate(rs.getDate("UpdatedOnDate"));
-            content.setArchivedOnDate(rs.getDate("ArchivedOnDate"));
+            content.setCreatedOnDate(rs.getTimestamp("CreatedOnDate"));
+            content.setUpdatedOnDate(rs.getTimestamp("UpdatedOnDate"));
+            content.setArchivedOnDate(rs.getTimestamp("ArchivedOnDate"));
             
             return content;
         }
