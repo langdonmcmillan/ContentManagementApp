@@ -33,12 +33,12 @@ function fillTableWithAllPosts(listOfAllPosts) {
 
     $.each(listOfAllPosts, function (index, post) {
         var postCreateName = post.createdByUser.userName;
-        var postCreateDate = post.createdOnDate;
+        var postCreateDate = new Date(post.createdOnDate);
         var contentTitle = post.mostRecentContent.title;
         var contentCreateName = post.mostRecentContent.createdByUser.userName;
-        var contentCreateDate = post.mostRecentContent.createdOnDate;
+        var contentCreateDate = new Date(post.mostRecentContent.createdOnDate);
         
-        if ((postCreateName === contentCreateName) && (postCreateDate === contentCreateDate)) {
+        if ((postCreateName === contentCreateName) && (postCreateDate.getTime()) === contentCreateDate.getTime()) {
             $("td.contentUser").text('-');
             $("td.contentDate").text('-');
         }

@@ -11,6 +11,7 @@ import com.sg.cutepuppies.models.User;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -222,9 +223,17 @@ public class ContentDbImpl implements ContentDaoInterface {
             content.setContentStatusCode(rs.getString("ContentStatusCode"));
             content.setUrlPattern(rs.getString("UrlPattern"));
             content.setContentTypeCode(rs.getString("ContentTypeCode"));
-            content.setCreatedOnDate(rs.getTimestamp("CreatedOnDate"));
-            content.setUpdatedOnDate(rs.getTimestamp("UpdatedOnDate"));
-            content.setArchivedOnDate(rs.getTimestamp("ArchivedOnDate"));
+            
+            
+            Timestamp createdTS = rs.getTimestamp("CreatedOnDate");
+            Timestamp updatedTS = rs.getTimestamp("UpdatedOnDate");
+            Timestamp archivedTS = rs.getTimestamp("ArchivedOnDate");
+            Date createDate = createdTS;
+            Date updateDate = updatedTS;
+            Date archiveDate = archivedTS;
+            content.setCreatedOnDate(createDate);
+            content.setUpdatedOnDate(updateDate);
+            content.setArchivedOnDate(archiveDate);
             
             return content;
         }

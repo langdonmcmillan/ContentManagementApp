@@ -159,11 +159,15 @@ public class PostDbImpl implements PostDaoInterface {
 
             Post post = new Post();
             post.setPostId(rs.getInt("PostId"));
-            Timestamp timestamp = rs.getTimestamp("CreatedOnDate");
-            Date date = timestamp;
-            post.setCreatedOnDate(date);
-            post.setUpdatedOnDate(rs.getTimestamp("UpdatedOnDate"));
-            post.setArchivedOnDate(rs.getTimestamp("ArchivedOnDate"));
+            Timestamp createdTS = rs.getTimestamp("CreatedOnDate");
+            Timestamp updatedTS = rs.getTimestamp("UpdatedOnDate");
+            Timestamp archivedTS = rs.getTimestamp("ArchivedOnDate");
+            Date createDate = createdTS;
+            Date updateDate = updatedTS;
+            Date archiveDate = archivedTS;
+            post.setCreatedOnDate(createDate);
+            post.setUpdatedOnDate(updateDate);
+            post.setArchivedOnDate(archiveDate);
             
             return post;
 
