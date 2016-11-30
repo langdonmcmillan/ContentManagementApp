@@ -43,7 +43,8 @@ function fillTableWithAllPosts(listOfAllPosts) {
             $("td.contentDate").text('-');
         }
         tbody.append($('<tr>')
-                .append($('<td>').append($('<a>').attr('href', 'admin/edit/' + post.postId)
+
+                .append($('<td>').append($('<a>').attr('href', 'edit/' + post.postId)
                         .text(contentTitle)))
                 .append($('<td>').addClass('postUser').text(postCreateName))
                 .append($('<td>').addClass('postDate').text(postCreateDate))
