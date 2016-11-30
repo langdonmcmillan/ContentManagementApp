@@ -19,7 +19,7 @@
     </head>
     <body>
         <c:if test="${not empty postId}">
-            <input type="hidden" id="post-id" value=${postId}/>
+            <input type="hidden" id="post-id" value="${postId}"/>
         </c:if>
         <div class="container-fluid">
             <div class="row">
@@ -73,6 +73,9 @@
                         <div class="row">
                             <h4>Post Body</h4>
                             <textarea></textarea>
+                        </div>
+                        <div>
+                            <button id="deletePostButton" class="btn btn-primary">Delete Post</button>
                         </div>
                     </div>
                     <div class="col-md-offset-1 col-md-3">

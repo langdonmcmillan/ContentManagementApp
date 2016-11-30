@@ -28,3 +28,8 @@ footer {
     color: #337ab7;
     font-weight: bold;
 }
+
+#deletePostButton {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}

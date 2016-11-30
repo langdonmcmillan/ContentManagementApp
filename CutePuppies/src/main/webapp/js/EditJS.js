@@ -4,9 +4,13 @@
  * and open the template in the editor.
  */
 var postID;
+var contentID;
+var userID;
 
 $(document).ready(function () {
     postID = 0;
+    contentID = 0;
+    userID = 1;
     populateCategories();
     populateTags();
     populateEdit();
@@ -45,12 +49,13 @@ function populateEdit() {
             $('#imageName').val(thisPost.mostRecentContent.contentImgAltTxt);
             $('#imageURL').val(thisPost.mostRecentContent.contentImgLink);
             tinyMCE.activeEditor.setContent(thisPost.mostRecentContent.body);
+            contentID = thisPost.mostRecentContent.contentId;
 
             $.each(thisPost.mostRecentContent.listOfTags, function (arrayPosition, tag) {
 
                 $(".tag").each(function () {
-                    if($(this).data('tagid') === tag.tagID){
-                         
+                    if ($(this).data('tagid') === tag.tagID) {
+
                         $(this).toggleClass('selected');
                     }
                 });
@@ -59,13 +64,13 @@ function populateEdit() {
             $.each(thisPost.mostRecentContent.listOfCategories, function (arrayPosition, category) {
 
                 $(".category").each(function () {
-                    if($(this).data('categoryid') === category.categoryID){
-                         
+                    if ($(this).data('categoryid') === category.categoryID) {
+
                         $(this).toggleClass('selected');
                     }
                 });
             });
-            
+
         });
     }
 }
@@ -130,6 +135,52 @@ $('#saveButton').click(function () {
     } else {
 
         addContent(contentStatusCode);
+    }
+});
+
+$('#deleteButton').click(function () {
+    if (postID === null || postID === 0) {
+        window.location.assign('/CutePuppies/admin/dashboard');
+    } else {
+        $.ajax({
+            type: 'DELETE',
+            url: 'content/' + contentID + '/' + userID,
+            contentType: 'application/json; charset=utf-8',
+            headers: {
+                'Accept': 'application/json',
+                'Content-type': 'application/json'
+            },
+            dataType: 'json'
+        }).success(function (post, status) {
+            window.location.assign('/CutePuppies/admin/edit/' + postID);
+        }).error(function (post, status) {
+
+        });
+    }
+});
+
+function checkIfAllArchived() {
+    
+}
+
+$('#deletePostButton').click(function () {
+    if (postID === null || postID === 0) {
+        window.location.assign('/CutePuppies/admin/dashboard');
+    } else {
+        $.ajax({
+            type: 'DELETE',
+            url: 'post/' + postID + '/' + userID,
+            contentType: 'application/json; charset=utf-8',
+            headers: {
+                'Accept': 'application/json',
+                'Content-type': 'application/json'
+            },
+            dataType: 'json'
+        }).success(function (post, status) {
+            window.location.assign('/CutePuppies/admin/dashboard');
+        }).error(function (post, status) {
+
+        });
     }
 });
 
