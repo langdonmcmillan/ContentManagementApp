@@ -148,7 +148,7 @@ public class DashboardController {
         return post;
     }
     
-    @RequestMapping(value = "admin/content", method = RequestMethod.POST)
+    @RequestMapping(value = "admin/edit/content", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     public Post addContent(@Valid @RequestBody Post post) {
