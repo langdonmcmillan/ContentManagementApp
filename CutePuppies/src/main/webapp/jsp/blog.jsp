@@ -14,6 +14,7 @@
         <link href="${pageContext.request.contextPath}/css/bootstrap.min.css" rel="stylesheet">
         <link href="${pageContext.request.contextPath}/css/CutePuppiesCSS.css" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css?family=McLaren" rel="stylesheet">
+        <link rel="shortcut icon" href="${pageContext.request.contextPath}/img/icon.png">
         <link href="${pageContext.request.contextPath}/css/tx3-tag-cloud.css" rel="stylesheet">
     </head>
     <body>
