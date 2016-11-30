@@ -167,10 +167,8 @@ public class DashboardController {
     @ResponseBody
     public Post addContent(@Valid @RequestBody Post post) {
         
-        //need to post new content
-        //need to change the updated by user/date
-        
         contentDao.updatePostContent(post.getMostRecentContent());
+        post = postDao.updatePost(post);
         
         return post;
     }
