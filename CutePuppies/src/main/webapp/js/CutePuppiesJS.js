@@ -78,7 +78,7 @@ function fillPostSnippetsContainer(posts) {
                 .append($('<p>')
                         .html('<span class="glyphicon glyphicon-time createdOnDate"></span><span>' + new Date(post.createdOnDate) + '</span>')))
                 .append($('<div>')
-                        .attr({'id': 'categories' + post.publishedContent.contentId, 'class' : 'row'})
+                        .attr('id', 'categories' + post.publishedContent.contentId)
                         .append($('<img>')
                                 .attr({
                                     'src': 'img/folder.png',

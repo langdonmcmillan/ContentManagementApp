@@ -35,7 +35,7 @@ function populateEdit() {
                                             'data-contact-id': content.contentId
                                         })
                                         .text(content.title)))
-                        .append($('<td>').text(content.createdOnDate))
+                        .append($('<td>').text(new Date(content.createdOnDate)))
                         .append($('<td>').text(content.createdByUser.userName))
                         );
             });
