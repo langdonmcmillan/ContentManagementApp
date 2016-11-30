@@ -7,9 +7,9 @@ var postID;
 
 $(document).ready(function () {
     postID = 0;
-    populateEdit();
     populateCategories();
     populateTags();
+    populateEdit();
     sessionStorage.setItem('pageNumber', 1);
 });
 
@@ -46,10 +46,28 @@ function populateEdit() {
             $('#imageURL').val(thisPost.mostRecentContent.contentImgLink);
             tinyMCE.activeEditor.setContent(thisPost.mostRecentContent.body);
 
+            $.each(thisPost.mostRecentContent.listOfTags, function (arrayPosition, tag) {
+
+                $(".tag").each(function () {
+                    if($(this).data('tagid') === tag.tagID){
+                         
+                        $(this).toggleClass('selected');
+                    }
+                });
+            });
+
+            $.each(thisPost.mostRecentContent.listOfCategories, function (arrayPosition, category) {
+
+                $(".category").each(function () {
+                    if($(this).data('categoryid') === category.categoryID){
+                         
+                        $(this).toggleClass('selected');
+                    }
+                });
+            });
+            
         });
-
     }
-
 }
 
 function clearContentTable() {
@@ -99,9 +117,9 @@ $('#publishButton').click(function () {
     if (postID === null || postID === 0) {
         addPost(contentStatusCode);
     } else {
-        
+
         addContent(contentStatusCode);
-        
+
     }
 });
 
@@ -110,7 +128,7 @@ $('#saveButton').click(function () {
     if (postID === null || postID === 0) {
         addPost(contentStatusCode);
     } else {
-        
+
         addContent(contentStatusCode);
     }
 });

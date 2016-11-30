@@ -60,6 +60,9 @@ public class PostDbImpl implements PostDaoInterface {
     private static final String SQL_ARCHIVE_POST = "update Post set ArchivedByUserId = :userId, "
             + "UpdatedByUserId = :userId, ArchivedOnDate = Current_Timestamp where PostId = :postId";
 
+    private static final String SQL_UPDATE_EDITED_POST = "update Post set UpdatedByUserId = :userId, "
+            + "UpdatedOnDate = Current_Timestamp where PostId = :postId";
+    
     @Override
     public List<Post> getAllPosts(boolean showArchived) {
         String SQL_BASE = SQL_SELECT_ALL_POSTS;
@@ -116,8 +119,12 @@ public class PostDbImpl implements PostDaoInterface {
 
     @Override
     public Post updatePost(Post post) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-
+        MapSqlParameterSource namedParameters = new MapSqlParameterSource();
+        namedParameters.addValue("userId", post.getMostRecentContent().getCreatedByUser().getUserId());
+        namedParameters.addValue("postId", post.getPostId());
+        npJdbcTemplate.update(SQL_UPDATE_EDITED_POST, namedParameters);
+        
+        return post;
     }
 
     @Override
