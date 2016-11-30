@@ -19,7 +19,7 @@
     </head>
     <body>
         <c:if test="${not empty postId}">
-            <input type="hidden" id="post-id" value=${postId}/>
+            <input type="hidden" id="post-id" value="${postId}"/>
         </c:if>
         <div class="container-fluid">
             <div class="row">

@@ -70,7 +70,7 @@ public class ContentDbImpl implements ContentDaoInterface {
             + "UpdatedByUserId = :userId, ArchivedOnDate = Current_Timestamp, ContentStatusCode = 'ARCHIVED' where ContentId = :contentId";
     
     private static final String SQL_ARCHIVE_CONTENT_BY_STATUS = "update Content set ContentStatusCode = 'ARCHIVED'"
-            + "where ContentStatusCode =:contentStatusCode and postID = :postID";
+            + "where ContentStatusCode =:contentStatusCode and PostId = :postID";
     
     @Override
     public List<Content> getAllContentsByPostId(int postID) {
