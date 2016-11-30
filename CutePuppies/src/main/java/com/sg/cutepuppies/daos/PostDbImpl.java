@@ -9,6 +9,8 @@ import com.sg.cutepuppies.models.Post;
 import com.sg.cutepuppies.models.User;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -157,7 +159,9 @@ public class PostDbImpl implements PostDaoInterface {
 
             Post post = new Post();
             post.setPostId(rs.getInt("PostId"));
-            post.setCreatedOnDate(rs.getTimestamp("CreatedOnDate"));
+            Timestamp timestamp = rs.getTimestamp("CreatedOnDate");
+            Date date = timestamp;
+            post.setCreatedOnDate(date);
             post.setUpdatedOnDate(rs.getTimestamp("UpdatedOnDate"));
             post.setArchivedOnDate(rs.getTimestamp("ArchivedOnDate"));
             
