@@ -101,7 +101,6 @@ public class PostDbImpl implements PostDaoInterface {
     public Post addPost(Post post) {
         MapSqlParameterSource namedParameters = new MapSqlParameterSource();
         namedParameters.addValue("createdByUserId", post.getCreatedByUser().getUserId());
-        namedParameters.addValue("createdOnDate", post.getCreatedOnDate());
         npJdbcTemplate.update(SQL_ADD_POST, namedParameters);
         post.setPostId(jdbcTemplate.queryForObject("select LAST_INSERT_ID()", Integer.class));
         return post;
@@ -151,9 +150,9 @@ public class PostDbImpl implements PostDaoInterface {
 
             Post post = new Post();
             post.setPostId(rs.getInt("PostId"));
-            post.setCreatedOnDate(rs.getDate("CreatedOnDate"));
-            post.setUpdatedOnDate(rs.getDate("UpdatedOnDate"));
-            post.setArchivedOnDate(rs.getDate("ArchivedOnDate"));
+            post.setCreatedOnDate(rs.getTimestamp("CreatedOnDate"));
+            post.setUpdatedOnDate(rs.getTimestamp("UpdatedOnDate"));
+            post.setArchivedOnDate(rs.getTimestamp("ArchivedOnDate"));
             
             return post;
 

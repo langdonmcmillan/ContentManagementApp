@@ -7,7 +7,7 @@
 $(document).ready(function () {
     setSessionProperties();
     updatePageNav(sessionStorage.getItem('pageNumber'));
-    if(!$.trim($("#allPosts").html())) {
+    if (!$.trim($("#allPosts").html())) {
         loadPagePosts();
 
         $('#itemsPerPageSelect').val(sessionStorage.getItem('postsPerPage'));
@@ -78,15 +78,15 @@ function fillPostSnippetsContainer(posts) {
                 .append($('<p>')
                         .html('<span class="glyphicon glyphicon-time createdOnDate"></span><span>' + post.createdOnDate + '</span>'))
                 .append($('<div>')
-                        .attr('id', 'tags' + post.publishedContent.contentId)
-                        .append($('<img>').attr('src', 'img/tag.png')))
-                .append($('<div>')
                         .attr('id', 'categories' + post.publishedContent.contentId)
                         .append($('<img>')
                                 .attr({
                                     'src': 'img/folder.png',
                                     'id': 'folderImg'
                                 })))
+                .append($('<div>')
+                        .attr('id', 'tags' + post.publishedContent.contentId)
+                        .append($('<img>').attr('src', 'img/tag.png')))
                 .append('<hr>')
                 .append($('<a href="post/' + post.postId + '">')
                         .append($('<img class="img-responsive contentImgLink readMoreLink">')
@@ -102,15 +102,8 @@ function fillPostSnippetsContainer(posts) {
                         .attr({'data-postId': post.postId})
                         )
                 .append('<hr>'));
-        $.each(post.publishedContent.listOfTags, function (index, tag) {
-            $('#tags' + post.publishedContent.contentId)
-                    .append($('<a href="#">' + tag.tagDescription + '</a>')
-                            .attr({
-                                'class': 'tag',
-                                'data-tagDescription': tag.tagDescription,
-                                'data-tagID': tag.tagID
-                            }).append(' '));
-        });
+
+
         $.each(post.publishedContent.listOfCategories, function (index, category) {
             $('#categories' + post.publishedContent.contentId)
                     .append($('<a href="#">' + category.categoryDescription + '</a>')
@@ -118,6 +111,16 @@ function fillPostSnippetsContainer(posts) {
                                 'class': 'category',
                                 'data-categoryDescription': category.categoryDescription,
                                 'data-categoryID': category.categoryID
+                            }).append(' '));
+        });
+
+        $.each(post.publishedContent.listOfTags, function (index, tag) {
+            $('#tags' + post.publishedContent.contentId)
+                    .append($('<a href="#">' + tag.tagDescription + '</a>')
+                            .attr({
+                                'class': 'tag',
+                                'data-tagDescription': tag.tagDescription,
+                                'data-tagID': tag.tagID
                             }).append(' '));
         });
     });

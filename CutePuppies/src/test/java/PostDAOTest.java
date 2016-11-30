@@ -4,7 +4,6 @@
  * and open the template in the editor.
  */
 
-import com.sg.cutepuppies.daos.ContentDaoInterface;
 import com.sg.cutepuppies.models.Post;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -14,6 +13,9 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.jdbc.core.JdbcTemplate;
 import com.sg.cutepuppies.daos.PostDaoInterface;
 import com.sg.cutepuppies.models.User;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
 import org.junit.After;
 import org.springframework.jdbc.core.simple.SimpleJdbcCall;
 
@@ -86,5 +88,34 @@ public class PostDAOTest {
         assertNotNull(post.getArchivedOnDate());
         
     }
+    
+    @Test
+    public void testGetPostsByAllCriteria() {
+        // Arrange
+        int pageNumber = 1;
+        int fivePostsPerPg = 5;
+        // Act
+        List<Post> posts = postDao.getPostsByAllCriteria(pageNumber, fivePostsPerPg, 0, 0);
+        // Assert
+        assertEquals("This should return 5. 6 was published, but showing 5 posts per page.", 5, posts.size());
+        assertNotNull("CreatedOnDate should not be null", posts.get(3).getCreatedOnDate());
+    
+        int tenPostsPerPg = 10;
+        
+        List<Post> posts2 = postDao.getPostsByAllCriteria(pageNumber, tenPostsPerPg, 0, 0);
+        assertEquals("This should return 6. 6 was published, showing 10 posts per page.", 6, posts2.size());
+    
+    }
+
+    @Test
+    public void testGetPostByID() {
+        Post post14 = postDao.getPostByID(14);
+        // use simpledateformat
+        SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date post14Date = post14.getCreatedOnDate();
+        String post14DateStr = sdfDate.format(post14Date);
+        assertEquals("CreatedOnDate of Post 14 should be 2011-01-14 01:11:11", "2011-01-14 01:11:11", post14DateStr);
+    }
+    
 }
 
