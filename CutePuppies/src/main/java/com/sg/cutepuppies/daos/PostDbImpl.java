@@ -35,7 +35,9 @@ public class PostDbImpl implements PostDaoInterface {
     // SQL PREPARED STATEMENTS
     private static final String SQL_GET_POST_BY_ID = "select * from Post where postId = :postId";
     private static final String SQL_SELECT_ALL_POSTS
-            = "select p.* from Post p"
+            = "select distinct p.* from Post p "
+            + " left join Content c "
+            + " on c.PostId = p.PostId "
             + " where 1 = 1";
     private static final String SQL_GET_POSTS_BY_ALL_CRITERIA
             = "select distinct p.* from Post p "
@@ -69,9 +71,9 @@ public class PostDbImpl implements PostDaoInterface {
     public List<Post> getAllPosts(boolean showArchived) {
         String SQL_BASE = SQL_SELECT_ALL_POSTS;
         if (showArchived == false) {
-            SQL_BASE += " and p.archivedOnDate is null";
+            SQL_BASE += " and (select c.ContentStatusCode != 'ARCHIVED')";
         }
-        SQL_BASE += " order by p.CreatedOnDate desc";
+        SQL_BASE += " order by p.createdOnDate desc";
         return jdbcTemplate.query(SQL_BASE, new PostMapper());
 
     }
