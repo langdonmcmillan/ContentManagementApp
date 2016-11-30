@@ -3,10 +3,12 @@
     Created on : Nov 23, 2016, 12:38:03 PM
     Author     : apprentice
 --%>
+<%--<%@page contentType="text/html" pageEncoding="UTF-8"%>--%>
 
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%--<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>--%>
+<%--
 <!DOCTYPE html>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -115,3 +117,4 @@
         <script src="${pageContext.request.contextPath}/js/jquery.tx3-tag-cloud.js"></script>
     </body>
 </html>
+--%>
