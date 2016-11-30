@@ -69,7 +69,7 @@
           <div class="well">
             <h4>Tags</h4>
             <div id="tagWell" style="width: 100%; height: 200px;">
-              <ul id="tagList">
+              <ul id="tagList" style="width: 100%; height: 200px;">
               </ul>
             </div>
           </div>
