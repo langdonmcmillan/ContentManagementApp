@@ -5,6 +5,8 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -17,9 +19,7 @@
     </head>
     <body>
         <c:if test="${not empty postId}">
-              
-            <input type="hidden" id="post-id" value=${postId}>
-              
+            <input type="hidden" id="post-id" value=${postId}/>
         </c:if>
         <div class="container-fluid">
             <div class="row">
@@ -72,7 +72,7 @@
                         </div>
                         <div class="row">
                             <h4>Post Body</h4>
-                            <contentarea></contentarea>
+                            <textarea></textarea>
                         </div>
                     </div>
                     <div class="col-md-offset-1 col-md-3">
@@ -116,6 +116,6 @@
             <script src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>
             <script src="${pageContext.request.contextPath}/js/EditJS.js"></script>  
             <script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
-            <script>tinymce.init({selector: 'contentarea'});</script>
+            <script>tinymce.init({selector: 'textarea'});</script>
     </body>
 </html>
