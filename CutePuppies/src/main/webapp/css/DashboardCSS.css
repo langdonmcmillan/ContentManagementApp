@@ -16,6 +16,12 @@ footer {
 .category, .tag {
     padding-right: 20px;
     color: grey;
+    float: left;
+}
+
+#categoryDiv, #tagDiv {
+    overflow-y: auto;
+    max-height: 500px;
 }
 
 .selected {
