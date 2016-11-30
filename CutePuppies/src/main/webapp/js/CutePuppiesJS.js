@@ -76,7 +76,7 @@ function fillPostSnippetsContainer(posts) {
                 .append(appendInput)
                 .append('<hr>')
                 .append($('<p>')
-                        .html('<span class="glyphicon glyphicon-time createdOnDate"></span><span>' + new Date(post.createdOnDate) + '</span>'))
+                        .html('<span class="glyphicon glyphicon-time createdOnDate"></span><span>' + new Date(post.createdOnDate) + '</span>')))
                 .append($('<div>')
                         .attr('id', 'categories' + post.publishedContent.contentId)
                         .append($('<img>')
@@ -101,7 +101,7 @@ function fillPostSnippetsContainer(posts) {
                         .text('Read more »')
                         .attr({'data-postId': post.postId})
                         )
-                .append('<hr>'));
+                .append('<hr>');
 
 
         $.each(post.publishedContent.listOfCategories, function (index, category) {
