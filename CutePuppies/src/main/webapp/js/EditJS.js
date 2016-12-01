@@ -23,41 +23,43 @@ $(document).on('click', '.revision', function () {
 
     $.ajax({
         type: 'GET',
-        url: 'post/' + $('#post-id').val() +"/"+ conId
+        url: 'post/' + $('#post-id').val() + "/" + conId
     }).success(function (thisContent) {
 
+        $('#contentStatusText').html('<h4><span class="' + thisContent.contentStatusCode + 'TEXT">' + thisContent.contentStatusCode + '</span></h4>');
         $('#postTitle').val(thisContent.title);
         $('#postURL').val(thisContent.urlPattern);
         $('#imageName').val(thisContent.contentImgAltTxt);
         $('#imageURL').val(thisContent.contentImgLink);
         tinyMCE.activeEditor.setContent(thisContent.body);
+
+        highlightTags(thisContent.listOfTags);
+        highlightCategories(thisContent.listOfCategories);
         
-        clearTags();
-        clearCategories();
-        populateTags();
-        populateCategories();
-
-        $.each(thisContent.listOfTags, function (arrayPosition, tag) {
-
-            $(".tag").each(function () {
-                if ($(this).data('tag') === tag.tagID) {
-
-                    $(this).toggleClass('selected');
-                }
-            });
-        });
-
-        $.each(thisContent.listOfCategories, function (arrayPosition, category) {
-
-            $(".category").each(function () {
-                if ($(this).data('categoryid') === category.categoryID) {
-
-                    $(this).toggleClass('selected');
-                }
-            });
-        });
     });
 });
+
+function highlightTags(listOfTags) {
+    $("a.tag").removeClass("selected");
+    $.each(listOfTags, function (arrayPosition, tag) {
+        
+        $("a.tag[data-tagid=" + tag.tagID + "]").addClass("selected");
+        $("a.tag[data-tagid=" + tag.tagID + "]").addClass("selected");
+        $("a.tag[data-tagid=" + tag.tagID + "]").addClass("selected");
+
+    });
+}
+
+function highlightCategories(listOfCategories) {
+    $("a.category").removeClass("selected");
+    $.each(listOfCategories, function (arrayPosition, category) {
+        
+        $("a.category[data-categoryid=" + category.categoryID + "]").addClass("selected");
+        $("a.category[data-categoryid=" + category.categoryID + "]").addClass("selected");
+        $("a.category[data-categoryid=" + category.categoryID + "]").addClass("selected");
+
+    });
+}
 
 function populateEdit() {
 
@@ -103,25 +105,8 @@ function populateEdit() {
             tinyMCE.activeEditor.setContent(thisPost.mostRecentContent.body);
             contentID = thisPost.mostRecentContent.contentId;
 
-            $.each(thisPost.mostRecentContent.listOfTags, function (arrayPosition, tag) {
-
-                $(".tag").each(function () {
-                    if ($(this).data('tagid') === tag.tagID) {
-
-                        $(this).toggleClass('selected');
-                    }
-                });
-            });
-
-            $.each(thisPost.mostRecentContent.listOfCategories, function (arrayPosition, category) {
-
-                $(".category").each(function () {
-                    if ($(this).data('categoryid') === category.categoryID) {
-
-                        $(this).toggleClass('selected');
-                    }
-                });
-            });
+            highlightTags(thisPost.mostRecentContent.listOfTags);
+            highlightCategories(thisPost.mostRecentContent.listOfCategories);
 
         });
     }
@@ -131,18 +116,11 @@ function clearContentTable() {
     $('#contentRows').empty();
 }
 
-function clearTags() {
-    $('#tagList').empty();
-}
-
-function clearCategories() {
-    $('#categoryList').empty();
-}
-
 function populateCategories() {
     $.ajax({
         url: contextPath + '/categories'
     }).success(function (data, status) {
+        $("#categoryList").empty();
         $.each(data, function (index, category) {
             $("#categoryList").append($('<a href="#">')
                     .attr({
@@ -225,10 +203,10 @@ $('#deleteButton').click(function () {
 
 function checkIfAllArchived() {
     var nonArchived = 0;
-    $('.contentStatusCode').each(function() {
-       if ($(this).text() !== "ARCHIVED") {
-           nonArchived++;
-       }
+    $('.contentStatusCode').each(function () {
+        if ($(this).text() !== "ARCHIVED") {
+            nonArchived++;
+        }
     });
     return (nonArchived <= 1);
 }
