@@ -48,9 +48,11 @@ function populateEdit() {
                                         .text(content.title)))
                         .append($('<td>').text(contentCreateDateString))
                         .append($('<td>').text(content.createdByUser.userName))
+                        .append($('<td class="contentStatusCode">').text(content.contentStatusCode))
                         );
             });
 
+            $('#contentStatusText').html('<h4><span class="' + thisPost.mostRecentContent.contentStatusCode + 'TEXT">' + thisPost.mostRecentContent.contentStatusCode + '</span></h4>');
             $('#postTitle').val(thisPost.mostRecentContent.title);
             $('#postURL').val(thisPost.mostRecentContent.urlPattern);
             $('#imageName').val(thisPost.mostRecentContent.contentImgAltTxt);
@@ -148,6 +150,10 @@ $('#saveButton').click(function () {
 $('#deleteButton').click(function () {
     if (postID === null || postID === 0) {
         window.location.assign('/CutePuppies/admin/dashboard');
+    } else if (checkIfAllArchived()) {
+        if (confirm('This post will be archived if this content is archived. Continue?')) {
+            $('#deletePostButton').click();
+        }
     } else {
         $.ajax({
             type: 'PUT',
@@ -167,7 +173,13 @@ $('#deleteButton').click(function () {
 });
 
 function checkIfAllArchived() {
-    
+    var nonArchived = 0;
+    $('.contentStatusCode').each(function() {
+       if ($(this).text() !== "ARCHIVED") {
+           nonArchived++;
+       }
+    });
+    return (nonArchived <= 1);
 }
 
 $('#deletePostButton').click(function () {

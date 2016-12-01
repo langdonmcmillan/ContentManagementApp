@@ -1,6 +1,3 @@
-* {
-    font-family: 'McLaren', cursive;
-}
 
 #listScroll {
     height: 400px;
@@ -32,4 +29,20 @@ footer {
 #deletePostButton {
     margin-top: 20px;
     margin-bottom: 20px;
+}
+
+.DRAFTTEXT {
+    background-color: yellow;
+}
+
+.PUBLISHEDTEXT {
+    background-color: green;
+}
+
+.AWAITINGTEXT {
+    background-color: blue;
+}
+
+.ARCHIVEDTEXT {
+    background-color: red;
 }
