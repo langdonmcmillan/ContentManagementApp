@@ -32,6 +32,13 @@ function populateEdit() {
             var summaryTable = $('#contentRows');
 
             $.each(thisPost.allContentRevisions, function (arrayPosition, content) {
+                var contentCreateDate = new Date(content.createdOnDate);
+                var contentCreateDateString =
+                        contentCreateDate.getUTCFullYear() + "/" +
+                        ("0" + (contentCreateDate.getUTCMonth() + 1)).slice(-2) + "/" +
+                        ("0" + contentCreateDate.getUTCDate()).slice(-2) + " " +
+                        ("0" + contentCreateDate.getUTCHours()).slice(-2) + ":" +
+                        ("0" + contentCreateDate.getUTCMinutes()).slice(-2);
                 summaryTable.append($('<tr>')
                         .append($('<td>')
                                 .append($('<a>')
@@ -39,7 +46,7 @@ function populateEdit() {
                                             'data-contact-id': content.contentId
                                         })
                                         .text(content.title)))
-                        .append($('<td>').text(new Date(content.createdOnDate)))
+                        .append($('<td>').text(contentCreateDateString))
                         .append($('<td>').text(content.createdByUser.userName))
                         );
             });

@@ -32,25 +32,44 @@ function fillTableWithAllPosts(listOfAllPosts) {
     tbody.empty();
 
     $.each(listOfAllPosts, function (index, post) {
-        var postCreateName = post.createdByUser.userName;
-        var postCreateDate = new Date(post.createdOnDate);
         var contentTitle = post.mostRecentContent.title;
+        var postCreateName = post.createdByUser.userName;
         var contentCreateName = post.mostRecentContent.createdByUser.userName;
+
+        var postCreateDate = new Date(post.createdOnDate);
         var contentCreateDate = new Date(post.mostRecentContent.createdOnDate);
         
-        if ((postCreateName === contentCreateName) && (postCreateDate.getTime()) === contentCreateDate.getTime()) {
-            $("td.contentUser").text('-');
-            $("td.contentDate").text('-');
+        var contentCreateDateString =
+                contentCreateDate.getUTCFullYear() + "/" +
+                ("0" + (contentCreateDate.getUTCMonth() + 1)).slice(-2) + "/" +
+                ("0" + contentCreateDate.getUTCDate()).slice(-2) + " " +
+                ("0" + contentCreateDate.getUTCHours()).slice(-2) + ":" +
+                ("0" + contentCreateDate.getUTCMinutes()).slice(-2);
+
+        var postCreateDateString =
+                postCreateDate.getUTCFullYear() + "/" +
+                ("0" + (postCreateDate.getUTCMonth() + 1)).slice(-2) + "/" +
+                ("0" + postCreateDate.getUTCDate()).slice(-2) + " " +
+                ("0" + postCreateDate.getUTCHours()).slice(-2) + ":" +
+                ("0" + postCreateDate.getUTCMinutes()).slice(-2);
+
+        if ((postCreateName === contentCreateName) && (postCreateDateString) === contentCreateDateString) {
+            contentCreateName = '-';
+            contentCreateDateString = '-';
         }
         tbody.append($('<tr>')
 
                 .append($('<td>').append($('<a>').attr('href', 'edit/' + post.postId)
                         .text(contentTitle)))
                 .append($('<td>').addClass('postUser').text(postCreateName))
-                .append($('<td>').addClass('postDate').text(postCreateDate))
+                .append($('<td>').addClass('postDate').text(postCreateDateString))
                 .append($('<td>').addClass('contentUser').text(contentCreateName))
-                .append($('<td>').addClass('contentDate').text(contentCreateDate)));
+                .append($('<td>').addClass('contentDate').text(contentCreateDateString)));
+
+
     });
+
+
     $("tr").click(function () {
         window.location.href = $(this).find("a").attr("href");
     });
