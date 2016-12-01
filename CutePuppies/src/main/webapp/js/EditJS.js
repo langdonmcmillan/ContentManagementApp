@@ -88,7 +88,7 @@ function clearContentTable() {
 
 function populateCategories() {
     $.ajax({
-        url: 'categories'
+        url: contextPath + '/categories'
     }).success(function (data, status) {
         $.each(data, function (index, category) {
             $("#categoryList").append($('<a href="#">')
@@ -103,7 +103,7 @@ function populateCategories() {
 
 function populateTags() {
     $.ajax({
-        url: 'tags'
+        url: contextPath + '/tags'
     }).success(function (data, status) {
         $.each(data, function (index, tag) {
             $("#tagList").append($('<a href="#">')
@@ -150,7 +150,7 @@ $('#deleteButton').click(function () {
         window.location.assign('/CutePuppies/admin/dashboard');
     } else {
         $.ajax({
-            type: 'DELETE',
+            type: 'PUT',
             url: 'content/' + contentID + '/' + userID,
             contentType: 'application/json; charset=utf-8',
             headers: {
@@ -175,7 +175,7 @@ $('#deletePostButton').click(function () {
         window.location.assign('/CutePuppies/admin/dashboard');
     } else {
         $.ajax({
-            type: 'DELETE',
+            type: 'PUT',
             url: 'post/' + postID + '/' + userID,
             contentType: 'application/json; charset=utf-8',
             headers: {

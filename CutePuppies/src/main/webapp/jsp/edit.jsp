@@ -37,9 +37,11 @@
                             </div>
                             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                                 <ul class="nav navbar-nav">
-                                    <li><a href="#">Posts</a></li>
+                                    <li><a href="${pageContext.request.contextPath}/admin/dashboard">Posts</a></li>
                                     <li><a href="#">Pages</a></li>
                                     <li><a href="#">Users</a></li>
+                                    <li><a href="${pageContext.request.contextPath}/admin/manageCategories">Categories</a></li>
+                                    <li><a href="${pageContext.request.contextPath}/admin/manageTags">Tags</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -90,7 +92,7 @@
                             <div id="categoryDiv" class="well">
                                 Categories
                                 <div id="categoryList">
-                                    
+
                                 </div>
                             </div>
                         </div>
@@ -98,7 +100,7 @@
                             <div id="tagDiv" class="well">
                                 Tags
                                 <div id="tagList">
-                                    
+
                                 </div>
                             </div>
                         </div>
@@ -115,10 +117,11 @@
 
             </div>
         </div>
-            <script src="${pageContext.request.contextPath}/js/jquery-2.2.4.min.js"></script>
-            <script src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>
-            <script src="${pageContext.request.contextPath}/js/EditJS.js"></script>  
-            <script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
-            <script>tinymce.init({selector: 'textarea'});</script>
+        <script>var contextPath = "${pageContext.request.contextPath}"</script>
+        <script src="${pageContext.request.contextPath}/js/jquery-2.2.4.min.js"></script>
+        <script src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>
+        <script src="${pageContext.request.contextPath}/js/EditJS.js"></script>  
+        <script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
+        <script>tinymce.init({selector: 'textarea'});</script>
     </body>
 </html>

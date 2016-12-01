@@ -173,16 +173,28 @@ public class DashboardController {
         return post;
     }
     
-    @RequestMapping(value = "admin/edit/post/{postId}/{userId}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "admin/edit/post/{postId}/{userId}", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void archivePost(@PathVariable("postId") int postID, @PathVariable("userId") int userId) {
         postDao.archivePost(postID, userId);
         contentDao.archivePost(postID, userId);
     }
     
-    @RequestMapping(value = "admin/edit/content/{contentId}/{userId}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "admin/edit/content/{contentId}/{userId}", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void archiveContent(@PathVariable("contentId") int contentID, @PathVariable("userId") int userId) {
         contentDao.archiveContent(contentID, userId);
+    }
+    
+    @RequestMapping(value = "admin/manageTags", method = RequestMethod.GET)
+    public String manageTags(Model model) {
+        model.addAttribute("categoryTag", "Tags");
+        return "tagcategory";
+    }
+    
+    @RequestMapping(value = "admin/manageCategories", method = RequestMethod.GET)
+    public String manageCategories(Model model) {
+        model.addAttribute("categoryTag", "Categories");
+        return "tagcategory";
     }
 }
