@@ -44,6 +44,7 @@ function populateEdit() {
                                         .text(content.title)))
                         .append($('<td>').text(contentCreateDateString))
                         .append($('<td>').text(content.createdByUser.userName))
+                        .append($('<td>').text(content.contentStatusCode))
                         );
             });
 
