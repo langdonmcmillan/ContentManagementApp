@@ -13,6 +13,48 @@ $(document).ready(function () {
     sessionStorage.setItem('pageNumber', 1);
 });
 
+$(document).on('click', '.revision', function () {
+
+    var conId = $(this).attr("data-content-id");
+
+    $.ajax({
+        type: 'GET',
+        url: 'post/' + $('#post-id').val() +"/"+ conId
+    }).success(function (thisContent) {
+
+        $('#postTitle').val(thisContent.title);
+        $('#postURL').val(thisContent.urlPattern);
+        $('#imageName').val(thisContent.contentImgAltTxt);
+        $('#imageURL').val(thisContent.contentImgLink);
+        tinyMCE.activeEditor.setContent(thisContent.body);
+        
+        clearTags();
+        clearCategories();
+        populateTags();
+        populateCategories();
+
+        $.each(thisContent.listOfTags, function (arrayPosition, tag) {
+
+            $(".tag").each(function () {
+                if ($(this).data('tag') === tag.tagID) {
+
+                    $(this).toggleClass('selected');
+                }
+            });
+        });
+
+        $.each(thisContent.listOfCategories, function (arrayPosition, category) {
+
+            $(".category").each(function () {
+                if ($(this).data('categoryid') === category.categoryID) {
+
+                    $(this).toggleClass('selected');
+                }
+            });
+        });
+    });
+});
+
 function populateEdit() {
 
     if ($('#post-id').length) {
@@ -39,7 +81,8 @@ function populateEdit() {
                         .append($('<td>')
                                 .append($('<a>')
                                         .attr({
-                                            'data-contact-id': content.contentId
+                                            'class': 'revision',
+                                            'data-content-id': content.contentId
                                         })
                                         .text(content.title)))
                         .append($('<td>').text(contentCreateDateString))
@@ -80,6 +123,14 @@ function populateEdit() {
 
 function clearContentTable() {
     $('#contentRows').empty();
+}
+
+function clearTags() {
+    $('#tagList').empty();
+}
+
+function clearCategories() {
+    $('#categoryList').empty();
 }
 
 function populateCategories() {
