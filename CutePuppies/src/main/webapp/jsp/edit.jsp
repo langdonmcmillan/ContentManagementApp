@@ -37,9 +37,11 @@
                             </div>
                             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                                 <ul class="nav navbar-nav">
-                                    <li><a href="#">Posts</a></li>
+                                    <li><a href="${pageContext.request.contextPath}/admin/dashboard">Posts</a></li>
                                     <li><a href="#">Pages</a></li>
                                     <li><a href="#">Users</a></li>
+                                    <li><a href="${pageContext.request.contextPath}/admin/manageCategories">Categories</a></li>
+                                    <li><a href="${pageContext.request.contextPath}/admin/manageTags">Tags</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -47,8 +49,10 @@
                 </div>
                 <div class="col-sm-9 col-lg-10">
                     <div class="col-md-8">
-                        
+
                         <div class="row">
+                            <h4>Content Status</h4>
+                            <div id="contentStatusText"></div>
                             <h4>Post Title</h4>
                             <input id="postTitle" class="form-control" placeholder="Title">
                             <h4>Post URL (optional)</h4>
@@ -62,7 +66,10 @@
                             <h4>Post Body</h4>
                             <textarea></textarea>
                         </div>
-                        
+                        <div>
+                            <button id="deletePostButton" class="btn btn-primary">Delete Post</button>
+                        </div>
+
                         <div class="row">
                             <div id="revisionsDiv" class="col-md-offset-2 col-md-8">
                                 <table id="revisionsTable" class="table table-striped">
@@ -78,43 +85,44 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-offset-1 col-md-3">
-                        <div class="row">
-                            <div id="publishDiv">
-                                <button id="publishButton" class="btn btn-primary">Publish</button>
-                                <button id="saveButton" class="btn btn-primary">Save</button>
-                                <button id="deleteButton" class="btn btn-primary">Delete</button>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div id="categoryDiv" class="well">
-                                Categories
-                                <div id="categoryList">
-                                    
+                        <div class="col-md-offset-1 col-md-3">
+                            <div class="row">
+                                <div id="publishDiv">
+                                    <button id="publishButton" class="btn btn-primary">Publish</button>
+                                    <button id="saveButton" class="btn btn-primary">Save</button>
+                                    <button id="deleteButton" class="btn btn-primary">Delete</button>
                                 </div>
                             </div>
-                        </div>
-                        <div class="row">
-                            <div id="tagDiv" class="well">
-                                Tags
-                                <div id="tagList">
-                                    
+                            <div class="row">
+                                <div id="categoryDiv" class="well">
+                                    Categories
+                                    <div id="categoryList">
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div id="tagDiv" class="well">
+                                    Tags
+                                    <div id="tagList">
+
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+
+                    <footer>
+                        <div class="row">
+                            <div class="col-md-12 text-center">
+                                <p>Powered by Java and Bootstrap</p>
+                            </div>
+                        </div>
+                    </footer>
+
                 </div>
-
-                <footer>
-                    <div class="row">
-                        <div class="col-md-12 text-center">
-                            <p>Powered by Java and Bootstrap</p>
-                        </div>
-                    </div>
-                </footer>
-
             </div>
-        </div>
+            <script>var contextPath = "${pageContext.request.contextPath}"</script>
             <script src="${pageContext.request.contextPath}/js/jquery-2.2.4.min.js"></script>
             <script src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>
             <script src="${pageContext.request.contextPath}/js/EditJS.js"></script>  
