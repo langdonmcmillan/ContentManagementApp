@@ -60,8 +60,9 @@ public class DashboardController {
     
     @RequestMapping(value = {"/admin/dashboard/pages"}, method = RequestMethod.GET)
     public String getPagesDashboard(Model model) {
+        List<Content> allStaticPages = contentDao.getAllStaticPages();
+        model.addAttribute("allStaticPages", allStaticPages);
         
-        List<Post> allPosts = postDao.getAllPostsInclArchived();
         return "dashboard";
     }
 
