@@ -46,9 +46,18 @@ public class CutePuppiesController {
     }
 
     @RequestMapping(value = {"/"}, method = RequestMethod.GET)
-    public String getLandingPage() {
+    public String getLandingPage(Model model) {
+        List<Content> allStaticPages = contentDao.getAllStaticPages();
+        Content oneContent = allStaticPages.get(0);
+        model.addAttribute("allStaticPages", allStaticPages);
         return "blog";
     }
+
+//    @RequestMapping(value = {"/"}, method = RequestMethod.PUT)
+//    public String populateNavBar(Model model) {
+//
+//        return "blogNavbar";
+//    }
 
     @RequestMapping(value = "getPagePosts/", method = RequestMethod.GET)
     @ResponseBody
@@ -101,29 +110,28 @@ public class CutePuppiesController {
 //        post.setPublishedContent(postContent);
 //        return post;
 //    }
-    
     @RequestMapping(value = "post/{postId}", method = RequestMethod.GET)
     public String displayPost(@PathVariable("postId") int postId, Model model) {
         Post post = postDao.getPostByID(postId);
         Content postContent = contentDao.getPublishedPostContent(postId);
-        
+
         postContent.setListOfTags(tagDao.getTagsByContentId(postContent.getContentId()));
         postContent.setListOfCategories(categoryDao.getCategoriesByContentId(postContent.getContentId()));
         postContent.setCreatedByUser(userDao.getUserWhoCreatedContent(postContent.getContentId()));
         post.setCreatedByUser(userDao.getUserWhoCreatedPost(postId));
-        
+
         post.setPublishedContent(postContent);
         model.addAttribute("post", post);
         return "/blog";
     }
-    
+
     @RequestMapping(value = "categories", method = RequestMethod.GET)
     @ResponseBody
     public List<Category> populateCategories() {
         List<Category> listOfCategories = categoryDao.getAllCategories();
         return listOfCategories;
     }
-    
+
     @RequestMapping(value = "tags", method = RequestMethod.GET)
     @ResponseBody
     public List<Tag> populateTags() {
