@@ -18,6 +18,7 @@
         <link href="${pageContext.request.contextPath}/css/tx3-tag-cloud.css" rel="stylesheet">
     </head>
     <body>
+
         <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
             <div class="container-fluid">
                 <div class="navbar-header">
@@ -26,18 +27,23 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="#">SWG Cute Puppies</a>
+                    <a class="navbar-brand" href="${pageContext.request.contextPath}/">SWG Cute Puppies</a>
                 </div>
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
                         <li><a href="${pageContext.request.contextPath}/">Blog</a></li>
-                        <li><a href="#">About</a></li>
-                        <li><a href="#">Contact Us</a></li>
+
+                        <c:forEach items="${allStaticPages}" var="staticPage">
+                            <li><a href="${pageContext.request.contextPath}/${staticPage.urlPattern}">${staticPage.title}</a></li>
+                            </c:forEach>
                     </ul>
                 </div>
             </div>
         </nav>
+        <%--<%@include file="includes/blogNavbar.jsp" %>--%>
+
 
         <div class="container">
             <div class="row">
@@ -114,7 +120,7 @@
             </footer>
 
         </div>
-                        
+
         <script>var contextPath = "${pageContext.request.contextPath}"</script>
         <script src="${pageContext.request.contextPath}/js/jquery-2.2.4.min.js"></script>
         <script src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>

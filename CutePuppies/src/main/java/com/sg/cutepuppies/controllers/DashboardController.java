@@ -57,6 +57,14 @@ public class DashboardController {
     public String getDashBoardPage() {
         return "dashboard";
     }
+    
+    @RequestMapping(value = {"/admin/dashboard/pages"}, method = RequestMethod.GET)
+    public String getPagesDashboard(Model model) {
+        List<Content> allStaticPages = contentDao.getAllStaticPages();
+        model.addAttribute("allStaticPages", allStaticPages);
+        
+        return "dashboard";
+    }
 
     @RequestMapping(value = "admin/getAllPosts/{archiveBoxChecked}", method = RequestMethod.GET)
     @ResponseBody
@@ -100,8 +108,6 @@ public class DashboardController {
             int conId = content.getContentId();
             content.setCreatedByUser(userDao.getUserWhoCreatedContent(conId));
 
-           
-
             //content.setListOfCategories(categoryDao.getCategoriesByContentId(conId));
             //content.setListOfTags(tagDao.getTagsByContentId(conId));
         });
@@ -109,6 +115,27 @@ public class DashboardController {
         post.setAllContentRevisions(allContent);
 
         return post;
+    }
+
+    @RequestMapping(value = "admin/edit/post/{postId}/{contentId}", method = RequestMethod.GET)
+    @ResponseBody
+    public Content getContentById(@PathVariable("postId") int postId, @PathVariable("contentId") int contentId) {
+
+        List<Content> allContent = contentDao.getAllContentsByPostId(postId);
+
+        Content content = new Content();
+
+        for (int x = 0; x < allContent.size(); x++) {
+
+            if (contentId == allContent.get(x).getContentId()) {
+                content = allContent.get(x);
+            }
+        }
+        
+        content.setListOfCategories(categoryDao.getCategoriesByContentId(content.getContentId()));
+        content.setListOfTags(tagDao.getTagsByContentId(content.getContentId()));
+        
+        return content;
     }
 
     @RequestMapping(value = "admin/edit", method = RequestMethod.GET)
@@ -133,26 +160,28 @@ public class DashboardController {
         contentDao.updatePostContent(post.getMostRecentContent());
         return post;
     }
-    
+
     @RequestMapping(value = "admin/edit/content", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     public Post addContent(@Valid @RequestBody Post post) {
-        
+
         contentDao.updatePostContent(post.getMostRecentContent());
         post = postDao.updatePost(post);
-        
+
         return post;
     }
-    
+
     @RequestMapping(value = "admin/edit/post/{postId}/{userId}", method = RequestMethod.PUT)
+
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void archivePost(@PathVariable("postId") int postID, @PathVariable("userId") int userId) {
         postDao.archivePost(postID, userId);
         contentDao.archivePost(postID, userId);
     }
-    
+
     @RequestMapping(value = "admin/edit/content/{contentId}/{userId}", method = RequestMethod.PUT)
+
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void archiveContent(@PathVariable("contentId") int contentID, @PathVariable("userId") int userId) {
         contentDao.archiveContent(contentID, userId);

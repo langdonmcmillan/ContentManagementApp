@@ -18,6 +18,110 @@ $(document).ready(function () {
     sessionStorage.setItem('pageNumber', 1);
 });
 
+$(document).on('click', '.revision', function () {
+
+    var conId = $(this).attr("data-content-id");
+
+    $.ajax({
+        type: 'GET',
+        url: 'post/' + $('#post-id').val() + "/" + conId
+    }).success(function (thisContent) {
+
+        $('#contentStatusText').html('<h4><span class="' + thisContent.contentStatusCode + 'TEXT">' + thisContent.contentStatusCode + '</span></h4>');
+        $('#postTitle').val(thisContent.title);
+        $('#postURL').val(thisContent.urlPattern);
+        $('#imageName').val(thisContent.contentImgAltTxt);
+        $('#imageURL').val(thisContent.contentImgLink);
+        tinyMCE.activeEditor.setContent(thisContent.body);
+
+        highlightTags(thisContent.listOfTags);
+        highlightCategories(thisContent.listOfCategories);
+    });
+});
+
+$('#publishButton').click(function () {
+    var contentStatusCode = 'PUBLISHED';
+    if (postID === null || postID === 0) {
+        addPost(contentStatusCode);
+    } else {
+        addContent(contentStatusCode);
+    }
+});
+
+$('#saveButton').click(function () {
+    var contentStatusCode = 'DRAFT';
+    if (postID === null || postID === 0) {
+        addPost(contentStatusCode);
+    } else {
+        addContent(contentStatusCode);
+    }
+});
+
+$('#deleteButton').click(function () {
+    if (postID === null || postID === 0) {
+        window.location.assign('/CutePuppies/admin/dashboard');
+    } else if (checkIfAllArchived()) {
+        if (confirm('This post will be archived if this content is archived. Continue?')) {
+            $('#deletePostButton').click();
+        }
+    } else {
+        $.ajax({
+            type: 'PUT',
+            url: 'content/' + contentID + '/' + userID,
+            contentType: 'application/json; charset=utf-8',
+            headers: {
+                'Accept': 'application/json',
+                'Content-type': 'application/json'
+            },
+            dataType: 'json'
+        }).success(function (post, status) {
+            window.location.assign('/CutePuppies/admin/edit/' + postID);
+        }).error(function (post, status) {
+
+        });
+    }
+});
+
+$('#deletePostButton').click(function () {
+    if (postID === null || postID === 0) {
+        window.location.assign('/CutePuppies/admin/dashboard');
+    } else {
+        $.ajax({
+            type: 'PUT',
+            url: 'post/' + postID + '/' + userID,
+            contentType: 'application/json; charset=utf-8',
+            headers: {
+                'Accept': 'application/json',
+                'Content-type': 'application/json'
+            },
+            dataType: 'json'
+        }).success(function (post, status) {
+            window.location.assign('/CutePuppies/admin/dashboard');
+        }).error(function (post, status) {
+
+        });
+    }
+});
+
+function highlightTags(listOfTags) {
+    var tagList = $('#selectTags');
+    tagList.empty();
+    populateTags();
+    $.each(listOfTags, function (arrayPosition, tag) {
+        $(".tagChosen[data-tagid=" + tag.tagID + "]").attr('selected', true);
+    });
+    tagList.trigger('chosen:updated');
+}
+
+function highlightCategories(listOfCategories) {
+    
+    var categoryList = $('#selectCategories');
+    $.each(listOfCategories, function (arrayPosition, category) {
+        $(".categoryChosen[data-categoryid=" + category.categoryID + "]").attr("selected", true);
+    });
+    categoryList.trigger('chosen:updated');
+}
+
 function populateEdit() {
 
     if ($('#post-id').length) {
@@ -44,13 +148,22 @@ function populateEdit() {
                         .append($('<td>')
                                 .append($('<a>')
                                         .attr({
-                                            'data-contact-id': content.contentId
+                                            'class': 'revision',
+                                            'data-content-id': content.contentId
                                         })
                                         .text(content.title)))
                         .append($('<td>').text(contentCreateDateString))
                         .append($('<td>').text(content.createdByUser.userName))
                         .append($('<td class="contentStatusCode">').text(content.contentStatusCode))
                         );
+            });
+
+            $(function () {
+                $("#contentRows").each(function (row, index) {
+                    var arr = $.makeArray($("tr", this).detach());
+                    arr.reverse();
+                    $(this).append(arr);
+                });
             });
 
             $('#contentStatusText').html('<h4><span class="' + thisPost.mostRecentContent.contentStatusCode + 'TEXT">' + thisPost.mostRecentContent.contentStatusCode + '</span></h4>');
@@ -61,25 +174,8 @@ function populateEdit() {
             tinyMCE.activeEditor.setContent(thisPost.mostRecentContent.body);
             contentID = thisPost.mostRecentContent.contentId;
 
-            $.each(thisPost.mostRecentContent.listOfTags, function (arrayPosition, tag) {
-
-                $(".tag").each(function () {
-                    if ($(this).data('tagid') === tag.tagID) {
-
-                        $(this).toggleClass('selected');
-                    }
-                });
-            });
-
-            $.each(thisPost.mostRecentContent.listOfCategories, function (arrayPosition, category) {
-
-                $(".category").each(function () {
-                    if ($(this).data('categoryid') === category.categoryID) {
-
-                        $(this).toggleClass('selected');
-                    }
-                });
-            });
+            highlightTags(thisPost.mostRecentContent.listOfTags);
+            highlightCategories(thisPost.mostRecentContent.listOfCategories);
 
         });
     }
@@ -183,27 +279,6 @@ function checkIfAllArchived() {
     });
     return (nonArchived <= 1);
 }
-
-$('#deletePostButton').click(function () {
-    if (postID === null || postID === 0) {
-        window.location.assign('/CutePuppies/admin/dashboard');
-    } else {
-        $.ajax({
-            type: 'PUT',
-            url: 'post/' + postID + '/' + userID,
-            contentType: 'application/json; charset=utf-8',
-            headers: {
-                'Accept': 'application/json',
-                'Content-type': 'application/json'
-            },
-            dataType: 'json'
-        }).success(function (post, status) {
-            window.location.assign('/CutePuppies/admin/dashboard');
-        }).error(function (post, status) {
-
-        });
-    }
-});
 
 function addContent(contentStatusCode) {
     var categoryList = [];
@@ -326,7 +401,7 @@ $('#addCategoryButton').click(function () {
         var alreadyExists = false;
         var categoryList = $('#selectCategories');
         $('.categoryChosen').each(function () {
-            if ($(this).data('categoryid') == category.categoryID) {
+            if ($(this).data('categoryid') === category.categoryID) {
                 $(this).attr('selected', true);
                 alreadyExists = true;
             }
@@ -364,7 +439,7 @@ $('#addTagButton').click(function () {
         var alreadyExists = false;
         var tagList = $('#selectTags');
         $('.tagChosen').each(function () {
-            if ($(this).data('tagid') == tag.tagID) {
+            if ($(this).data('tagid') === tag.tagID) {
                 $(this).attr('selected', true);
                 alreadyExists = true;
             }
