@@ -27,12 +27,12 @@
                                 <span class="icon-bar"></span>
                                 <span class="icon-bar"></span>
                             </button>
-                            <a class="navbar-brand" href="${pageContext.request.contextPath}/">SWG Cute Puppies</a>
+                            <a class="navbar-brand" href="${pageContext.request.contextPath}/admin/dashboard">SWG Cute Puppies Dashboard</a>
                         </div>
                         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                             <ul class="nav navbar-nav">
                                 <li><a href="#">Posts</a></li>
-                                <li><a href="#">Pages</a></li>
+                                <li><a id="pagesDashboard" href="${pageContext.request.contextPath}/admin/dashboard/pages">Pages</a></li>
                                 <li><a href="#">Users</a></li>
                             </ul>
                         </div>

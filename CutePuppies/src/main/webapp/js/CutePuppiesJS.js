@@ -218,3 +218,4 @@ $(document).on('click', '.tag', function () {
     updatePageNav(1);
     loadPagePosts();
 });
+

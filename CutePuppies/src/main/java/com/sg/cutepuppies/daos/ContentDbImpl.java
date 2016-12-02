@@ -37,6 +37,9 @@ public class ContentDbImpl implements ContentDaoInterface {
     }
 
     // SQL PREPARED STATEMENTS
+    private static final String SQL_GET_ALL_STATIC_PAGES
+            = "select c.* from Content c "
+            + " where c.ContentTypeCode = 'PAGE'";
     private static final String SQL_GET_ALL_REVISIONS_BY_POST_ID 
             = "select c.* from Content c "
             + " join Post p on c.PostId = p.PostId "
@@ -161,7 +164,7 @@ public class ContentDbImpl implements ContentDaoInterface {
 
     @Override
     public List<Content> getAllStaticPages() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return jdbcTemplate.query(SQL_GET_ALL_STATIC_PAGES, new ContentMapper());
     }
 
     @Override

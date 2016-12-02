@@ -57,6 +57,13 @@ public class DashboardController {
     public String getDashBoardPage() {
         return "dashboard";
     }
+    
+    @RequestMapping(value = {"/admin/dashboard/pages"}, method = RequestMethod.GET)
+    public String getPagesDashboard(Model model) {
+        
+        List<Post> allPosts = postDao.getAllPostsInclArchived();
+        return "dashboard";
+    }
 
     @RequestMapping(value = "admin/getAllPosts/{archiveBoxChecked}", method = RequestMethod.GET)
     @ResponseBody

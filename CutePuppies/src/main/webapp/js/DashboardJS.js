@@ -11,6 +11,10 @@ $(document).ready(function () {
     sessionStorage.setItem('pageNumber', 1);
 });
 
+$('#pagesDashboard').click(function () {
+    window.location.href = $(this).find("a").attr("href");
+});
+
 $("#showArchivedPosts").change(function () {
     var archiveBoxChecked = $('#showArchivedPosts').is(':checked');
     loadAllPosts(archiveBoxChecked);
@@ -38,7 +42,7 @@ function fillTableWithAllPosts(listOfAllPosts) {
 
         var postCreateDate = new Date(post.createdOnDate);
         var contentCreateDate = new Date(post.mostRecentContent.createdOnDate);
-        
+
         var contentCreateDateString =
                 contentCreateDate.getUTCFullYear() + "/" +
                 ("0" + (contentCreateDate.getUTCMonth() + 1)).slice(-2) + "/" +
