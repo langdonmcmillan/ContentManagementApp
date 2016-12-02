@@ -68,24 +68,27 @@
                             <h4>Post Body</h4>
                             <textarea></textarea>
                         </div>
-                        <div>
-                            <button id="deletePostButton" class="btn btn-primary">Delete Post</button>
-                        </div>
 
                         <div class="row">
                             <div id="revisionsDiv" class="col-md-offset-2 col-md-8">
                                 <table id="revisionsTable" class="table table-striped">
                                     <caption class="text-center">Previous Revisions</caption>
                                     <tr>
+                                        <th class="text-center">#</th>
                                         <th class="text-center">Title</th>
                                         <th class="text-center">Date Modified</th>
                                         <th class="text-center">Author</th>
                                         <th class="text-center">Status</th>
                                     </tr>
-                                    <tbody id="contentRows"></tbody>
+                                    <tbody id="revisionRows"></tbody>
                                 </table>
                             </div>
                         </div>
+                        
+                        <div class="text-center">
+                            <button id="deletePostButton" class="btn btn-primary">Archive All Revisions</button>
+                        </div>
+                        
                     </div>
                     <div class="col-md-offset-1 col-md-3">
                         <div class="row">

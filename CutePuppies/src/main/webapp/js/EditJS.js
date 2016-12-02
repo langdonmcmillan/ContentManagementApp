@@ -134,9 +134,12 @@ function populateEdit() {
 
             clearContentTable();
 
-            var summaryTable = $('#contentRows');
+            var summaryTable = $('#revisionRows');
 
+            var contentCount = 0;
             $.each(thisPost.allContentRevisions, function (arrayPosition, content) {
+                contentCount++;
+                
                 var contentCreateDate = new Date(content.createdOnDate);
                 var contentCreateDateString =
                         contentCreateDate.getUTCFullYear() + "/" +
@@ -145,6 +148,7 @@ function populateEdit() {
                         ("0" + contentCreateDate.getUTCHours()).slice(-2) + ":" +
                         ("0" + contentCreateDate.getUTCMinutes()).slice(-2);
                 summaryTable.append($('<tr>')
+                        .append($('<td>').text(contentCount))
                         .append($('<td>')
                                 .append($('<a>')
                                         .attr({
@@ -159,7 +163,7 @@ function populateEdit() {
             });
 
             $(function () {
-                $("#contentRows").each(function (row, index) {
+                $("#revisionRows").each(function (row, index) {
                     var arr = $.makeArray($("tr", this).detach());
                     arr.reverse();
                     $(this).append(arr);
@@ -182,7 +186,7 @@ function populateEdit() {
 }
 
 function clearContentTable() {
-    $('#contentRows').empty();
+    $('#revisionRows').empty();
 }
 
 function populateCategories() {
