@@ -4,14 +4,62 @@
  * and open the template in the editor.
  */
 var postID;
+var contentID;
+var userID;
 
 $(document).ready(function () {
     postID = 0;
+    contentID = 0;
+    userID = 1;
     populateCategories();
     populateTags();
     populateEdit();
     sessionStorage.setItem('pageNumber', 1);
 });
+
+$(document).on('click', '.revision', function () {
+
+    var conId = $(this).attr("data-content-id");
+
+    $.ajax({
+        type: 'GET',
+        url: 'post/' + $('#post-id').val() + "/" + conId
+    }).success(function (thisContent) {
+
+        $('#contentStatusText').html('<h4><span class="' + thisContent.contentStatusCode + 'TEXT">' + thisContent.contentStatusCode + '</span></h4>');
+        $('#postTitle').val(thisContent.title);
+        $('#postURL').val(thisContent.urlPattern);
+        $('#imageName').val(thisContent.contentImgAltTxt);
+        $('#imageURL').val(thisContent.contentImgLink);
+        tinyMCE.activeEditor.setContent(thisContent.body);
+
+        highlightTags(thisContent.listOfTags);
+        highlightCategories(thisContent.listOfCategories);
+        
+    });
+});
+
+function highlightTags(listOfTags) {
+    $("a.tag").removeClass("selected");
+    $.each(listOfTags, function (arrayPosition, tag) {
+        
+        $("a.tag[data-tagid=" + tag.tagID + "]").addClass("selected");
+        $("a.tag[data-tagid=" + tag.tagID + "]").addClass("selected");
+        $("a.tag[data-tagid=" + tag.tagID + "]").addClass("selected");
+
+    });
+}
+
+function highlightCategories(listOfCategories) {
+    $("a.category").removeClass("selected");
+    $.each(listOfCategories, function (arrayPosition, category) {
+        
+        $("a.category[data-categoryid=" + category.categoryID + "]").addClass("selected");
+        $("a.category[data-categoryid=" + category.categoryID + "]").addClass("selected");
+        $("a.category[data-categoryid=" + category.categoryID + "]").addClass("selected");
+
+    });
+}
 
 function populateEdit() {
 
@@ -39,40 +87,26 @@ function populateEdit() {
                         .append($('<td>')
                                 .append($('<a>')
                                         .attr({
-                                            'data-contact-id': content.contentId
+                                            'class': 'revision',
+                                            'data-content-id': content.contentId
                                         })
                                         .text(content.title)))
                         .append($('<td>').text(contentCreateDateString))
                         .append($('<td>').text(content.createdByUser.userName))
-                        .append($('<td>').text(content.contentStatusCode))
+                        .append($('<td class="contentStatusCode">').text(content.contentStatusCode))
                         );
             });
 
+            $('#contentStatusText').html('<h4><span class="' + thisPost.mostRecentContent.contentStatusCode + 'TEXT">' + thisPost.mostRecentContent.contentStatusCode + '</span></h4>');
             $('#postTitle').val(thisPost.mostRecentContent.title);
             $('#postURL').val(thisPost.mostRecentContent.urlPattern);
             $('#imageName').val(thisPost.mostRecentContent.contentImgAltTxt);
             $('#imageURL').val(thisPost.mostRecentContent.contentImgLink);
             tinyMCE.activeEditor.setContent(thisPost.mostRecentContent.body);
+            contentID = thisPost.mostRecentContent.contentId;
 
-            $.each(thisPost.mostRecentContent.listOfTags, function (arrayPosition, tag) {
-
-                $(".tag").each(function () {
-                    if ($(this).data('tagid') === tag.tagID) {
-
-                        $(this).toggleClass('selected');
-                    }
-                });
-            });
-
-            $.each(thisPost.mostRecentContent.listOfCategories, function (arrayPosition, category) {
-
-                $(".category").each(function () {
-                    if ($(this).data('categoryid') === category.categoryID) {
-
-                        $(this).toggleClass('selected');
-                    }
-                });
-            });
+            highlightTags(thisPost.mostRecentContent.listOfTags);
+            highlightCategories(thisPost.mostRecentContent.listOfCategories);
 
         });
     }
@@ -84,8 +118,9 @@ function clearContentTable() {
 
 function populateCategories() {
     $.ajax({
-        url: 'categories'
+        url: contextPath + '/categories'
     }).success(function (data, status) {
+        $("#categoryList").empty();
         $.each(data, function (index, category) {
             $("#categoryList").append($('<a href="#">')
                     .attr({
@@ -99,7 +134,7 @@ function populateCategories() {
 
 function populateTags() {
     $.ajax({
-        url: 'tags'
+        url: contextPath + '/tags'
     }).success(function (data, status) {
         $.each(data, function (index, tag) {
             $("#tagList").append($('<a href="#">')
@@ -138,6 +173,62 @@ $('#saveButton').click(function () {
     } else {
 
         addContent(contentStatusCode);
+    }
+});
+
+$('#deleteButton').click(function () {
+    if (postID === null || postID === 0) {
+        window.location.assign('/CutePuppies/admin/dashboard');
+    } else if (checkIfAllArchived()) {
+        if (confirm('This post will be archived if this content is archived. Continue?')) {
+            $('#deletePostButton').click();
+        }
+    } else {
+        $.ajax({
+            type: 'PUT',
+            url: 'content/' + contentID + '/' + userID,
+            contentType: 'application/json; charset=utf-8',
+            headers: {
+                'Accept': 'application/json',
+                'Content-type': 'application/json'
+            },
+            dataType: 'json'
+        }).success(function (post, status) {
+            window.location.assign('/CutePuppies/admin/edit/' + postID);
+        }).error(function (post, status) {
+
+        });
+    }
+});
+
+function checkIfAllArchived() {
+    var nonArchived = 0;
+    $('.contentStatusCode').each(function () {
+        if ($(this).text() !== "ARCHIVED") {
+            nonArchived++;
+        }
+    });
+    return (nonArchived <= 1);
+}
+
+$('#deletePostButton').click(function () {
+    if (postID === null || postID === 0) {
+        window.location.assign('/CutePuppies/admin/dashboard');
+    } else {
+        $.ajax({
+            type: 'PUT',
+            url: 'post/' + postID + '/' + userID,
+            contentType: 'application/json; charset=utf-8',
+            headers: {
+                'Accept': 'application/json',
+                'Content-type': 'application/json'
+            },
+            dataType: 'json'
+        }).success(function (post, status) {
+            window.location.assign('/CutePuppies/admin/dashboard');
+        }).error(function (post, status) {
+
+        });
     }
 });
 
