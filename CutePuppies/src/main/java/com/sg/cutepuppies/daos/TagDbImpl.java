@@ -43,6 +43,7 @@ public class TagDbImpl implements TagDaoInterface {
     private static final String SQL_UPDATE_TAG = "update Tag set TagDescription = ? where TagId = ?";
     private static final String SQL_DELETE_TAG = "delete from Tag where TagId = ?";
     private static final String SQL_DELETE_CONTENT_TAG = "delete from content_tag where TagId = ?";
+    private static final String SQL_GET_TAG_ID = "select TagId from Tag where TagDescription = ?";
     
     @Override
     public List<Tag> getAllTags(boolean onlyPublished) {
@@ -59,7 +60,7 @@ public class TagDbImpl implements TagDaoInterface {
         jdbcTemplate.update(SQL_ADD_TAG, tag);
         Tag newTag = new Tag();
         newTag.setTagDescription(tag);
-        newTag.setTagID(jdbcTemplate.queryForObject("select LAST_INSERT_ID()", Integer.class));
+        newTag.setTagID(jdbcTemplate.queryForObject(SQL_GET_TAG_ID, Integer.class, tag));
         return newTag;
     }
 

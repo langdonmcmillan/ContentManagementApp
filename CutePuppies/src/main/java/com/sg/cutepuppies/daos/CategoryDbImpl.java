@@ -35,6 +35,7 @@ public class CategoryDbImpl implements CategoryDaoInterface {
     private static final String SQL_UPDATE_CATEGORY = "update Category set CategoryDescription = ? where CategoryId = ?";
     private static final String SQL_DELETE_CATEGORY = "delete from Category where CategoryId = ?";
     private static final String SQL_DELETE_CONTENT_CATEGORY = "delete from content_category where CategoryId = ?";
+    private static final String SQL_GET_CATEGORY_ID = "select CategoryId from Category where CategoryDescription = ?";
 
     @Override
     public List<Category> getAllCategories() {
@@ -51,7 +52,7 @@ public class CategoryDbImpl implements CategoryDaoInterface {
         jdbcTemplate.update(SQL_ADD_CATEGORY, category);
         Category newCategory = new Category();
         newCategory.setCategoryDescription(category);
-        newCategory.setCategoryID(jdbcTemplate.queryForObject("select LAST_INSERT_ID()", Integer.class));
+        newCategory.setCategoryID(jdbcTemplate.queryForObject(SQL_GET_CATEGORY_ID, Integer.class, category));
         return newCategory;
     }
 

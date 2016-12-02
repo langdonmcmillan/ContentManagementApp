@@ -106,7 +106,6 @@ $('#addButton').click(function () {
     }).error(function (data, status) {
 
     });
-
 });
 
 $(document).on('click', '.editLink', function () {

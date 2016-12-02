@@ -11,6 +11,7 @@ $(document).ready(function () {
     postID = 0;
     contentID = 0;
     userID = 1;
+    $('.chosenElement').chosen();
     populateCategories();
     populateTags();
     populateEdit();
@@ -92,39 +93,40 @@ function populateCategories() {
     $.ajax({
         url: contextPath + '/categories'
     }).success(function (data, status) {
+        var categoryList = $('#selectCategories');
+        categoryList.empty();
         $.each(data, function (index, category) {
-            $("#categoryList").append($('<a href="#">')
+            categoryList.append($('<option>')
                     .attr({
-                        'class': 'category',
                         'data-categoryDescription': category.categoryDescription,
-                        'data-categoryID': category.categoryID
-                    }).append(category.categoryDescription));
+                        'data-categoryid': category.categoryID,
+                        'class': 'categoryChosen'
+                    })
+                    .text(category.categoryDescription));
         });
+        categoryList.trigger('chosen:updated');
     });
+
 }
 
 function populateTags() {
     $.ajax({
         url: contextPath + '/tags/false'
     }).success(function (data, status) {
+        var tagList = $('#selectTags');
+        tagList.empty();
         $.each(data, function (index, tag) {
-            $("#tagList").append($('<a href="#">')
+            tagList.append($('<option>')
                     .attr({
-                        'class': 'tag',
                         'data-tagDescription': tag.tagDescription,
-                        'data-tagID': tag.tagID
-                    }).append(tag.tagDescription));
+                        'data-tagid': tag.tagID,
+                        'class': 'tagChosen'
+                    })
+                    .text(tag.tagDescription));
         });
+        tagList.trigger('chosen:updated');
     });
 }
-
-$(document).on('click', '.category', function () {
-    $(this).toggleClass('selected');
-});
-
-$(document).on('click', '.tag', function () {
-    $(this).toggleClass('selected');
-});
 
 $('#publishButton').click(function () {
     var contentStatusCode = 'PUBLISHED';
@@ -174,10 +176,10 @@ $('#deleteButton').click(function () {
 
 function checkIfAllArchived() {
     var nonArchived = 0;
-    $('.contentStatusCode').each(function() {
-       if ($(this).text() !== "ARCHIVED") {
-           nonArchived++;
-       }
+    $('.contentStatusCode').each(function () {
+        if ($(this).text() !== "ARCHIVED") {
+            nonArchived++;
+        }
     });
     return (nonArchived <= 1);
 }
@@ -205,14 +207,14 @@ $('#deletePostButton').click(function () {
 
 function addContent(contentStatusCode) {
     var categoryList = [];
-    $('.category.selected').each(function () {
+    $('.categoryChosen:selected').each(function () {
         categoryList.push({
             'categoryID': $(this).data('categoryid'),
             'categoryDescription': $(this).data('categorydescription')
         });
     });
     var tagList = [];
-    $('.tag.selected').each(function () {
+    $('.tagChosen:selected').each(function () {
         tagList.push({
             'tagID': $(this).data('tagid'),
             'tagDescription': $(this).data('tagdescription')
@@ -258,14 +260,14 @@ function addContent(contentStatusCode) {
 
 function addPost(contentStatusCode) {
     var categoryList = [];
-    $('.category.selected').each(function () {
+    $('.categoryChosen:selected').each(function () {
         categoryList.push({
             'categoryID': $(this).data('categoryid'),
             'categoryDescription': $(this).data('categorydescription')
         });
     });
     var tagList = [];
-    $('.tag.selected').each(function () {
+    $('.tagChosen:selected').each(function () {
         tagList.push({
             'tagID': $(this).data('tagid'),
             'tagDescription': $(this).data('tagdescription')
@@ -307,3 +309,80 @@ function addPost(contentStatusCode) {
 
     });
 }
+
+$('#addCategoryButton').click(function () {
+    var categoryDescription = $('#addCategoryInput').val();
+    $.ajax({
+        url: contextPath + "/admin/Categories",
+        type: "POST",
+        data: categoryDescription,
+        contentType: 'application/json; charset=utf-8',
+        headers: {
+            'Accept': 'application/json',
+            'Content-type': 'application/json'
+        },
+        dataType: 'json'
+    }).success(function (category, status) {
+        var alreadyExists = false;
+        var categoryList = $('#selectCategories');
+        $('.categoryChosen').each(function () {
+            if ($(this).data('categoryid') == category.categoryID) {
+                $(this).attr('selected', true);
+                alreadyExists = true;
+            }
+        });
+        if (!alreadyExists) {
+            categoryList.append($('<option selected>')
+                    .attr({
+                        'data-categoryDescription': category.categoryDescription,
+                        'data-categoryid': category.categoryID,
+                        'class': 'categoryChosen'
+                    })
+                    .text(category.categoryDescription));
+            categoryList.trigger('chosen:updated');
+        }
+        categoryList.trigger('chosen:updated');
+        $('#addCategoryInput').val('');
+    }).error(function (data, status) {
+
+    });
+});
+
+$('#addTagButton').click(function () {
+    var tagDescription = $('#addTagInput').val();
+    $.ajax({
+        url: contextPath + "/admin/Tags",
+        type: "POST",
+        data: tagDescription,
+        contentType: 'application/json; charset=utf-8',
+        headers: {
+            'Accept': 'application/json',
+            'Content-type': 'application/json'
+        },
+        dataType: 'json'
+    }).success(function (tag, status) {
+        var alreadyExists = false;
+        var tagList = $('#selectTags');
+        $('.tagChosen').each(function () {
+            if ($(this).data('tagid') == tag.tagID) {
+                $(this).attr('selected', true);
+                alreadyExists = true;
+            }
+        });
+        if (!alreadyExists) {
+            tagList.append($('<option selected>')
+                    .attr({
+                        'data-tagDescription': tag.tagDescription,
+                        'data-tagid': tag.tagID,
+                        'class': 'tagChosen'
+                    })
+                    .text(tag.tagDescription));
+            tagList.trigger('chosen:updated');
+        }
+        tagList.trigger('chosen:updated');
+        $('#addTagInput').val('');
+    }).error(function (data, status) {
+
+    });
+});
+
