@@ -14,6 +14,7 @@
         <title>SWG Cute Puppy Adoption Center Dashboard</title>
         <link href="${pageContext.request.contextPath}/css/bootstrap.min.css" rel="stylesheet">
         <link href="${pageContext.request.contextPath}/css/DashboardCSS.css" rel="stylesheet">
+        <link href="${pageContext.request.contextPath}/css/chosen.min.css" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css?family=McLaren" rel="stylesheet">
         <link href="${pageContext.request.contextPath}/css/navbar-fixed-side.css" rel="stylesheet">
     </head>
@@ -125,6 +126,7 @@
             <script>var contextPath = "${pageContext.request.contextPath}"</script>
             <script src="${pageContext.request.contextPath}/js/jquery-2.2.4.min.js"></script>
             <script src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>
+            <script src="${pageContext.request.contextPath}/js/chosen.jquery.min.js"></script>
             <script src="${pageContext.request.contextPath}/js/EditJS.js"></script>  
             <script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
             <script>tinymce.init({selector: 'textarea'});</script>

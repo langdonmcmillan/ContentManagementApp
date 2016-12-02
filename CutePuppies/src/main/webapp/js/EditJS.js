@@ -105,7 +105,7 @@ function populateCategories() {
 
 function populateTags() {
     $.ajax({
-        url: contextPath + '/tags'
+        url: contextPath + '/tags/false'
     }).success(function (data, status) {
         $.each(data, function (index, tag) {
             $("#tagList").append($('<a href="#">')

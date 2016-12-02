@@ -27,15 +27,22 @@ public class TagDbImpl implements TagDaoInterface {
     
     // SQL PREPARED STATEMENTS
     private static final String SQL_GET_TAGS_BY_CONTENT_ID = "select t.* from Tag t join content_tag ct on t.TagId = ct.TagId where ct.ContentId = ?";
+    // This is for blog page, returns top 50 for tag cloud
     private static final String SQL_GET_PUBLISHED_TAGS = "select t.TagId, t.TagDescription, count(ct.TagId) as useNum from content_tag ct "
             + "join Content c on c.ContentId = ct.ContentId "
             + "join Tag t on t.TagId = ct.TagId "
             + "where c.ContentStatusCode = 'PUBLISHED' "
-            + "group by t.TagId, t.TagDescription";
-    private static final String SQL_GET_ALL_TAGS = "select t.TagId, t.TagDescription, count(ct.TagId) as useNum from content_tag ct "
-            + "join Content c on c.ContentId = ct.ContentId "
-            + "join Tag t on t.TagId = ct.TagId "
-            + "group by t.TagId, t.TagDescription";
+            + "group by t.TagId, t.TagDescription "
+            + "order by useNum desc "
+            + "limit 50";
+    // This will return all tags alphabetically - for use in the dashboard (does not give count used for tag cloud)
+    private static final String SQL_GET_ALL_TAGS = "select TagId, TagDescription from Tag "
+            + "order by TagDescription asc";
+    private static final String SQL_ADD_TAG = "insert ignore into Tag (TagDescription) "
+            + "values(?)";
+    private static final String SQL_UPDATE_TAG = "update Tag set TagDescription = ? where TagId = ?";
+    private static final String SQL_DELETE_TAG = "delete from Tag where TagId = ?";
+    private static final String SQL_DELETE_CONTENT_TAG = "delete from content_tag where TagId = ?";
     
     @Override
     public List<Tag> getAllTags(boolean onlyPublished) {
@@ -49,17 +56,23 @@ public class TagDbImpl implements TagDaoInterface {
 
     @Override
     public Tag addTag(String tag) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        jdbcTemplate.update(SQL_ADD_TAG, tag);
+        Tag newTag = new Tag();
+        newTag.setTagDescription(tag);
+        newTag.setTagID(jdbcTemplate.queryForObject("select LAST_INSERT_ID()", Integer.class));
+        return newTag;
     }
 
     @Override
     public Tag updateTag(Tag tag) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        jdbcTemplate.update(SQL_UPDATE_TAG, tag.getTagDescription(), tag.getTagID());
+        return tag;
     }
 
     @Override
     public void deleteTag(int tagID) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        jdbcTemplate.update(SQL_DELETE_CONTENT_TAG, tagID);
+        jdbcTemplate.update(SQL_DELETE_TAG, tagID);
     }
 
     @Override

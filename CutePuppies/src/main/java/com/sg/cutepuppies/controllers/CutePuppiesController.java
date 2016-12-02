@@ -124,10 +124,10 @@ public class CutePuppiesController {
         return listOfCategories;
     }
     
-    @RequestMapping(value = "tags", method = RequestMethod.GET)
+    @RequestMapping(value = "tags/{onlyPublished}", method = RequestMethod.GET)
     @ResponseBody
-    public List<Tag> populateTags() {
-        List<Tag> listOfTags = tagDao.getAllTags(true);
+    public List<Tag> populateTags(@PathVariable("onlyPublished") boolean onlyPublished) {
+        List<Tag> listOfTags = tagDao.getAllTags(onlyPublished);
         return listOfTags;
     }
 
