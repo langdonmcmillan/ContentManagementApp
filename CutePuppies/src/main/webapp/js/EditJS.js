@@ -33,9 +33,10 @@ $(document).on('click', '.revision', function () {
         $('#imageName').val(thisContent.contentImgAltTxt);
         $('#imageURL').val(thisContent.contentImgLink);
         tinyMCE.activeEditor.setContent(thisContent.body);
-
+        
         highlightTags(thisContent.listOfTags);
         highlightCategories(thisContent.listOfCategories);
+        $('#selectCategories').chosen().trigger('chosen:updated');
     });
 });
 
@@ -104,20 +105,19 @@ $('#deletePostButton').click(function () {
 });
 
 function highlightTags(listOfTags) {
+    $('#selectTags option').removeAttr('selected');
     var tagList = $('#selectTags');
-    tagList.empty();
-    populateTags();
     $.each(listOfTags, function (arrayPosition, tag) {
-        $(".tagChosen[data-tagid=" + tag.tagID + "]").attr('selected', true);
+        $(".tagChosen[data-tagid=" + tag.tagID + "]").prop('selected', true);
     });
     tagList.trigger('chosen:updated');
 }
 
 function highlightCategories(listOfCategories) {
-    
+    $('#selectCategories option').removeAttr('selected');
     var categoryList = $('#selectCategories');
     $.each(listOfCategories, function (arrayPosition, category) {
-        $(".categoryChosen[data-categoryid=" + category.categoryID + "]").attr("selected", true);
+        $(".categoryChosen[data-categoryid=" + category.categoryID + "]").prop("selected", true);
     });
     categoryList.trigger('chosen:updated');
 }
@@ -464,4 +464,3 @@ $('#addTagButton').click(function () {
 
     });
 });
-
