@@ -6,6 +6,8 @@
 package com.sg.cutepuppies.models;
 
 import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -21,6 +23,7 @@ public class User {
     private String userName;
     private String userPassword;
     private String userEmail;
+    private List<String> permissions = new ArrayList<>();
 
     public int getUserId() {
         return userId;
@@ -84,6 +87,14 @@ public class User {
 
     public void setUserEmail(String userEmail) {
         this.userEmail = userEmail;
+    }
+
+    public List<String> getPermissions() {
+        return permissions;
+    }
+
+    public void setPermissions(List<String> permissions) {
+        this.permissions = permissions;
     }
     
 }

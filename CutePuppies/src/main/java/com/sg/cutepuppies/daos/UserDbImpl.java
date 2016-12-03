@@ -8,6 +8,8 @@ package com.sg.cutepuppies.daos;
 import com.sg.cutepuppies.models.User;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -61,6 +63,10 @@ public class UserDbImpl implements UserDaoInterface {
             + " join Post p "
             + " on u.UserId = p.ArchivedByUserId "
             + " where p.PostId = ?";
+    private static final String SQL_INSERT_USER
+            = "insert into users (UserName, UserPassword, UserEmail, RoleCode) values (?, ?, ?, ?)";
+    private static final String SQL_DELETE_USER
+            = "delete from users where UserName = ?";
 
     @Override
     public User getUserWhoCreatedPost(int postId) {
@@ -107,6 +113,18 @@ public class UserDbImpl implements UserDaoInterface {
         } catch (EmptyResultDataAccessException ex) {
             return null;
         }
+    }
+
+    @Override
+    public User addUser(User newUser) {
+        jdbcTemplate.update(SQL_INSERT_USER, newUser.getUserName(), newUser.getUserPassword());
+        newUser.setUserId(jdbcTemplate.queryForObject("select LAST_INSERT_ID()", Integer.class));
+        return newUser;
+    }
+
+    @Override
+    public void deleteUser(String username) {
+        jdbcTemplate.update(SQL_DELETE_USER, username);
     }
 
     private static final class UserMapper implements RowMapper<User> {
