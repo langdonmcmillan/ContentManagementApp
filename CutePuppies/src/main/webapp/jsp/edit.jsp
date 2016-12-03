@@ -14,6 +14,7 @@
         <title>SWG Cute Puppy Adoption Center Dashboard</title>
         <link href="${pageContext.request.contextPath}/css/bootstrap.min.css" rel="stylesheet">
         <link href="${pageContext.request.contextPath}/css/DashboardCSS.css" rel="stylesheet">
+        <link href="${pageContext.request.contextPath}/css/chosen.min.css" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css?family=McLaren" rel="stylesheet">
         <link href="${pageContext.request.contextPath}/css/navbar-fixed-side.css" rel="stylesheet">
     </head>
@@ -21,6 +22,7 @@
         <c:if test="${not empty postId}">
             <input type="hidden" id="post-id" value="${postId}"/>
         </c:if>
+        <p id="testp"></p>
         <div class="container-fluid">
             <div class="row">
                 <div class="col-sm-3 col-lg-2">
@@ -66,67 +68,89 @@
                             <h4>Post Body</h4>
                             <textarea></textarea>
                         </div>
-                        <div>
-                            <button id="deletePostButton" class="btn btn-primary">Delete Post</button>
-                        </div>
 
                         <div class="row">
                             <div id="revisionsDiv" class="col-md-offset-2 col-md-8">
                                 <table id="revisionsTable" class="table table-striped">
                                     <caption class="text-center">Previous Revisions</caption>
                                     <tr>
+                                        <th class="text-center">#</th>
                                         <th class="text-center">Title</th>
                                         <th class="text-center">Date Modified</th>
                                         <th class="text-center">Author</th>
                                         <th class="text-center">Status</th>
                                     </tr>
-                                    <tbody id="contentRows"></tbody>
+                                    <tbody id="revisionRows"></tbody>
                                 </table>
                             </div>
                         </div>
-                    </div>
-                        <div class="col-md-offset-1 col-md-3">
-                            <div class="row">
-                                <div id="publishDiv">
-                                    <button id="publishButton" class="btn btn-primary">Publish</button>
-                                    <button id="saveButton" class="btn btn-primary">Save</button>
-                                    <button id="deleteButton" class="btn btn-primary">Delete</button>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div id="categoryDiv" class="well">
-                                    Categories
-                                    <div id="categoryList">
-
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div id="tagDiv" class="well">
-                                    Tags
-                                    <div id="tagList">
-
-                                    </div>
-                                </div>
-                            </div>
+                        
+                        <div class="text-center">
+                            <button id="deletePostButton" class="btn btn-primary">Archive All Revisions</button>
                         </div>
+                        
                     </div>
-
-                    <footer>
+                    <div class="col-md-offset-1 col-md-3">
                         <div class="row">
-                            <div class="col-md-12 text-center">
-                                <p>Powered by Java and Bootstrap</p>
+                            <div id="publishDiv">
+                                <button id="publishButton" class="btn btn-primary">Publish</button>
+                                <button id="saveButton" class="btn btn-primary">Save</button>
+                                <button id="deleteButton" class="btn btn-primary">Delete</button>
                             </div>
                         </div>
-                    </footer>
-
+                        <div class="row">
+                            <div id="categoryDivChosen" class="well">
+                                Categories
+                                <div>
+                                    <select class="form-control chosenElement" id = "selectCategories" data-placeholder="Choose categories..." multiple = "multiple">
+                                    </select>
+                                </div>
+                                <div class="input-group addDiv">
+                                    <input type="text" id="addCategoryInput" class="form-control" placeholder="Add New Category">
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-primary" type="button" id="addCategoryButton">
+                                            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                                        </button>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div id="tagDivChosen" class="well">
+                                Tags
+                                <div>
+                                    <select class="form-control chosenElement" id = "selectTags" data-placeholder="Choose tags..." multiple = "multiple">
+                                    </select>
+                                </div>
+                                <div class="input-group addDiv">
+                                    <input type="text" id="addTagInput" class="form-control" placeholder="Add New Tag">
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-primary" type="button" id="addTagButton">
+                                            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                                        </button>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
+
+                <footer>
+                    <div class="row">
+                        <div class="col-md-12 text-center">
+                            <p>Powered by Java and Bootstrap</p>
+                        </div>
+                    </div>
+                </footer>
+
             </div>
-            <script>var contextPath = "${pageContext.request.contextPath}"</script>
-            <script src="${pageContext.request.contextPath}/js/jquery-2.2.4.min.js"></script>
-            <script src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>
-            <script src="${pageContext.request.contextPath}/js/EditJS.js"></script>  
-            <script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
-            <script>tinymce.init({selector: 'textarea'});</script>
+        </div>
+        <script>var contextPath = "${pageContext.request.contextPath}"</script>
+        <script src="${pageContext.request.contextPath}/js/jquery-2.2.4.min.js"></script>
+        <script src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>
+        <script src="${pageContext.request.contextPath}/js/chosen.jquery.min.js"></script>
+        <script src="${pageContext.request.contextPath}/js/EditJS.js"></script>  
+        <script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
+        <script>tinymce.init({selector: 'textarea'});</script>
     </body>
 </html>

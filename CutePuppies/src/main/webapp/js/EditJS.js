@@ -11,6 +11,7 @@ $(document).ready(function () {
     postID = 0;
     contentID = 0;
     userID = 1;
+    $('.chosenElement').chosen();
     populateCategories();
     populateTags();
     populateEdit();
@@ -32,33 +33,93 @@ $(document).on('click', '.revision', function () {
         $('#imageName').val(thisContent.contentImgAltTxt);
         $('#imageURL').val(thisContent.contentImgLink);
         tinyMCE.activeEditor.setContent(thisContent.body);
-
+        
         highlightTags(thisContent.listOfTags);
         highlightCategories(thisContent.listOfCategories);
-        
+        $('#selectCategories').chosen().trigger('chosen:updated');
     });
 });
 
-function highlightTags(listOfTags) {
-    $("a.tag").removeClass("selected");
-    $.each(listOfTags, function (arrayPosition, tag) {
-        
-        $("a.tag[data-tagid=" + tag.tagID + "]").addClass("selected");
-        $("a.tag[data-tagid=" + tag.tagID + "]").addClass("selected");
-        $("a.tag[data-tagid=" + tag.tagID + "]").addClass("selected");
+$('#publishButton').click(function () {
+    var contentStatusCode = 'PUBLISHED';
+    if (postID === null || postID === 0) {
+        addPost(contentStatusCode);
+    } else {
+        addContent(contentStatusCode);
+    }
+});
 
+$('#saveButton').click(function () {
+    var contentStatusCode = 'DRAFT';
+    if (postID === null || postID === 0) {
+        addPost(contentStatusCode);
+    } else {
+        addContent(contentStatusCode);
+    }
+});
+
+$('#deleteButton').click(function () {
+    if (postID === null || postID === 0) {
+        window.location.assign('/CutePuppies/admin/dashboard');
+    } else if (checkIfAllArchived()) {
+        if (confirm('This post will be archived if this content is archived. Continue?')) {
+            $('#deletePostButton').click();
+        }
+    } else {
+        $.ajax({
+            type: 'PUT',
+            url: 'content/' + contentID + '/' + userID,
+            contentType: 'application/json; charset=utf-8',
+            headers: {
+                'Accept': 'application/json',
+                'Content-type': 'application/json'
+            },
+            dataType: 'json'
+        }).success(function (post, status) {
+            window.location.assign('/CutePuppies/admin/edit/' + postID);
+        }).error(function (post, status) {
+
+        });
+    }
+});
+
+$('#deletePostButton').click(function () {
+    if (postID === null || postID === 0) {
+        window.location.assign('/CutePuppies/admin/dashboard');
+    } else {
+        $.ajax({
+            type: 'PUT',
+            url: 'post/' + postID + '/' + userID,
+            contentType: 'application/json; charset=utf-8',
+            headers: {
+                'Accept': 'application/json',
+                'Content-type': 'application/json'
+            },
+            dataType: 'json'
+        }).success(function (post, status) {
+            window.location.assign('/CutePuppies/admin/dashboard');
+        }).error(function (post, status) {
+
+        });
+    }
+});
+
+function highlightTags(listOfTags) {
+    $('#selectTags option').removeAttr('selected');
+    var tagList = $('#selectTags');
+    $.each(listOfTags, function (arrayPosition, tag) {
+        $(".tagChosen[data-tagid=" + tag.tagID + "]").prop('selected', true);
     });
+    tagList.trigger('chosen:updated');
 }
 
 function highlightCategories(listOfCategories) {
-    $("a.category").removeClass("selected");
+    $('#selectCategories option').removeAttr('selected');
+    var categoryList = $('#selectCategories');
     $.each(listOfCategories, function (arrayPosition, category) {
-        
-        $("a.category[data-categoryid=" + category.categoryID + "]").addClass("selected");
-        $("a.category[data-categoryid=" + category.categoryID + "]").addClass("selected");
-        $("a.category[data-categoryid=" + category.categoryID + "]").addClass("selected");
-
+        $(".categoryChosen[data-categoryid=" + category.categoryID + "]").prop("selected", true);
     });
+    categoryList.trigger('chosen:updated');
 }
 
 function populateEdit() {
@@ -73,9 +134,12 @@ function populateEdit() {
 
             clearContentTable();
 
-            var summaryTable = $('#contentRows');
+            var summaryTable = $('#revisionRows');
 
+            var contentCount = 0;
             $.each(thisPost.allContentRevisions, function (arrayPosition, content) {
+                contentCount++;
+                
                 var contentCreateDate = new Date(content.createdOnDate);
                 var contentCreateDateString =
                         contentCreateDate.getUTCFullYear() + "/" +
@@ -84,6 +148,7 @@ function populateEdit() {
                         ("0" + contentCreateDate.getUTCHours()).slice(-2) + ":" +
                         ("0" + contentCreateDate.getUTCMinutes()).slice(-2);
                 summaryTable.append($('<tr>')
+                        .append($('<td>').text(contentCount))
                         .append($('<td>')
                                 .append($('<a>')
                                         .attr({
@@ -95,6 +160,14 @@ function populateEdit() {
                         .append($('<td>').text(content.createdByUser.userName))
                         .append($('<td class="contentStatusCode">').text(content.contentStatusCode))
                         );
+            });
+
+            $(function () {
+                $("#revisionRows").each(function (row, index) {
+                    var arr = $.makeArray($("tr", this).detach());
+                    arr.reverse();
+                    $(this).append(arr);
+                });
             });
 
             $('#contentStatusText').html('<h4><span class="' + thisPost.mostRecentContent.contentStatusCode + 'TEXT">' + thisPost.mostRecentContent.contentStatusCode + '</span></h4>');
@@ -113,47 +186,47 @@ function populateEdit() {
 }
 
 function clearContentTable() {
-    $('#contentRows').empty();
+    $('#revisionRows').empty();
 }
 
 function populateCategories() {
     $.ajax({
         url: contextPath + '/categories'
     }).success(function (data, status) {
-        $("#categoryList").empty();
+        var categoryList = $('#selectCategories');
+        categoryList.empty();
         $.each(data, function (index, category) {
-            $("#categoryList").append($('<a href="#">')
+            categoryList.append($('<option>')
                     .attr({
-                        'class': 'category',
                         'data-categoryDescription': category.categoryDescription,
-                        'data-categoryID': category.categoryID
-                    }).append(category.categoryDescription));
+                        'data-categoryid': category.categoryID,
+                        'class': 'categoryChosen'
+                    })
+                    .text(category.categoryDescription));
         });
+        categoryList.trigger('chosen:updated');
     });
+
 }
 
 function populateTags() {
     $.ajax({
-        url: contextPath + '/tags'
+        url: contextPath + '/tags/false'
     }).success(function (data, status) {
+        var tagList = $('#selectTags');
+        tagList.empty();
         $.each(data, function (index, tag) {
-            $("#tagList").append($('<a href="#">')
+            tagList.append($('<option>')
                     .attr({
-                        'class': 'tag',
                         'data-tagDescription': tag.tagDescription,
-                        'data-tagID': tag.tagID
-                    }).append(tag.tagDescription));
+                        'data-tagid': tag.tagID,
+                        'class': 'tagChosen'
+                    })
+                    .text(tag.tagDescription));
         });
+        tagList.trigger('chosen:updated');
     });
 }
-
-$(document).on('click', '.category', function () {
-    $(this).toggleClass('selected');
-});
-
-$(document).on('click', '.tag', function () {
-    $(this).toggleClass('selected');
-});
 
 $('#publishButton').click(function () {
     var contentStatusCode = 'PUBLISHED';
@@ -211,37 +284,16 @@ function checkIfAllArchived() {
     return (nonArchived <= 1);
 }
 
-$('#deletePostButton').click(function () {
-    if (postID === null || postID === 0) {
-        window.location.assign('/CutePuppies/admin/dashboard');
-    } else {
-        $.ajax({
-            type: 'PUT',
-            url: 'post/' + postID + '/' + userID,
-            contentType: 'application/json; charset=utf-8',
-            headers: {
-                'Accept': 'application/json',
-                'Content-type': 'application/json'
-            },
-            dataType: 'json'
-        }).success(function (post, status) {
-            window.location.assign('/CutePuppies/admin/dashboard');
-        }).error(function (post, status) {
-
-        });
-    }
-});
-
 function addContent(contentStatusCode) {
     var categoryList = [];
-    $('.category.selected').each(function () {
+    $('.categoryChosen:selected').each(function () {
         categoryList.push({
             'categoryID': $(this).data('categoryid'),
             'categoryDescription': $(this).data('categorydescription')
         });
     });
     var tagList = [];
-    $('.tag.selected').each(function () {
+    $('.tagChosen:selected').each(function () {
         tagList.push({
             'tagID': $(this).data('tagid'),
             'tagDescription': $(this).data('tagdescription')
@@ -287,14 +339,14 @@ function addContent(contentStatusCode) {
 
 function addPost(contentStatusCode) {
     var categoryList = [];
-    $('.category.selected').each(function () {
+    $('.categoryChosen:selected').each(function () {
         categoryList.push({
             'categoryID': $(this).data('categoryid'),
             'categoryDescription': $(this).data('categorydescription')
         });
     });
     var tagList = [];
-    $('.tag.selected').each(function () {
+    $('.tagChosen:selected').each(function () {
         tagList.push({
             'tagID': $(this).data('tagid'),
             'tagDescription': $(this).data('tagdescription')
@@ -336,3 +388,79 @@ function addPost(contentStatusCode) {
 
     });
 }
+
+$('#addCategoryButton').click(function () {
+    var categoryDescription = $('#addCategoryInput').val();
+    $.ajax({
+        url: contextPath + "/admin/Categories",
+        type: "POST",
+        data: categoryDescription,
+        contentType: 'application/json; charset=utf-8',
+        headers: {
+            'Accept': 'application/json',
+            'Content-type': 'application/json'
+        },
+        dataType: 'json'
+    }).success(function (category, status) {
+        var alreadyExists = false;
+        var categoryList = $('#selectCategories');
+        $('.categoryChosen').each(function () {
+            if ($(this).data('categoryid') === category.categoryID) {
+                $(this).attr('selected', true);
+                alreadyExists = true;
+            }
+        });
+        if (!alreadyExists) {
+            categoryList.append($('<option selected>')
+                    .attr({
+                        'data-categoryDescription': category.categoryDescription,
+                        'data-categoryid': category.categoryID,
+                        'class': 'categoryChosen'
+                    })
+                    .text(category.categoryDescription));
+            categoryList.trigger('chosen:updated');
+        }
+        categoryList.trigger('chosen:updated');
+        $('#addCategoryInput').val('');
+    }).error(function (data, status) {
+
+    });
+});
+
+$('#addTagButton').click(function () {
+    var tagDescription = $('#addTagInput').val();
+    $.ajax({
+        url: contextPath + "/admin/Tags",
+        type: "POST",
+        data: tagDescription,
+        contentType: 'application/json; charset=utf-8',
+        headers: {
+            'Accept': 'application/json',
+            'Content-type': 'application/json'
+        },
+        dataType: 'json'
+    }).success(function (tag, status) {
+        var alreadyExists = false;
+        var tagList = $('#selectTags');
+        $('.tagChosen').each(function () {
+            if ($(this).data('tagid') === tag.tagID) {
+                $(this).attr('selected', true);
+                alreadyExists = true;
+            }
+        });
+        if (!alreadyExists) {
+            tagList.append($('<option selected>')
+                    .attr({
+                        'data-tagDescription': tag.tagDescription,
+                        'data-tagid': tag.tagID,
+                        'class': 'tagChosen'
+                    })
+                    .text(tag.tagDescription));
+            tagList.trigger('chosen:updated');
+        }
+        tagList.trigger('chosen:updated');
+        $('#addTagInput').val('');
+    }).error(function (data, status) {
+
+    });
+});

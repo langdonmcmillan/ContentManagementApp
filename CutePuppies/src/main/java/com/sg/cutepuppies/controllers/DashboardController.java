@@ -53,7 +53,7 @@ public class DashboardController {
         this.userDao = userDao;
     }
 
-    @RequestMapping(value = {"/admin/dashboard"}, method = RequestMethod.GET)
+    @RequestMapping(value = {"/admin/dashboard", "/admin"}, method = RequestMethod.GET)
     public String getDashBoardPage() {
         return "dashboard";
     }
@@ -151,34 +151,6 @@ public class DashboardController {
         return "edit";
     }
 
-    @RequestMapping(value = "/admin/categories", method = RequestMethod.GET)
-    @ResponseBody
-    public List<Category> populateCategories() {
-        List<Category> listOfCategories = categoryDao.getAllCategories();
-        return listOfCategories;
-    }
-
-    @RequestMapping(value = "/admin/edit/categories", method = RequestMethod.GET)
-    @ResponseBody
-    public List<Category> populateEditCategories() {
-        List<Category> listOfCategories = categoryDao.getAllCategories();
-        return listOfCategories;
-    }
-
-    @RequestMapping(value = "/admin/tags", method = RequestMethod.GET)
-    @ResponseBody
-    public List<Tag> populateTags() {
-        List<Tag> listOfTags = tagDao.getAllTags(false);
-        return listOfTags;
-    }
-
-    @RequestMapping(value = "/admin/edit/tags", method = RequestMethod.GET)
-    @ResponseBody
-    public List<Tag> populateEditTags() {
-        List<Tag> listOfTags = tagDao.getAllTags(false);
-        return listOfTags;
-    }
-
     @RequestMapping(value = "admin/post", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
@@ -225,5 +197,49 @@ public class DashboardController {
     public String manageCategories(Model model) {
         model.addAttribute("categoryTag", "Categories");
         return "tagcategory";
+    }
+    
+    @RequestMapping(value = "admin/Tags", method = RequestMethod.POST)
+    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseBody
+    public Tag addTag(@Valid @RequestBody String tag) {
+        return tagDao.addTag(tag);
+    }
+    
+    @RequestMapping(value = "admin/Categories", method = RequestMethod.POST)
+    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseBody
+    public Category addCategory(@Valid @RequestBody String category) {
+        return categoryDao.addCategory(category);
+    }
+    
+    @RequestMapping(value = "admin/Categories/{categoryId}", method = RequestMethod.PUT)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void editCategory(@Valid @RequestBody String categoryDescription, @PathVariable("categoryId") int categoryId) {
+        Category category = new Category();
+        category.setCategoryID(categoryId);
+        category.setCategoryDescription(categoryDescription);
+        categoryDao.updateCategory(category);
+    }
+    
+    @RequestMapping(value = "admin/Tags/{tagId}", method = RequestMethod.PUT)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void editTag(@Valid @RequestBody String tagDescription, @PathVariable("tagId") int tagId) {
+        Tag tag = new Tag();
+        tag.setTagID(tagId);
+        tag.setTagDescription(tagDescription);
+        tagDao.updateTag(tag);
+    }
+    
+    @RequestMapping(value = "admin/Categories/{categoryId}", method = RequestMethod.DELETE)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteCategory(@PathVariable("categoryId") int categoryId) {
+        categoryDao.deleteCategory(categoryId);
+    }
+    
+    @RequestMapping(value = "admin/Tags/{tagId}", method = RequestMethod.DELETE)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void editTag(@PathVariable("tagId") int tagId) {
+        tagDao.deleteTag(tagId);
     }
 }

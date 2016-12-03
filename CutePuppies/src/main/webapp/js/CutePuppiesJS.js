@@ -175,7 +175,7 @@ function updatePageNav(selectedPage) {
 
 function populateCategories() {
     $.ajax({
-        url: 'categories'
+        url: contextPath + '/categories'
     }).success(function (data, status) {
         $.each(data, function (index, category) {
             $("#categoryList").append($('<a href="#"' + category.categoryID + '>')
@@ -190,7 +190,7 @@ function populateCategories() {
 
 function populateTags() {
     $.ajax({
-        url: 'tags'
+        url: contextPath + '/tags/true'
     }).success(function (data, status) {
         $.each(data, function (index, tag) {
             $("#tagList").append($('<li data-weight="' + tag.numUsed + '"><a href="#">' + tag.tagDescription + '</a></li>')
