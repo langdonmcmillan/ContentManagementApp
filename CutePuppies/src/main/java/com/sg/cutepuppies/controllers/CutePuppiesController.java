@@ -52,7 +52,6 @@ public class CutePuppiesController {
         return "blog";
     }
 
-
     @RequestMapping(value = "blog/", method = RequestMethod.GET)
     @ResponseBody
     public List<Post> getPagePosts(String pageNumber, String postsPerPage, String tagId, String categoryId) {
