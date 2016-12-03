@@ -127,6 +127,18 @@ public class UserDbImpl implements UserDaoInterface {
         jdbcTemplate.update(SQL_DELETE_USER, username);
     }
 
+    @Override
+    public User addUser(User newUser) {
+        jdbcTemplate.update(SQL_INSERT_USER, newUser.getUserName(), newUser.getUserPassword());
+        newUser.setUserId(jdbcTemplate.queryForObject("select LAST_INSERT_ID()", Integer.class));
+        return newUser;
+    }
+
+    @Override
+    public void deleteUser(String username) {
+        jdbcTemplate.update(SQL_DELETE_USER, username);
+    }
+
     private static final class UserMapper implements RowMapper<User> {
 
         @Override
