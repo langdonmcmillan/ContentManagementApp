@@ -43,7 +43,7 @@ function fillTableWithAllPosts(listOfAllPosts) {
         var postCreateDate = new Date(post.createdOnDate);
         var contentCreateDate = new Date(post.mostRecentContent.createdOnDate);
 
-        var contentCreateDateString = contentCreateDate.toLocalDateString() + " " + contentCreateDate.toLocalTimeString([], {hour: '2-digit', minute:'2-digit'});
+        var contentCreateDateString = contentCreateDate.toLocaleDateString() + " " + contentCreateDate.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
         var postCreateDateString = postCreateDate.toLocaleDateString() + " " + postCreateDate.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
 
         if ((postCreateName === contentCreateName) && (postCreateDateString) === contentCreateDateString) {

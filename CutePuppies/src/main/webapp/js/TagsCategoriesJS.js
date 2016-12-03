@@ -38,7 +38,7 @@ function populateCategories() {
             $("#tableBody").append(row);
             $(row).append($('<th>')
                     .html('<span id="cell' + category.categoryID + '">' + category.categoryDescription + '</span>' +
-                            '<input id="input' + category.categoryID + '" type="text" class="edit editInput" value="' + category.categoryDescription + '">'))
+                            '<input id="input' + category.categoryID + '" type="text" class="edit editInput form-control" value="' + category.categoryDescription + '">'))
                     .append($('<td>')
                             .attr({
                                 'data-description': category.categoryDescription,
@@ -68,7 +68,7 @@ function populateTags() {
             $("#tableBody").append(row);
             $(row).append($('<th>')
                     .html('<span id="cell' + tag.tagID + '">' + tag.tagDescription + '</span>' +
-                            '<input id="input' + tag.tagID + '" type="text" class="edit editInput" value="' + tag.tagDescription + '">'))
+                            '<input id="input' + tag.tagID + '" type="text" class="edit editInput form-control" value="' + tag.tagDescription + '">'))
                     .append($('<td>')
                             .attr({
                                 'data-description': tag.tagDescription,
