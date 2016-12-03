@@ -4,21 +4,69 @@
  * and open the template in the editor.
  */
 
+var archiveBoxChecked = $('#showArchivedPosts').is(':checked');
 
 $(document).ready(function () {
-    var archiveBoxChecked = $('#showArchivedPosts').is(':checked');
-    loadAllPosts(archiveBoxChecked);
     sessionStorage.setItem('pageNumber', 1);
-});
-
-$('#pagesDashboard').click(function () {
-    window.location.href = $(this).find("a").attr("href");
+    loadContent();
 });
 
 $("#showArchivedPosts").change(function () {
     var archiveBoxChecked = $('#showArchivedPosts').is(':checked');
-    loadAllPosts(archiveBoxChecked);
+    if (pageType === 'StaticPage') {
+        loadStaticPages(archiveBoxChecked);
+    } else {
+        loadAllPosts(archiveBoxChecked);
+    }
 });
+
+function loadContent() {
+    if (pageType === 'StaticPage') {
+        loadStaticPages(archiveBoxChecked);
+    } else {
+        loadAllPosts(archiveBoxChecked);
+    }
+}
+
+function loadStaticPages(archiveBoxChecked) {
+    $.ajax({
+        type: 'GET',
+        url: 'displayPages/' + archiveBoxChecked
+    }).success(function (data, status) {
+        fillTableWithAllStaticPages(data);
+    }).error(function (data, status) {
+
+    });
+}
+
+
+function fillTableWithAllStaticPages(listOfAllStaticPageContent) {
+    $('#listTitle').text('List Of All Static Pages');
+    var tbody = $('#populateTable');
+    tbody.empty();
+    $.each(listOfAllStaticPageContent, function (index, content) {
+        var contentCreateName = content.createdByUser.userName;
+        var contentUpdateName = (content.updatedByUser === null) ? '-' : content.updatedByUser.userName;
+        var contentCreateDate = new Date(content.createdOnDate);
+        var contentUpdateDate = (content.updatedOnDate === null) ? '-' : new Date(content.updatedOnDate);
+
+        var contentCreateDateString = contentCreateDate.toLocaleDateString() + " " + contentCreateDate.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'});
+        var contentUpdateDateString = (contentUpdateDate === '-') ? '-' : contentUpdateDate.toLocaleDateString() + " " + contentUpdateDate.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'});
+
+        if ((contentCreateName === contentUpdateName) && (contentUpdateDateString === contentCreateDateString)) {
+            contentUpdateName = '-';
+            contentUpdateDateString = '-';
+        }
+        tbody.append($('<tr>')
+
+                .append($('<td>').append($('<a>').attr('href', 'edit/' + content.contentId)
+                        .text(content.title)))
+                .append($('<td>').addClass('contentCreateName').text(contentCreateName))
+                .append($('<td>').addClass('contentCreateDate').text(contentCreateDateString))
+                .append($('<td>').addClass('contentUpdateName').text(contentUpdateName))
+                .append($('<td>').addClass('contentUpdateUser').text(contentUpdateDateString)));
+    });
+}
 
 function loadAllPosts(archiveBoxChecked) {
     $.ajax({
@@ -43,10 +91,10 @@ function fillTableWithAllPosts(listOfAllPosts) {
         var postCreateDate = new Date(post.createdOnDate);
         var contentCreateDate = new Date(post.mostRecentContent.createdOnDate);
 
-        var contentCreateDateString = contentCreateDate.toLocalDateString() + " " + contentCreateDate.toLocalTimeString([], {hour: '2-digit', minute:'2-digit'});
-        var postCreateDateString = postCreateDate.toLocaleDateString() + " " + postCreateDate.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+        var contentCreateDateString = contentCreateDate.toLocaleDateString() + " " + contentCreateDate.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'});
+        var postCreateDateString = postCreateDate.toLocaleDateString() + " " + postCreateDate.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'});
 
-        if ((postCreateName === contentCreateName) && (postCreateDateString) === contentCreateDateString) {
+        if ((postCreateName === contentCreateName) && (postCreateDateString === contentCreateDateString)) {
             contentCreateName = '-';
             contentCreateDateString = '-';
         }
@@ -66,6 +114,5 @@ function fillTableWithAllPosts(listOfAllPosts) {
     $("tr").click(function () {
         window.location.href = $(this).find("a").attr("href");
     });
-    
-    $('#')
+
 }

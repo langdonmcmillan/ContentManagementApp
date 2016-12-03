@@ -47,7 +47,7 @@ public class CutePuppiesController {
 
     @RequestMapping(value = {"/"}, method = RequestMethod.GET)
     public String getLandingPage(Model model) {
-        List<Content> allStaticPages = contentDao.getAllStaticPages();
+        List<Content> allStaticPages = contentDao.getPublishedStaticPages();
         model.addAttribute("allStaticPages", allStaticPages);
         return "blog";
     }
@@ -96,18 +96,20 @@ public class CutePuppiesController {
 
     @RequestMapping(value = "/{urlPattern}", method = RequestMethod.GET)
     public String displayStaticPage(@PathVariable("urlPattern") String urlPattern, Model model) {
-        List<Content> allStaticPages = contentDao.getAllStaticPages();
+        List<Content> allStaticPages = contentDao.getPublishedStaticPages();
         model.addAttribute("allStaticPages", allStaticPages);
 
         Content staticPage = contentDao.getStaticPageByURL(urlPattern);
-        staticPage.setCreatedByUser(userDao.getUserWhoCreatedContent(staticPage.getContentId()));
+        int staticPageId = staticPage.getContentId();
+        staticPage.setCreatedByUser(userDao.getUserWhoCreatedContent(staticPageId));
+        staticPage.setUpdatedByUser(userDao.getUserWhoUpdatedContent(staticPageId));
         model.addAttribute("staticPage", staticPage);
         return "/blog";
     }
 
     @RequestMapping(value = "post/{postId}", method = RequestMethod.GET)
     public String displayPost(@PathVariable("postId") int postId, Model model) {
-        List<Content> allStaticPages = contentDao.getAllStaticPages();
+        List<Content> allStaticPages = contentDao.getPublishedStaticPages();
         model.addAttribute("allStaticPages", allStaticPages);
         Post post = postDao.getPostByID(postId);
         Content postContent = contentDao.getPublishedPostContent(postId);

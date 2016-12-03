@@ -39,7 +39,13 @@ public class ContentDbImpl implements ContentDaoInterface {
     // SQL PREPARED STATEMENTS
     private static final String SQL_GET_ALL_STATIC_PAGES
             = "select c.* from Content c "
-            + " where c.ContentTypeCode = 'STATIC PAGE'";
+            + " where 1 = 1 "
+            + " and c.ContentTypeCode = 'STATIC PAGE'";
+    private static final String SQL_GET_PUBLISHED_STATIC_PAGES
+            = "select c.* from Content c "
+            + " where 1 = 1 "
+            + " and c.ContentTypeCode = 'STATIC PAGE' "
+            + " and c.ContentStatusCode = 'PUBLISHED'";
 
     private static final String SQL_GET_STATIC_PAGE_BY_URL
             = "select c.* from Content c "
@@ -169,8 +175,19 @@ public class ContentDbImpl implements ContentDaoInterface {
     }
 
     @Override
-    public List<Content> getAllStaticPages() {
-        return jdbcTemplate.query(SQL_GET_ALL_STATIC_PAGES, new ContentMapper());
+    public List<Content> getAllStaticPages(boolean showArchived) {
+        String SQL_BASE = SQL_GET_ALL_STATIC_PAGES;
+        if (showArchived == false) {
+            SQL_BASE += " and (select c.ContentStatusCode != 'ARCHIVED')";
+        }
+        SQL_BASE += " order by c.CreatedOnDate desc";
+
+        return jdbcTemplate.query(SQL_BASE, new ContentMapper());
+    }
+
+    @Override
+    public List<Content> getPublishedStaticPages() {
+        return jdbcTemplate.query(SQL_GET_PUBLISHED_STATIC_PAGES, new ContentMapper());
     }
 
     @Override

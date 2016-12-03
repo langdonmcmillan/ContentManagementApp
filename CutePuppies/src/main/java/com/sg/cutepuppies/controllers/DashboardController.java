@@ -57,13 +57,24 @@ public class DashboardController {
     public String getDashBoardPage() {
         return "dashboard";
     }
-    
-    @RequestMapping(value = {"/admin/dashboard/pages"}, method = RequestMethod.GET)
+
+    @RequestMapping(value = "/admin/dashboard/pages", method = RequestMethod.GET)
     public String getPagesDashboard(Model model) {
-        List<Content> allStaticPages = contentDao.getAllStaticPages();
-        model.addAttribute("allStaticPages", allStaticPages);
-        
+        model.addAttribute("PageType", "StaticPage");
         return "dashboard";
+    }
+
+    @RequestMapping(value = "/admin/dashboard/displayPages/{archiveBoxChecked}", method = RequestMethod.GET)
+    @ResponseBody
+    public List<Content> displayPagesDashboard(@PathVariable("archiveBoxChecked") boolean showArchived) {
+        List<Content> listOfAllStaticPgs = contentDao.getAllStaticPages(showArchived);
+        listOfAllStaticPgs.forEach(content -> {
+            int contentId = content.getContentId();
+            content.setCreatedByUser(userDao.getUserWhoCreatedContent(contentId));
+            content.setUpdatedByUser(userDao.getUserWhoUpdatedContent(contentId));
+            content.setArchivedByUser(userDao.getUserWhoArchivedContent(contentId));
+        });
+        return listOfAllStaticPgs;
     }
 
     @RequestMapping(value = "admin/getAllPosts/{archiveBoxChecked}", method = RequestMethod.GET)
@@ -131,10 +142,10 @@ public class DashboardController {
                 content = allContent.get(x);
             }
         }
-        
+
         content.setListOfCategories(categoryDao.getCategoriesByContentId(content.getContentId()));
         content.setListOfTags(tagDao.getTagsByContentId(content.getContentId()));
-        
+
         return content;
     }
 
@@ -186,33 +197,33 @@ public class DashboardController {
     public void archiveContent(@PathVariable("contentId") int contentID, @PathVariable("userId") int userId) {
         contentDao.archiveContent(contentID, userId);
     }
-    
+
     @RequestMapping(value = "admin/manageTags", method = RequestMethod.GET)
     public String manageTags(Model model) {
         model.addAttribute("categoryTag", "Tags");
         return "tagcategory";
     }
-    
+
     @RequestMapping(value = "admin/manageCategories", method = RequestMethod.GET)
     public String manageCategories(Model model) {
         model.addAttribute("categoryTag", "Categories");
         return "tagcategory";
     }
-    
+
     @RequestMapping(value = "admin/Tags", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     public Tag addTag(@Valid @RequestBody String tag) {
         return tagDao.addTag(tag);
     }
-    
+
     @RequestMapping(value = "admin/Categories", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     public Category addCategory(@Valid @RequestBody String category) {
         return categoryDao.addCategory(category);
     }
-    
+
     @RequestMapping(value = "admin/Categories/{categoryId}", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void editCategory(@Valid @RequestBody String categoryDescription, @PathVariable("categoryId") int categoryId) {
@@ -221,7 +232,7 @@ public class DashboardController {
         category.setCategoryDescription(categoryDescription);
         categoryDao.updateCategory(category);
     }
-    
+
     @RequestMapping(value = "admin/Tags/{tagId}", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void editTag(@Valid @RequestBody String tagDescription, @PathVariable("tagId") int tagId) {
@@ -230,13 +241,13 @@ public class DashboardController {
         tag.setTagDescription(tagDescription);
         tagDao.updateTag(tag);
     }
-    
+
     @RequestMapping(value = "admin/Categories/{categoryId}", method = RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteCategory(@PathVariable("categoryId") int categoryId) {
         categoryDao.deleteCategory(categoryId);
     }
-    
+
     @RequestMapping(value = "admin/Tags/{tagId}", method = RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void editTag(@PathVariable("tagId") int tagId) {

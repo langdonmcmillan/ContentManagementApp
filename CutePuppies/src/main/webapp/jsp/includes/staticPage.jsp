@@ -2,8 +2,8 @@
 <div class="staticPage">
     <h1 class="title">${staticPage.title}</h1>
     <p class = "lead userName">created by <a href="#">${staticPage.createdByUser.userName}</a></p>
-    <c:if test="${staticPage.createdByUser.userName != staticPage.createdByUser.userName}">
-        <p class = "lead userName">updated by <a href="#">${staticPage.createdByUser.userName}</a></p>
+    <c:if test="${(staticPage.createdByUser.userName != staticPage.updatedByUser.userName) && (staticPage.createdOnDate != staticPage.updatedOnDate)}">
+        <p class = "lead userName">updated by <a href="#">${staticPage.updatedByUser.userName}</a></p>
     </c:if>
     <hr>
     <p>

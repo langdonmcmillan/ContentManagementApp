@@ -84,7 +84,11 @@ public class UserDbImpl implements UserDaoInterface {
 
     @Override
     public User getUserWhoUpdatedContent(int contentId) {
-        return jdbcTemplate.queryForObject(SQL_GET_USER_WHO_UPDATED_CONTENT, new UserMapper(), contentId);
+        try {
+            return jdbcTemplate.queryForObject(SQL_GET_USER_WHO_UPDATED_CONTENT, new UserMapper(), contentId);
+        } catch (EmptyResultDataAccessException ex) {
+            return null;
+        }
     }
 
     @Override
@@ -98,7 +102,11 @@ public class UserDbImpl implements UserDaoInterface {
 
     @Override
     public User getUserWhoArchivedContent(int contentId) {
-        return jdbcTemplate.queryForObject(SQL_GET_USER_WHO_ARCHIVED_CONTENT, new UserMapper(), contentId);
+        try {
+            return jdbcTemplate.queryForObject(SQL_GET_USER_WHO_ARCHIVED_CONTENT, new UserMapper(), contentId);
+        } catch (EmptyResultDataAccessException ex) {
+            return null;
+        }
     }
 
     private static final class UserMapper implements RowMapper<User> {
