@@ -52,12 +52,8 @@ public class CutePuppiesController {
         return "blog";
     }
 
-//    @RequestMapping(value = {"/"}, method = RequestMethod.PUT)
-//    public String populateNavBar(Model model) {
-//
-//        return "blogNavbar";
-//    }
-    @RequestMapping(value = "getPagePosts/", method = RequestMethod.GET)
+
+    @RequestMapping(value = "blog/", method = RequestMethod.GET)
     @ResponseBody
     public List<Post> getPagePosts(String pageNumber, String postsPerPage, String tagId, String categoryId) {
         // parse to int: newestPostId, oldestPostId, postsPerPage, tagId, categoryId
