@@ -12,6 +12,7 @@ import java.sql.SQLException;
 import java.util.List;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 
 /**
  *
@@ -27,8 +28,14 @@ public class CategoryDbImpl implements CategoryDaoInterface {
     }
 
     // SQL PREPARED STATEMENTS
-    private static final String SQL_GET_ALL_CATEGORIES = "select * from Category";
+    private static final String SQL_GET_ALL_CATEGORIES = "select * from Category order by CategoryDescription asc";
     private static final String SQL_GET_CATEGORIES_BY_CONTENT_ID = "select ctg.* from Category ctg join content_category cc on ctg.CategoryId = cc.CategoryId where cc.ContentId = ?";
+    private static final String SQL_ADD_CATEGORY = "insert ignore into Category (CategoryDescription) "
+            + "values(?)";
+    private static final String SQL_UPDATE_CATEGORY = "update Category set CategoryDescription = ? where CategoryId = ?";
+    private static final String SQL_DELETE_CATEGORY = "delete from Category where CategoryId = ?";
+    private static final String SQL_DELETE_CONTENT_CATEGORY = "delete from content_category where CategoryId = ?";
+    private static final String SQL_GET_CATEGORY_ID = "select CategoryId from Category where CategoryDescription = ?";
 
     @Override
     public List<Category> getAllCategories() {
@@ -42,17 +49,23 @@ public class CategoryDbImpl implements CategoryDaoInterface {
 
     @Override
     public Category addCategory(String category) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        jdbcTemplate.update(SQL_ADD_CATEGORY, category);
+        Category newCategory = new Category();
+        newCategory.setCategoryDescription(category);
+        newCategory.setCategoryID(jdbcTemplate.queryForObject(SQL_GET_CATEGORY_ID, Integer.class, category));
+        return newCategory;
     }
 
     @Override
     public Category updateCategory(Category category) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        jdbcTemplate.update(SQL_UPDATE_CATEGORY, category.getCategoryDescription(), category.getCategoryID());
+        return category;
     }
 
     @Override
     public void deleteCategory(int categoryID) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        jdbcTemplate.update(SQL_DELETE_CONTENT_CATEGORY, categoryID);
+        jdbcTemplate.update(SQL_DELETE_CATEGORY, categoryID);
     }
 
     @Override

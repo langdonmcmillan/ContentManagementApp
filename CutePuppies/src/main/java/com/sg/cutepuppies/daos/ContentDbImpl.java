@@ -37,14 +37,23 @@ public class ContentDbImpl implements ContentDaoInterface {
     }
 
     // SQL PREPARED STATEMENTS
-    private static final String SQL_GET_ALL_REVISIONS_BY_POST_ID 
+    private static final String SQL_GET_ALL_STATIC_PAGES
+            = "select c.* from Content c "
+            + " where c.ContentTypeCode = 'STATIC PAGE'";
+
+    private static final String SQL_GET_STATIC_PAGE_BY_URL
+            = "select c.* from Content c "
+            + " where 1 = 1 "
+            + " and c.ContentTypeCode = 'STATIC PAGE'"
+            + " and c.UrlPattern = :urlPattern";
+    private static final String SQL_GET_ALL_REVISIONS_BY_POST_ID
             = "select c.* from Content c "
             + " join Post p on c.PostId = p.PostId "
             + " where c.PostId = ?";
     private static final String SQL_GET_PUBLISHED_CONTENT_BY_POST_ID = "select c.* from Content c join Post p "
             + "on c.PostId = p.PostId where c.ContentStatusCode = 'PUBLISHED' and c.PostId = ?";
-    
-    private static final String SQL_GET_MOST_RECENT_CONTENT_BY_POST_ID 
+
+    private static final String SQL_GET_MOST_RECENT_CONTENT_BY_POST_ID
             = " select c.* "
             + " from Content c "
             + " join Post p "
@@ -52,7 +61,7 @@ public class ContentDbImpl implements ContentDaoInterface {
             + " where p.PostId = ? "
             + " order by c.ContentId desc"
             + " limit 1";
-    
+
     private static final String SQL_ADD_CONTENT_TO_POST = "insert into Content (PostId, Title, "
             + "ContentImgLink, ContentImgAltTxt, Body, Snippet, ContentStatusCode, UrlPattern, ContentTypeCode, "
             + "CreatedByUserId) "
@@ -68,10 +77,10 @@ public class ContentDbImpl implements ContentDaoInterface {
             + "UpdatedByUserId = :userId, ArchivedOnDate = Current_Timestamp, ContentStatusCode = 'ARCHIVED' where PostId = :postId";
     private static final String SQL_ARCHIVE_CONTENT = "update Content set ArchivedByUserId = :userId, "
             + "UpdatedByUserId = :userId, ArchivedOnDate = Current_Timestamp, ContentStatusCode = 'ARCHIVED' where ContentId = :contentId";
-    
+
     private static final String SQL_ARCHIVE_CONTENT_BY_STATUS = "update Content set ContentStatusCode = 'ARCHIVED'"
             + "where ContentStatusCode =:contentStatusCode and PostId = :postID";
-    
+
     @Override
     public List<Content> getAllContentsByPostId(int postID) {
         return jdbcTemplate.query(SQL_GET_ALL_REVISIONS_BY_POST_ID, new ContentMapper(), postID);
@@ -95,23 +104,23 @@ public class ContentDbImpl implements ContentDaoInterface {
         namedParameters.addValue("contentTypeCode", content.getContentTypeCode());
         namedParameters.addValue("createdByUserID", content.getCreatedByUser().getUserId());
         namedParameters.addValue("createdOnDate", content.getCreatedOnDate());
-        
-       archiveContentByStatus(content.getPostId(), content.getContentStatusCode());
-        
+
+        archiveContentByStatus(content.getPostId(), content.getContentStatusCode());
+
         npJdbcTemplate.update(SQL_ADD_CONTENT_TO_POST, namedParameters);
         content.setContentId(jdbcTemplate.queryForObject("select LAST_INSERT_ID()", Integer.class));
         updateContentCategories(content);
         updateContentTags(content);
         return content;
     }
-    
-     private void archiveContentByStatus(int postId, String contentStatusCode) {
-        
+
+    private void archiveContentByStatus(int postId, String contentStatusCode) {
+
         MapSqlParameterSource namedParameters = new MapSqlParameterSource();
         namedParameters.addValue("postID", postId);
         namedParameters.addValue("contentStatusCode", contentStatusCode);
         npJdbcTemplate.update(SQL_ARCHIVE_CONTENT_BY_STATUS, namedParameters);
-         
+
     }
 
     private void archiveOldContent(int postID) {
@@ -161,17 +170,35 @@ public class ContentDbImpl implements ContentDaoInterface {
 
     @Override
     public List<Content> getAllStaticPages() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return jdbcTemplate.query(SQL_GET_ALL_STATIC_PAGES, new ContentMapper());
     }
 
     @Override
     public Content getStaticPageByURL(String urlPattern) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        MapSqlParameterSource namedParameters = new MapSqlParameterSource();
+        namedParameters.addValue("urlPattern", urlPattern);
+        return npJdbcTemplate.queryForObject(SQL_GET_STATIC_PAGE_BY_URL, namedParameters, new ContentMapper());
     }
 
     @Override
     public Content addStaticPage(Content content) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        MapSqlParameterSource namedParameters = new MapSqlParameterSource();
+        namedParameters.addValue("title", content.getTitle());
+        namedParameters.addValue("contentImgLink", content.getContentImgLink());
+        namedParameters.addValue("contentImgAltTxt", content.getContentImgAltTxt());
+        namedParameters.addValue("body", content.getBody());
+        namedParameters.addValue("snippet", content.getSnippet());
+        namedParameters.addValue("contentStatusCode", content.getContentStatusCode());
+        namedParameters.addValue("urlPattern", content.getUrlPattern());
+        namedParameters.addValue("contentTypeCode", content.getContentTypeCode());
+        namedParameters.addValue("createdByUserID", content.getCreatedByUser().getUserId());
+        namedParameters.addValue("createdOnDate", content.getCreatedOnDate());
+
+        archiveContentByStatus(content.getPostId(), content.getContentStatusCode());
+
+        npJdbcTemplate.update(SQL_ADD_CONTENT_TO_POST, namedParameters);
+        content.setContentId(jdbcTemplate.queryForObject("select LAST_INSERT_ID()", Integer.class));
+        return content;
     }
 
     @Override
@@ -205,8 +232,6 @@ public class ContentDbImpl implements ContentDaoInterface {
         npJdbcTemplate.update(SQL_ARCHIVE_POST, namedParameters);
     }
 
-   
-
     private static final class ContentMapper implements RowMapper<Content> {
 
         @Override
@@ -223,8 +248,7 @@ public class ContentDbImpl implements ContentDaoInterface {
             content.setContentStatusCode(rs.getString("ContentStatusCode"));
             content.setUrlPattern(rs.getString("UrlPattern"));
             content.setContentTypeCode(rs.getString("ContentTypeCode"));
-            
-            
+
             Timestamp createdTS = rs.getTimestamp("CreatedOnDate");
             Timestamp updatedTS = rs.getTimestamp("UpdatedOnDate");
             Timestamp archivedTS = rs.getTimestamp("ArchivedOnDate");
@@ -234,7 +258,7 @@ public class ContentDbImpl implements ContentDaoInterface {
             content.setCreatedOnDate(createDate);
             content.setUpdatedOnDate(updateDate);
             content.setArchivedOnDate(archiveDate);
-            
+
             return content;
         }
     }
