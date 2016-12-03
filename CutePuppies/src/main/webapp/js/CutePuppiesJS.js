@@ -31,6 +31,7 @@ $(document).ready(function () {
 
     populateCategories();
     populateTags();
+    showStaticPage();
 });
 
 $(document).ajaxComplete(function () {
@@ -42,6 +43,13 @@ $(document).ajaxComplete(function () {
     });
 });
 
+function showStaticPage() {
+    if ($.isEmptyObject(staticPage) === false) {
+        $('#sidebar').hide();
+        $('#allPosts').removeClass('col-md-8').addClass('col-md-12');
+        $('#pagination').hide();
+    }
+}
 function loadPagePosts() {
     $.ajax({
         type: 'GET',
@@ -65,13 +73,8 @@ function fillPostSnippetsContainer(posts) {
     $.each(posts, function (index, post) {
         var appendInput = '';
         var postCreateDate = new Date(post.createdOnDate);
-        var postCreateDateString =
-                postCreateDate.getUTCFullYear() + "/" +
-                ("0" + (postCreateDate.getUTCMonth() + 1)).slice(-2) + "/" +
-                ("0" + postCreateDate.getUTCDate()).slice(-2) + " " +
-                ("0" + postCreateDate.getUTCHours()).slice(-2) + ":" +
-                ("0" + postCreateDate.getUTCMinutes()).slice(-2);
-        
+
+        var postCreateDateString = postCreateDate.toLocaleDateString() + " " + postCreateDate.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'});
         if (!post.createdByUser.userName === post.publishedContent.createdByUser.userName) {
             appendInput = $('<p class = "lead userName">').html('updated by <a href="#">' + post.publishedContent.createdByUser.userName + '</a>');
         }
@@ -84,7 +87,7 @@ function fillPostSnippetsContainer(posts) {
                 .append(appendInput)
                 .append('<hr>')
                 .append($('<p>')
-                        .html('<span class="glyphicon glyphicon-time createdOnDate"></span><span>' + ' '+postCreateDateString + '</span>')))
+                        .html('<span class="glyphicon glyphicon-time createdOnDate"></span><span>' + ' ' + postCreateDateString + '</span>')))
                 .append($('<div>')
                         .attr('id', 'categories' + post.publishedContent.contentId)
                         .append($('<img>')

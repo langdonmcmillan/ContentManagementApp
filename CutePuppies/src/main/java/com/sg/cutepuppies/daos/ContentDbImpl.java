@@ -44,7 +44,7 @@ public class ContentDbImpl implements ContentDaoInterface {
     private static final String SQL_GET_STATIC_PAGE_BY_URL
             = "select c.* from Content c "
             + " where 1 = 1 "
-            + " and c.ContentTypeCode = 'PAGE'"
+            + " and c.ContentTypeCode = 'STATIC PAGE'"
             + " and c.UrlPattern = :urlPattern";
     private static final String SQL_GET_ALL_REVISIONS_BY_POST_ID
             = "select c.* from Content c "

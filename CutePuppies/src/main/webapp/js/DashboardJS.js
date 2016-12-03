@@ -43,19 +43,8 @@ function fillTableWithAllPosts(listOfAllPosts) {
         var postCreateDate = new Date(post.createdOnDate);
         var contentCreateDate = new Date(post.mostRecentContent.createdOnDate);
 
-        var contentCreateDateString =
-                contentCreateDate.getUTCFullYear() + "/" +
-                ("0" + (contentCreateDate.getUTCMonth() + 1)).slice(-2) + "/" +
-                ("0" + contentCreateDate.getUTCDate()).slice(-2) + " " +
-                ("0" + contentCreateDate.getUTCHours()).slice(-2) + ":" +
-                ("0" + contentCreateDate.getUTCMinutes()).slice(-2);
-
-        var postCreateDateString =
-                postCreateDate.getUTCFullYear() + "/" +
-                ("0" + (postCreateDate.getUTCMonth() + 1)).slice(-2) + "/" +
-                ("0" + postCreateDate.getUTCDate()).slice(-2) + " " +
-                ("0" + postCreateDate.getUTCHours()).slice(-2) + ":" +
-                ("0" + postCreateDate.getUTCMinutes()).slice(-2);
+        var contentCreateDateString = contentCreateDate.toLocalDateString() + " " + contentCreateDate.toLocalTimeString([], {hour: '2-digit', minute:'2-digit'});
+        var postCreateDateString = postCreateDate.toLocaleDateString() + " " + postCreateDate.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
 
         if ((postCreateName === contentCreateName) && (postCreateDateString) === contentCreateDateString) {
             contentCreateName = '-';
