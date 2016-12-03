@@ -13,12 +13,20 @@ import com.sg.cutepuppies.models.User;
  */
 public interface UserDaoInterface {
 
+    public User addUser(User newUser);
+
+    public void deleteUser(String username);
+
     public User getUserWhoCreatedPost(int postId);
+
     public User getUserWhoUpdatedPost(int postId);
+
     public User getUserWhoArchivedPost(int postId);
-    
+
     public User getUserWhoCreatedContent(int contentId);
+
     public User getUserWhoUpdatedContent(int contentId);
+
     public User getUserWhoArchivedContent(int contentId);
 
 }
