@@ -124,33 +124,33 @@ public class DashboardController {
         return "edit";
     }
 
-    @RequestMapping(value = "/admin/categories", method = RequestMethod.GET)
-    @ResponseBody
-    public List<Category> populateCategories() {
-        List<Category> listOfCategories = categoryDao.getAllCategories();
-        return listOfCategories;
-    }
-    
-    @RequestMapping(value = "/admin/edit/categories", method = RequestMethod.GET)
-    @ResponseBody
-    public List<Category> populateEditCategories() {
-        List<Category> listOfCategories = categoryDao.getAllCategories();
-        return listOfCategories;
-    }
-
-    @RequestMapping(value = "/admin/tags", method = RequestMethod.GET)
-    @ResponseBody
-    public List<Tag> populateTags() {
-        List<Tag> listOfTags = tagDao.getAllTags(false);
-        return listOfTags;
-    }
-    
-    @RequestMapping(value = "/admin/edit/tags", method = RequestMethod.GET)
-    @ResponseBody
-    public List<Tag> populateEditTags() {
-        List<Tag> listOfTags = tagDao.getAllTags(false);
-        return listOfTags;
-    }
+//    @RequestMapping(value = "/admin/categories", method = RequestMethod.GET)
+//    @ResponseBody
+//    public List<Category> populateCategories() {
+//        List<Category> listOfCategories = categoryDao.getAllCategories();
+//        return listOfCategories;
+//    }
+//    
+//    @RequestMapping(value = "/admin/edit/categories", method = RequestMethod.GET)
+//    @ResponseBody
+//    public List<Category> populateEditCategories() {
+//        List<Category> listOfCategories = categoryDao.getAllCategories();
+//        return listOfCategories;
+//    }
+//
+//    @RequestMapping(value = "/admin/tags", method = RequestMethod.GET)
+//    @ResponseBody
+//    public List<Tag> populateTags() {
+//        List<Tag> listOfTags = tagDao.getAllTags(false);
+//        return listOfTags;
+//    }
+//    
+//    @RequestMapping(value = "/admin/edit/tags", method = RequestMethod.GET)
+//    @ResponseBody
+//    public List<Tag> populateEditTags() {
+//        List<Tag> listOfTags = tagDao.getAllTags(false);
+//        return listOfTags;
+//    }
 
     @RequestMapping(value = "admin/post", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)

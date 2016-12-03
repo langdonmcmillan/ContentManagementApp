@@ -45,7 +45,7 @@ $(document).ajaxComplete(function () {
 function loadPagePosts() {
     $.ajax({
         type: 'GET',
-        url: 'getPagePosts/',
+        url: 'blog/',
         data: {
             pageNumber: sessionStorage.getItem('pageNumber'),
             postsPerPage: sessionStorage.getItem('postsPerPage'),

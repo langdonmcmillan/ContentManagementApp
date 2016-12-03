@@ -50,7 +50,7 @@ public class CutePuppiesController {
         return "blog";
     }
 
-    @RequestMapping(value = "getPagePosts/", method = RequestMethod.GET)
+    @RequestMapping(value = "blog/", method = RequestMethod.GET)
     @ResponseBody
     public List<Post> getPagePosts(String pageNumber, String postsPerPage, String tagId, String categoryId) {
         // parse to int: newestPostId, oldestPostId, postsPerPage, tagId, categoryId
@@ -86,21 +86,6 @@ public class CutePuppiesController {
         });
         return listOfPosts;
     }
-
-//    @RequestMapping(value = "displayPost/{postId}", method = RequestMethod.GET)
-//    @ResponseBody
-//    public Post displayPost(@PathVariable("postId") int postId) {
-//        Post post = postDao.getPostByID(postId);
-//        Content postContent = contentDao.getPublishedPostContent(postId);
-//        
-//        postContent.setListOfTags(tagDao.getTagsByContentId(postContent.getContentId()));
-//        postContent.setListOfCategories(categoryDao.getCategoriesByContentId(postContent.getContentId()));
-//        postContent.setCreatedByUser(userDao.getUserWhoCreatedContent(postContent.getContentId()));
-//        post.setCreatedByUser(userDao.getUserWhoCreatedPost(postId));
-//        
-//        post.setPublishedContent(postContent);
-//        return post;
-//    }
     
     @RequestMapping(value = "post/{postId}", method = RequestMethod.GET)
     public String displayPost(@PathVariable("postId") int postId, Model model) {
