@@ -8,7 +8,7 @@ $(document).ready(function () {
     setSessionProperties();
     updatePageNav(sessionStorage.getItem('pageNumber'));
     if (!$.trim($("#allPosts").html())) {
-        loadPagePosts();
+        loadPagePosts("");
 
         $('#itemsPerPageSelect').val(sessionStorage.getItem('postsPerPage'));
 
@@ -16,13 +16,13 @@ $(document).ready(function () {
             var selectedPage = $(this).data('value');
             if (selectedPage != 0) {
                 updatePageNav(selectedPage);
-                loadPagePosts();
+                loadPagePosts("");
             }
         });
 
         $('#itemsPerPageSelect').change(function () {
             sessionStorage.setItem('postsPerPage', $('#itemsPerPageSelect option:selected').val());
-            loadPagePosts();
+            loadPagePosts("");
         });
     }
 
@@ -50,7 +50,8 @@ function showStaticPage() {
         $('#pagination').hide();
     }
 }
-function loadPagePosts() {
+function loadPagePosts(searchTerm) {
+    $('#searchInput').val("");
     $.ajax({
         type: 'GET',
         url: 'getPagePosts/',
@@ -58,7 +59,8 @@ function loadPagePosts() {
             pageNumber: sessionStorage.getItem('pageNumber'),
             postsPerPage: sessionStorage.getItem('postsPerPage'),
             tagId: sessionStorage.getItem('selectedTagId'),
-            categoryId: sessionStorage.getItem('selectedCategoryId')
+            categoryId: sessionStorage.getItem('selectedCategoryId'),
+            searchTerm: searchTerm
         }
     }).success(function (data, status) {
         fillPostSnippetsContainer(data);
@@ -211,7 +213,7 @@ $(document).on('click', '.category', function () {
     sessionStorage.setItem('selectedTagId', 'null');
     sessionStorage.setItem('selectedCategoryId', $(this).data('categoryid'));
     updatePageNav(1);
-    loadPagePosts();
+    loadPagePosts("");
 });
 
 $(document).on('click', '.tag', function () {
@@ -219,6 +221,14 @@ $(document).on('click', '.tag', function () {
     sessionStorage.setItem('selectedTagId', $(this).data('tagid'));
     sessionStorage.setItem('selectedCategoryId', 'null');
     updatePageNav(1);
-    loadPagePosts();
+    loadPagePosts("");
+});
+
+$('#searchButton').click(function() {
+    var searchTerm = $('#searchInput').val();
+    sessionStorage.setItem('selectedTagId', 'null');
+    sessionStorage.setItem('selectedCategoryId', 'null');
+    updatePageNav(1);
+    loadPagePosts(searchTerm);
 });
 

@@ -47,7 +47,8 @@ public class PostDbImpl implements PostDaoInterface {
             + " left join content_category cc on c.ContentId = cc.ContentId"
             + " left join Category ctg on cc.CategoryId = ctg.CategoryId"
             + " where 1 = 1"
-            + " and c.ContentStatusCode = 'PUBLISHED'";
+            + " and c.ContentStatusCode = 'PUBLISHED'"
+            + " and (c.Title like :searchTerm or c.Body like :searchTerm)";
 
     private static final String SQL_UPDATE_POST = "update Post"
             + "set CreatedUserId = ?"
@@ -132,7 +133,7 @@ public class PostDbImpl implements PostDaoInterface {
     }
 
     @Override
-    public List<Post> getPostsByAllCriteria(int pageNumberInt, int postsPerPageInt, int tagIdInt, int categoryIdInt) {
+    public List<Post> getPostsByAllCriteria(int pageNumberInt, int postsPerPageInt, int tagIdInt, int categoryIdInt, String searchTerm) {
         MapSqlParameterSource namedParameters = new MapSqlParameterSource();
         // set base query
         String SQL_QUERY = SQL_GET_POSTS_BY_ALL_CRITERIA;
@@ -150,6 +151,9 @@ public class PostDbImpl implements PostDaoInterface {
         SQL_QUERY += " order by p.CreatedOnDate desc limit :postsPerPage offset :postOffset";
         namedParameters.addValue("postsPerPage", postsPerPageInt);
         namedParameters.addValue("postOffset", postsPerPageInt * (pageNumberInt - 1));
+        // always search by search term - if not a search, it will be empty string
+        // which will not affect results
+        namedParameters.addValue("searchTerm", "%" + searchTerm + "%");
         return npJdbcTemplate.query(SQL_QUERY, namedParameters, new PostMapper());
 
     }

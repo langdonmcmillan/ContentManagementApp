@@ -64,9 +64,9 @@
                         <div class="well">
                             <h4>Blog Search</h4>
                             <div class="input-group">
-                                <input type="text" class="form-control">
+                                <input id="searchInput" type="text" class="form-control" placeholder="Search posts">
                                 <span class="input-group-btn">
-                                    <button class="btn btn-default" type="button">
+                                    <button id="searchButton" class="btn btn-default" type="button">
                                         <span class="glyphicon glyphicon-search"></span>
                                     </button>
                                 </span>

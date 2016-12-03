@@ -40,24 +40,6 @@ $(document).on('click', '.revision', function () {
     });
 });
 
-$('#publishButton').click(function () {
-    var contentStatusCode = 'PUBLISHED';
-    if (postID === null || postID === 0) {
-        addPost(contentStatusCode);
-    } else {
-        addContent(contentStatusCode);
-    }
-});
-
-$('#saveButton').click(function () {
-    var contentStatusCode = 'DRAFT';
-    if (postID === null || postID === 0) {
-        addPost(contentStatusCode);
-    } else {
-        addContent(contentStatusCode);
-    }
-});
-
 $('#deleteButton').click(function () {
     if (postID === null || postID === 0) {
         window.location.assign('/CutePuppies/admin/dashboard');
@@ -370,7 +352,7 @@ function addPost(contentStatusCode) {
     });
     $.ajax({
         type: 'POST',
-        url: 'post',
+        url: contextPath + '/admin/post',
         data: JSON.stringify({
             createdByUser: user,
             mostRecentContent: newContent

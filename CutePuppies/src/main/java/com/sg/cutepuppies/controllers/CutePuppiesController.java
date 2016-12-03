@@ -59,7 +59,7 @@ public class CutePuppiesController {
 //    }
     @RequestMapping(value = "getPagePosts/", method = RequestMethod.GET)
     @ResponseBody
-    public List<Post> getPagePosts(String pageNumber, String postsPerPage, String tagId, String categoryId) {
+    public List<Post> getPagePosts(String pageNumber, String postsPerPage, String tagId, String categoryId, String searchTerm) {
         // parse to int: newestPostId, oldestPostId, postsPerPage, tagId, categoryId
         int pageNumberInt = 0;
         int postsPerPageInt = 0;
@@ -80,7 +80,7 @@ public class CutePuppiesController {
         }
 
         // get me a list of Post objects.
-        List<Post> listOfPosts = postDao.getPostsByAllCriteria(pageNumberInt, postsPerPageInt, tagIdInt, categoryIdInt);
+        List<Post> listOfPosts = postDao.getPostsByAllCriteria(pageNumberInt, postsPerPageInt, tagIdInt, categoryIdInt, searchTerm);
 
         listOfPosts.forEach((post) -> {
             int postId = post.getPostId();

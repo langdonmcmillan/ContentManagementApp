@@ -34,7 +34,7 @@ public class TagDbImpl implements TagDaoInterface {
             + "where c.ContentStatusCode = 'PUBLISHED' "
             + "group by t.TagId, t.TagDescription "
             + "order by useNum desc "
-            + "limit 50";
+            + "limit 30";
     // This will return all tags alphabetically - for use in the dashboard (does not give count used for tag cloud)
     private static final String SQL_GET_ALL_TAGS = "select TagId, TagDescription from Tag "
             + "order by TagDescription asc";
