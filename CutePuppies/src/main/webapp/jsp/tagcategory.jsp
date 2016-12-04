@@ -82,8 +82,8 @@
         <script src="${pageContext.request.contextPath}/js/jquery-2.2.4.min.js"></script>
         <script src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>
         <script src="${pageContext.request.contextPath}/js/TagsCategoriesJS.js"></script>
-          
         <script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
         <script>tinymce.init({selector: 'textarea'});</script>
+        <script src="${pageContext.request.contextPath}/js/AdminJS.js"></script>
     </body>
 </html>
