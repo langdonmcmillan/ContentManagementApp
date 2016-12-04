@@ -227,39 +227,30 @@ function populateTags() {
 }
 
 $('#publishButton').click(function () {
-    $('#titleEmptyError').empty();
-    $('#urlEmptyError').empty();
     var contentStatusCode = 'PUBLISHED';
-    if (pageType === 'StaticPage') {
-        if ($('#postTitle').val() === "" && $('#postURL').val() === "") {
-            $('#titleEmptyError').text("Please enter a title.");
-            $('#urlEmptyError').text("Please enter a url.");
-        } else if ($('#postTitle').val() === "") {
-            $('#titleEmptyError').text("Please enter a title.");
-        } else if ($('#postURL').val() === "") {
-            $('#urlEmptyError').text("Please enter a url.");
-        } else {
-            addStaticPage(contentStatusCode);
-        }
-    } else {
-        if (postID === null || postID === 0) {
-            addPost(contentStatusCode);
-        } else {
-            addContent(contentStatusCode);
-        }
-    }
+    validateTitleAndUrl(contentStatusCode);
 });
 
 $('#saveButton').click(function () {
     var contentStatusCode = 'DRAFT';
+    validateTitleAndUrl(contentStatusCode);
+});
+
+function validateTitleAndUrl(contentStatusCode) {
+    var regexPattern = /^[a-zA-Z0-9_-]*$/i;
+    var title = $('#postTitle').val();
+    var url = $('#postURL').val();
+
+    $('#titleEmptyError').empty();
+    $('#urlEmptyError').empty();
     if (pageType === 'StaticPage') {
-        if ($('#postTitle').val() === "" && $('#postURL').val() === "") {
+        if (title === "" && url === "") {
             $('#titleEmptyError').text("Please enter a title.");
-            $('#urlEmptyError').text("Please enter a url.");
-        } else if ($('#postTitle').val() === "") {
+            $('#urlEmptyError').text("Please enter a valid URL (only letters, numbers, dashes, underscores)");
+        } else if (title === "") {
             $('#titleEmptyError').text("Please enter a title.");
-        } else if ($('#postURL').val() === "") {
-            $('#urlEmptyError').text("Please enter a url.");
+        } else if (url === "" || regexPattern.test(url) === false) {
+            $('#urlEmptyError').text("Please enter a valid URL (only letters, numbers, dashes, underscores)");
         } else {
             addStaticPage(contentStatusCode);
         }
@@ -270,7 +261,7 @@ $('#saveButton').click(function () {
             addContent(contentStatusCode);
         }
     }
-});
+}
 
 function checkIfAllArchived() {
     var nonArchived = 0;
@@ -341,7 +332,7 @@ function addStaticPage(contentStatusCode) {
     });
     $.ajax({
         type: 'POST',
-        url: 'staticPage/add',
+        url: contextPath + '/admin/ajax/addStaticPage',
         data: JSON.stringify({
             'title': $('#postTitle').val(),
             'contentImgLink': $('#imageURL').val(),
@@ -359,7 +350,7 @@ function addStaticPage(contentStatusCode) {
         },
         dataType: 'json'
     }).success(function (post, status) {
-        window.location.assign('/CutePuppies/admin/dashboard/pages');
+        window.location.assign('/CutePuppies/admin/manageStaticPages');
     }).error(function (post, status) {
 
     });
