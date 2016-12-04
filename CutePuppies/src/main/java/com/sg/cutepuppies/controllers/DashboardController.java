@@ -42,7 +42,7 @@ public class DashboardController {
     private TagDaoInterface tagDao;
     private UserDaoInterface userDao;
 
-    @Autowired
+//    @Autowired
     @Inject
     public DashboardController(PostDaoInterface postDao, ContentDaoInterface contentDao,
             CategoryDaoInterface categoryDao, TagDaoInterface tagDao, UserDaoInterface userDao) {

@@ -8,7 +8,6 @@ package com.sg.cutepuppies.daos;
 import com.sg.cutepuppies.models.User;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -28,6 +27,7 @@ public class UserDbImpl implements UserDaoInterface {
     }
 
     // SQL PREPARED STATEMENTS
+    private static final String SQL_RETURN_ALL_USERS = "select * from User";
     private static final String SQL_GET_USER_WHO_CREATED_CONTENT
             = "select * from User u "
             + " join Content c "
@@ -64,9 +64,11 @@ public class UserDbImpl implements UserDaoInterface {
             + " on u.UserId = p.ArchivedByUserId "
             + " where p.PostId = ?";
     private static final String SQL_INSERT_USER
-            = "insert into users (UserName, UserPassword, UserEmail, RoleCode) values (?, ?, ?, ?)";
+            = "insert into User (UserName, UserPassword, UserEmail, RoleCode) values (?, ?, ?, ?)";
+    private static final String SQL_UPDATE_USER
+            = "update User set UserName = ?, UserPassword = ?, UserEmail = ?, RoleCode = ? where UserId = ?";
     private static final String SQL_DELETE_USER
-            = "delete from users where UserName = ?";
+            = "delete from User where UserId = ?";
 
     @Override
     public User getUserWhoCreatedPost(int postId) {
@@ -109,14 +111,24 @@ public class UserDbImpl implements UserDaoInterface {
 
     @Override
     public User addUser(User newUser) {
-        jdbcTemplate.update(SQL_INSERT_USER, newUser.getUserName(), newUser.getUserPassword());
+        jdbcTemplate.update(SQL_INSERT_USER, newUser.getUserName(), newUser.getUserPassword(), newUser.getUserEmail(), newUser.getRoleCode());
         newUser.setUserId(jdbcTemplate.queryForObject("select LAST_INSERT_ID()", Integer.class));
         return newUser;
     }
 
     @Override
-    public void deleteUser(String username) {
-        jdbcTemplate.update(SQL_DELETE_USER, username);
+    public void deleteUser(int userId) {
+        jdbcTemplate.update(SQL_DELETE_USER, userId);
+    }
+
+    @Override
+    public void updateUser(User user) {
+        jdbcTemplate.update(SQL_UPDATE_USER, user.getUserName(), user.getUserPassword(), user.getUserEmail(), user.getRoleCode(), user.getUserId());
+    }
+
+    @Override
+    public List<User> getAllUsers() {
+        return jdbcTemplate.query(SQL_RETURN_ALL_USERS, new UserMapper());
     }
 
     private static final class UserMapper implements RowMapper<User> {

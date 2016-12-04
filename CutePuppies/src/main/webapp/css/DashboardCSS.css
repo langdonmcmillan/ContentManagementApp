@@ -50,3 +50,7 @@ footer {
 .addDiv {
     margin-top: 15px;
 }
+
+.disableClick{
+    pointer-events: none;
+}

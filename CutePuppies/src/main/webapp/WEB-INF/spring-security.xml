@@ -37,18 +37,27 @@
                     login-page="/login"
                     authentication-failure-url="/login?login_error=1"/>
         <!-- #3d - Go back to home page when user logs out -->
-        <logout logout-success-url="/blog" />
+        <logout logout-success-url="/" />
         <!-- #3e - Access to these endpoints require admin role -->
         <!-- Multiple roles are allowed - the access list is comma-delimited -->
-        <intercept-url pattern="/admin/dashboard" access="ROLE_ADMIN" />
-        <intercept-url pattern="/admin/getAllPosts/**" access="ROLE_ADMIN" />
-        <intercept-url pattern="/admin/edit/post/**" access="ROLE_ADMIN" />
-        <intercept-url pattern="/admin/edit" access="ROLE_ADMIN" />
-        <intercept-url pattern="/admin/edit/**" access="ROLE_ADMIN" />
-        <intercept-url pattern="/admin/post" access="ROLE_ADMIN" />
-        <intercept-url pattern="/admin/edit/content" access="ROLE_ADMIN" />
-        <intercept-url pattern="/admin/post/**" access="ROLE_ADMIN" />
-        <intercept-url pattern="/admin/content/**" access="ROLE_ADMIN" />
+        <intercept-url pattern="/admin/dashboard" access="ROLE_ADMIN,ROLE_AUTHOR" />
+        <intercept-url pattern="/admin/dashboard/pages" access="ROLE_ADMIN" />
+        <intercept-url pattern="/admin/getAllPosts/**" access="ROLE_ADMIN,ROLE_AUTHOR" />
+        <intercept-url pattern="/admin/edit/post/**" access="ROLE_ADMIN,ROLE_AUTHOR" />
+        <intercept-url pattern="/admin/edit" access="ROLE_ADMIN,ROLE_AUTHOR" />
+        <intercept-url pattern="/admin/edit/**" access="ROLE_ADMIN,ROLE_AUTHOR" />
+        <intercept-url pattern="/admin/post" access="ROLE_ADMIN,ROLE_AUTHOR" />
+        <intercept-url pattern="/admin/edit/content" access="ROLE_ADMIN,ROLE_AUTHOR" />
+        <intercept-url pattern="/admin/edit/post/**" access="ROLE_ADMIN,ROLE_AUTHOR" />
+        <intercept-url pattern="/admin/edit/content/**" access="ROLE_ADMIN,ROLE_AUTHOR" />
+        
+        <intercept-url pattern="/admin/manageTags" access="ROLE_ADMIN" />
+        <intercept-url pattern="/admin/manageCategories" access="ROLE_ADMIN" />
+        <intercept-url pattern="/admin/Tags" access="ROLE_ADMIN" />
+        <intercept-url pattern="/admin/Tags/**" access="ROLE_ADMIN" />
+        <intercept-url pattern="/admin/Categories" access="ROLE_ADMIN" />
+        <intercept-url pattern="/admin/Categories/**" access="ROLE_ADMIN" />
+        
         <intercept-url pattern="/admin/**" access="ROLE_ADMIN" />
         
         <!-- For Spring Security Hashing Passwords Examples -->
