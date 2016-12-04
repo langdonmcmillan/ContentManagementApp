@@ -7,7 +7,6 @@
 var archiveBoxChecked = $('#showArchivedPosts').is(':checked');
 
 $(document).ready(function () {
-    sessionStorage.setItem('pageNumber', 1);
     loadContent();
 });
 

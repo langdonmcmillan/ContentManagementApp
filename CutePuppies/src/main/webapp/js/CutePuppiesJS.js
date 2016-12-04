@@ -50,7 +50,7 @@ function showStaticPage() {
         $('#pagination').hide();
     }
 }
-function loadPagePosts(searchTerm) {
+function loadPagePosts() {
     $('#searchInput').val("");
     $.ajax({
         type: 'GET',
@@ -60,7 +60,7 @@ function loadPagePosts(searchTerm) {
             postsPerPage: sessionStorage.getItem('postsPerPage'),
             tagId: sessionStorage.getItem('selectedTagId'),
             categoryId: sessionStorage.getItem('selectedCategoryId'),
-            searchTerm: searchTerm
+            searchTerm: sessionStorage.getItem('searchTerm')
         }
     }).success(function (data, status) {
         fillPostSnippetsContainer(data);
@@ -81,7 +81,7 @@ function fillPostSnippetsContainer(posts) {
             appendInput = $('<p class = "lead userName">').html('updated by <a href="#">' + post.publishedContent.createdByUser.userName + '</a>');
         }
         postSnippetContainer.append($('<div class="singlePost">')
-                .append($('<a href="post/' + post.postId + '">')
+                .append($('<a href="' + contextPath + '/post/' + post.postId + '">')
                         .append($('<h1 class="title readMoreLink">')
                                 .text(post.publishedContent.title)
                                 .attr({'data-postId': post.postId})))
@@ -94,12 +94,12 @@ function fillPostSnippetsContainer(posts) {
                         .attr('id', 'categories' + post.publishedContent.contentId)
                         .append($('<img>')
                                 .attr({
-                                    'src': 'img/folder.png',
+                                    'src': contextPath + '/img/folder.png',
                                     'id': 'folderImg'
                                 })))
                 .append($('<div>')
                         .attr('id', 'tags' + post.publishedContent.contentId)
-                        .append($('<img>').attr('src', 'img/tag.png')))
+                        .append($('<img>').attr('src', contextPath + '/img/tag.png')))
                 .append('<hr>')
                 .append($('<a href="post/' + post.postId + '">')
                         .append($('<img class="img-responsive contentImgLink readMoreLink">')
@@ -142,13 +142,6 @@ function fillPostSnippetsContainer(posts) {
 }
 ;
 
-function resetSessionProperties() {
-    sessionStorage.setItem('postsPerPage', 5);
-    sessionStorage.setItem('pageNumber', 1);
-    sessionStorage.setItem('selectedTagId', 'null');
-    sessionStorage.setItem('selectedCategoryId', 'null');
-}
-
 function setSessionProperties() {
     if (sessionStorage.getItem('postsPerPage') === null) {
         sessionStorage.setItem('postsPerPage', 5);
@@ -156,8 +149,9 @@ function setSessionProperties() {
     if (sessionStorage.getItem('pageNumber') === null) {
         sessionStorage.setItem('pageNumber', 1);
     }
-    sessionStorage.setItem('selectedTagId', 'null');
-    sessionStorage.setItem('selectedCategoryId', 'null');
+//    sessionStorage.setItem('selectedTagId', 'null');
+//    sessionStorage.setItem('selectedCategoryId', 'null');
+//    sessionStorage.setItem('searchTerm', '');
 }
 
 function updatePageNav(selectedPage) {
@@ -212,23 +206,28 @@ $(document).on('click', '.category', function () {
     var categoryId = $(this).data('categoryid');
     sessionStorage.setItem('selectedTagId', 'null');
     sessionStorage.setItem('selectedCategoryId', $(this).data('categoryid'));
+    sessionStorage.setItem('searchTerm', '');
     updatePageNav(1);
-    loadPagePosts("");
+    window.location.replace(contextPath);
 });
 
 $(document).on('click', '.tag', function () {
     var tagId = $(this).data('tagid');
     sessionStorage.setItem('selectedTagId', $(this).data('tagid'));
     sessionStorage.setItem('selectedCategoryId', 'null');
+    sessionStorage.setItem('searchTerm', '');
     updatePageNav(1);
-    loadPagePosts("");
+    window.location.replace(contextPath);
 });
 
 $('#searchButton').click(function() {
-    var searchTerm = $('#searchInput').val();
-    sessionStorage.setItem('selectedTagId', 'null');
-    sessionStorage.setItem('selectedCategoryId', 'null');
+    sessionStorage.setItem('searchTerm', $('#searchInput').val());
     updatePageNav(1);
-    loadPagePosts(searchTerm);
+    window.location.replace(contextPath);
 });
 
+$('.homeLink').click(function() {
+    sessionStorage.setItem('selectedTagId', 'null');
+    sessionStorage.setItem('selectedCategoryId', 'null');
+    sessionStorage.setItem('searchTerm', '');
+});

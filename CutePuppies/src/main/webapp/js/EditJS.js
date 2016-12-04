@@ -11,7 +11,6 @@ $(document).ready(function () {
     postID = 0;
     contentID = 0;
     userID = 1;
-    sessionStorage.setItem('pageNumber', 1);
     if (pageType === 'StaticPage') {
         $('#sidebarColumn').hide();
         $('#revisionRow').hide();
