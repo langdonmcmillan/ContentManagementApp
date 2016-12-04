@@ -31,7 +31,7 @@ $(window).on('resize', function(){
 function populateCategories() {
     var row;
     $.ajax({
-        url: contextPath + '/categories'
+        url: contextPath + '/ajax/getCategories'
     }).success(function (data, status) {
         $.each(data, function (index, category) {
             row = $("<tr id='row" + category.categoryID + "'>");
@@ -61,7 +61,7 @@ function populateCategories() {
 function populateTags() {
     var row;
     $.ajax({
-        url: contextPath + '/tags/false'
+        url: contextPath + '/ajax/getTags/false'
     }).success(function (data, status) {
         $.each(data, function (index, tag) {
             row = $("<tr id='row" + tag.tagID + "'>");
@@ -91,7 +91,7 @@ function populateTags() {
 $('#addButton').click(function () {
     var dataDescription = $('#addDataInput').val();
     $.ajax({
-        url: contextPath + "/admin/" + type,
+        url: contextPath + "/admin/add" + type,
         type: "POST",
         data: dataDescription,
         contentType: 'application/json; charset=utf-8',
@@ -119,7 +119,7 @@ $(document).on('click', '.deleteLink', function () {
     if (confirm('Are you sure you want to delete?')) {
         $.ajax({
             type: 'DELETE',
-            url: contextPath + '/admin/' + type + '/' + id,
+            url: contextPath + '/admin/delete' + type + '/' + id,
             contentType: 'application/json; charset=utf-8',
             headers: {
                 'Accept': 'application/json',
@@ -138,7 +138,7 @@ $(document).on('click', '.saveLink', function () {
     var id = $(this).parent().data('id');
     var dataDescription = $('#input' + id).val();
     $.ajax({
-        url: contextPath + "/admin/" + type + '/' + id,
+        url: contextPath + "/admin/edit" + type + '/' + id,
         type: "PUT",
         data: dataDescription,
         contentType: 'application/json; charset=utf-8',

@@ -24,4 +24,5 @@ public interface ContentDaoInterface {
     public Content updateStaticPage(Content content);
     public void archiveContent(int contentID, int userID);
     public void archivePost(int postID, int userID);
+    public Content getContentById(int contentId);
 }

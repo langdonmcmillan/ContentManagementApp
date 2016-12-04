@@ -23,7 +23,7 @@ $("#showArchivedPosts").change(function () {
 function loadAllPosts(archiveBoxChecked) {
     $.ajax({
         type: 'GET',
-        url: 'getAllPosts/' + archiveBoxChecked
+        url: contextPath + '/admin/ajax/getAllPosts/' + archiveBoxChecked
     }).success(function (data, status) {
         fillTableWithAllPosts(data);
     }).error(function (data, status) {
@@ -50,9 +50,10 @@ function fillTableWithAllPosts(listOfAllPosts) {
             contentCreateName = '-';
             contentCreateDateString = '-';
         }
+        var url = contextPath + '/admin/edit/post/' + post.postId;
         tbody.append($('<tr>')
 
-                .append($('<td>').append($('<a>').attr('href', 'edit/' + post.postId)
+                .append($('<td>').append($('<a>').attr('href', url)
                         .text(contentTitle)))
                 .append($('<td>').addClass('postUser').text(postCreateName))
                 .append($('<td>').addClass('postDate').text(postCreateDateString))

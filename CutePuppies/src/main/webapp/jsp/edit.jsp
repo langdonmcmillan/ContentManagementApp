@@ -22,6 +22,10 @@
         <c:if test="${not empty postId}">
             <input type="hidden" id="post-id" value="${postId}"/>
         </c:if>
+        <c:if test="${not empty staticId}">
+            <input type="hidden" id="static-id" value="${staticId}"/>
+        </c:if>
+        <input type="hidden" id="content-type" value="${contentType}"/>
         <p id="testp"></p>
         <div class="container-fluid">
             <div class="row">
@@ -39,9 +43,9 @@
                             </div>
                             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                                 <ul class="nav navbar-nav">
-                                    <li><a href="${pageContext.request.contextPath}/admin/dashboard">Posts</a></li>
-                                    <li><a href="#">Pages</a></li>
-                                    <li><a href="#">Users</a></li>
+                                    <li><a href="${pageContext.request.contextPath}/admin/managePosts">Posts</a></li>
+                                    <li><a href="${pageContext.request.contextPath}/admin/manageStaticPages">Pages</a></li>
+                                    <li><a href="${pageContext.request.contextPath}/admin/manageUsers">Users</a></li>
                                     <li><a href="${pageContext.request.contextPath}/admin/manageCategories">Categories</a></li>
                                     <li><a href="${pageContext.request.contextPath}/admin/manageTags">Tags</a></li>
                                 </ul>
@@ -84,11 +88,11 @@
                                 </table>
                             </div>
                         </div>
-                        
+
                         <div class="text-center">
                             <button id="deletePostButton" class="btn btn-primary">Archive All Revisions</button>
                         </div>
-                        
+
                     </div>
                     <div class="col-md-offset-1 col-md-3">
                         <div class="row">

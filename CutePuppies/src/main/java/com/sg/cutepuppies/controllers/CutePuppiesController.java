@@ -57,7 +57,7 @@ public class CutePuppiesController {
 //
 //        return "blogNavbar";
 //    }
-    @RequestMapping(value = "getPagePosts/", method = RequestMethod.GET)
+    @RequestMapping(value = "/ajax/getPagePosts/", method = RequestMethod.GET)
     @ResponseBody
     public List<Post> getPagePosts(String pageNumber, String postsPerPage, String tagId, String categoryId, String searchTerm) {
         // parse to int: newestPostId, oldestPostId, postsPerPage, tagId, categoryId
@@ -121,14 +121,14 @@ public class CutePuppiesController {
         return "/blog";
     }
 
-    @RequestMapping(value = "categories", method = RequestMethod.GET)
+    @RequestMapping(value = "ajax/getCategories", method = RequestMethod.GET)
     @ResponseBody
     public List<Category> populateCategories() {
         List<Category> listOfCategories = categoryDao.getAllCategories();
         return listOfCategories;
     }
     
-    @RequestMapping(value = "tags/{onlyPublished}", method = RequestMethod.GET)
+    @RequestMapping(value = "ajax/getTags/{onlyPublished}", method = RequestMethod.GET)
     @ResponseBody
     public List<Tag> populateTags(@PathVariable("onlyPublished") boolean onlyPublished) {
         List<Tag> listOfTags = tagDao.getAllTags(onlyPublished);
