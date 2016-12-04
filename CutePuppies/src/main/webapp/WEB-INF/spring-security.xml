@@ -45,16 +45,35 @@
         <logout logout-success-url="/" />
         <!-- #3e - Access to these endpoints require admin role -->
         <!-- Multiple roles are allowed - the access list is comma-delimited -->
+        <intercept-url pattern="/admin" access="ROLE_ADMIN,ROLE_AUTHOR" />
         <intercept-url pattern="/admin/dashboard" access="ROLE_ADMIN,ROLE_AUTHOR" />
-        <intercept-url pattern="/admin/dashboard/pages" access="ROLE_ADMIN" />
-        <intercept-url pattern="/admin/getAllPosts/**" access="ROLE_ADMIN,ROLE_AUTHOR" />
+        <intercept-url pattern="/admin/managePosts" access="ROLE_ADMIN,ROLE_AUTHOR" />
+        <intercept-url pattern="/admin/manageStaticPages" access="ROLE_ADMIN" />
+        <intercept-url pattern="/admin/ajax/getStaticPages/**" access="ROLE_ADMIN" />
+        <intercept-url pattern="/admin/ajax/getAllPosts/**" access="ROLE_ADMIN,ROLE_AUTHOR" />
+        <intercept-url pattern="/admin/ajax/edit/getPost/**" access="ROLE_ADMIN,ROLE_AUTHOR" />
+        <intercept-url pattern="/admin/ajax/edit/getContent/**" access="ROLE_ADMIN,ROLE_AUTHOR" />
+        <intercept-url pattern="/admin/edit/post" access="ROLE_ADMIN,ROLE_AUTHOR" />
         <intercept-url pattern="/admin/edit/post/**" access="ROLE_ADMIN,ROLE_AUTHOR" />
-        <intercept-url pattern="/admin/edit" access="ROLE_ADMIN,ROLE_AUTHOR" />
-        <intercept-url pattern="/admin/edit/**" access="ROLE_ADMIN,ROLE_AUTHOR" />
-        <intercept-url pattern="/admin/post" access="ROLE_ADMIN,ROLE_AUTHOR" />
-        <intercept-url pattern="/admin/edit/content" access="ROLE_ADMIN,ROLE_AUTHOR" />
-        <intercept-url pattern="/admin/edit/post/**" access="ROLE_ADMIN,ROLE_AUTHOR" />
-        <intercept-url pattern="/admin/edit/content/**" access="ROLE_ADMIN,ROLE_AUTHOR" />
+        <intercept-url pattern="/admin/edit/static" access="ROLE_ADMIN" />
+        <intercept-url pattern="/admin/edit/static/**" access="ROLE_ADMIN" />
+        <intercept-url pattern="/admin/ajax/addPost" access="ROLE_ADMIN,ROLE_AUTHOR" />
+        <intercept-url pattern="/admin/ajax/addContent" access="ROLE_ADMIN,ROLE_AUTHOR" />
+        <intercept-url pattern="/admin/ajax/archivePost/**" access="ROLE_ADMIN,ROLE_AUTHOR" />
+        <intercept-url pattern="/admin/ajax/archiveContent/**" access="ROLE_ADMIN,ROLE_AUTHOR" />
+        <intercept-url pattern="/admin//manageTags" access="ROLE_ADMIN" />
+        <intercept-url pattern="/admin/manageCategories" access="ROLE_ADMIN" />
+        <intercept-url pattern="/admin/ajax/addTags" access="ROLE_ADMIN" />
+        <intercept-url pattern="/admin/addCategories" access="ROLE_ADMIN" />
+        <intercept-url pattern="/admin/ajax/editCategories/**" access="ROLE_ADMIN" />
+        <intercept-url pattern="/admin/ajax/editTags/**" access="ROLE_ADMIN" />
+        <intercept-url pattern="/admin/ajax/deleteCategories/**" access="ROLE_ADMIN" />
+        <intercept-url pattern="/admin/ajax/deleteTags/**" access="ROLE_ADMIN" />
+        <intercept-url pattern="/manageUsers" access="ROLE_ADMIN" />
+        <intercept-url pattern="/manageUsers/userList" access="ROLE_ADMIN" />
+        <intercept-url pattern="/manageUsers/add" access="ROLE_ADMIN" />
+        <intercept-url pattern="/manageUsers/update" access="ROLE_ADMIN" />
+        <intercept-url pattern="/manageUsers/remove/**" access="ROLE_ADMIN" />
         
         <intercept-url pattern="/admin/manageTags" access="ROLE_ADMIN" />
         <intercept-url pattern="/admin/manageCategories" access="ROLE_ADMIN" />

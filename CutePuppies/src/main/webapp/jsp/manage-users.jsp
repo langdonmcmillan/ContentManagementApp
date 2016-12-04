@@ -18,6 +18,7 @@
     </head>
     <body>
         <div class="container-fluid">
+          <h1>Test</h1>
             <div class="row">
                 <div class="col-sm-3 col-lg-2">
                   <%@include file="includes/dashboard-nav.jsp" %>
