@@ -41,6 +41,7 @@ public class UserController {
     @RequestMapping(value = {"/", "/userList"}, method = RequestMethod.GET)
     public String displayAll(Model model) {
         List<User> users = userDao.getAllUsers();
+        model.addAttribute("newUser", new User());
         model.addAttribute("users", users);
         return "manage-users";
     }
