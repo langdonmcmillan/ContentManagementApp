@@ -7,7 +7,7 @@ footer {
     margin: 50px;
 }
 
-#createNewPost {
+#createNew {
     margin: 20px;
 }
 .category, .tag {
@@ -53,4 +53,12 @@ footer {
 
 .disableClick{
     pointer-events: none;
+}
+
+#publishButton, #saveButton, #deleteButton {
+    margin: 5px;
+}
+
+p#titleEmptyError, p#urlEmptyError {
+    color: red;
 }

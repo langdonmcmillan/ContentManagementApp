@@ -37,6 +37,8 @@ function loadStaticPages(archiveBoxChecked) {
     }).error(function (data, status) {
 
     });
+    $('#createNew').attr("href", "/CutePuppies/admin/edit/static");
+    $('#createNew').text('Create New Static Page');
 }
 
 
