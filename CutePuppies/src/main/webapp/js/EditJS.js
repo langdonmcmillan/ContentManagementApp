@@ -6,6 +6,7 @@
 var postID;
 var contentID;
 var userID;
+var pageType = $('#PageType').val();
 $(document).ready(function () {
     postID = 0;
     contentID = 0;
@@ -21,7 +22,7 @@ $(document).ready(function () {
         $('#postURL').prop('required', true);
         $('#bodyText').text('Static Page Body');
         if (staticId !== "") {
-            populateStatic();
+            populateStaticEdit();
         }
     } else {
         loadData();
@@ -54,9 +55,10 @@ $(document).on('click', '.revision', function () {
         $('#selectCategories').chosen().trigger('chosen:updated');
     });
 });
+
 $('#deleteButton').click(function () {
     if (postID === null || postID === 0) {
-        window.location.assign('/CutePuppies/admin/dashboard');
+        window.location.assign(contextPath + '/admin/dashboard');
     } else if (checkIfAllArchived()) {
         if (confirm('This post will be archived if this content is archived. Continue?')) {
             $('#deletePostButton').click();
@@ -169,7 +171,17 @@ function populateEdit() {
 
 function populateStaticEdit() {
     staticId = $('#static-id').val();
-
+    $.ajax({
+        type: 'GET',
+        url: contextPath + '/admin/ajax/edit/getContent/' + staticId
+    }).success(function (thisStaticPage, status) {
+        $('#contentStatusText').html('<h4><span class="' + thisStaticPage.contentStatusCode + 'TEXT">' + thisStaticPage.contentStatusCode + '</span></h4>');
+        $('#postTitle').val(thisStaticPage.title);
+        $('#postURL').val(thisStaticPage.urlPattern);
+        $('#imageName').val(thisStaticPage.contentImgAltTxt);
+        $('#imageURL').val(thisStaticPage.contentImgLink);
+        tinyMCE.activeEditor.setContent(thisStaticPage.body);
+    });
 }
 
 function clearContentTable() {
@@ -218,14 +230,17 @@ $('#publishButton').click(function () {
     var contentStatusCode = 'PUBLISHED';
     validateTitleAndUrl(contentStatusCode);
 });
+
 $('#saveButton').click(function () {
     var contentStatusCode = 'DRAFT';
     validateTitleAndUrl(contentStatusCode);
 });
+
 function validateTitleAndUrl(contentStatusCode) {
     var regexPattern = /^[a-zA-Z0-9_-]*$/i;
     var title = $('#postTitle').val();
     var urlPattern = $('#postURL').val();
+    var staticId = $('#static-id').val();
     $('#titleEmptyError').empty();
     $('#urlEmptyError').empty();
     if (pageType === 'StaticPage') {
@@ -246,14 +261,16 @@ function validateTitleAndUrl(contentStatusCode) {
                     'Content-type': 'application/json'
                 },
                 dataType: 'json'
-            }).success(function (data, status) {
-                if (data === null) {
+            }).success(function (content, status) {
+                if (content === null) {
                     addStaticPage(contentStatusCode);
-                } else {
+                } else if ($('#contentStatusText').is(':empty')) {
                     $('#urlEmptyError').text("That URL Pattern already exists in our database. Please enter another valid URL (only letters, numbers, dashes, underscores.");
+                } else {
+                    updateStaticPage(contentStatusCode, staticId);
                 }
             }).error(function (data, status) {
-                
+
             });
         }
     } else {
@@ -265,6 +282,39 @@ function validateTitleAndUrl(contentStatusCode) {
     }
 }
 
+function updateStaticPage(contentStatusCode, staticId) {
+    staticId = $('#static-id').val();
+
+    var body = tinyMCE.activeEditor.getContent();
+    var user = ({
+        'userId': 1
+    });
+    $.ajax({
+        type: 'PUT',
+        url: contextPath + '/admin/ajax/updateStaticPage/' + staticId,
+        data: JSON.stringify({
+            'contentId' : staticId,
+            'title': $('#postTitle').val(),
+            'contentImgLink': $('#imageURL').val(),
+            'contentImgAltTxt': $('#imageName').val(),
+            'body': body,
+            'contentStatusCode': contentStatusCode,
+            'urlPattern': $('#postURL').val(),
+            'contentTypeCode': 'STATIC PAGE',
+            'updatedByUser': user
+        }),
+        contentType: 'application/json; charset=utf-8',
+        headers: {
+            'Accept': 'application/json',
+            'Content-type': 'application/json'
+        },
+        dataType: 'json'
+    }).success(function (post, status) {
+        window.location.assign('/CutePuppies/admin/manageStaticPages');
+    }).error(function (post, status) {
+        console.log('error');
+    });
+}
 function checkIfAllArchived() {
     var nonArchived = 0;
     $('.contentStatusCode').each(function () {
