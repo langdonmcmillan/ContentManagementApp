@@ -120,53 +120,18 @@
           </div>
         </div>
       </div>
-      <div class="input-group addDiv">
-        <input type="text" id="addCategoryInput" class="form-control" placeholder="Add New Category">
-        <span class="input-group-btn">
-          <button class="btn btn-primary" type="button" id="addCategoryButton">
-            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-          </button>
-        </span>
-      </div>
-    </div>
-  </div>
-  <div class="row">
-    <div id="tagDivChosen" class="well">
-      Tags
-      <div>
-        <select class="form-control chosenElement" id = "selectTags" data-placeholder="Choose tags..." multiple = "multiple">
-        </select>
-      </div>
-      <div class="input-group addDiv">
-        <input type="text" id="addTagInput" class="form-control" placeholder="Add New Tag">
-        <span class="input-group-btn">
-          <button class="btn btn-primary" type="button" id="addTagButton">
-            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-          </button>
-        </span>
-      </div>
-    </div>
-  </div>
-</div>
-</div>
 
-<footer>
-  <div class="row">
-    <div class="col-md-12 text-center">
-      <p>Powered by Java and Bootstrap</p>
-    </div>
-  </div>
-</footer>
+      <%@include file="includes/footer.jsp" %>
 
-</div>
-</div>
-<script>var contextPath = "${pageContext.request.contextPath}"</script>
-<script>var pageType = "${PageType}";</script>
-<script src="${pageContext.request.contextPath}/js/jquery-2.2.4.min.js"></script>
-<script src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>
-<script src="${pageContext.request.contextPath}/js/chosen.jquery.min.js"></script>
-<script src="${pageContext.request.contextPath}/js/EditJS.js"></script>  
-<script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
-<script>tinymce.init({selector: 'textarea'});</script>
-</body>
+
+    </div>
+    <script>var contextPath = "${pageContext.request.contextPath}"</script>
+    <script>var pageType = "${PageType}";</script>
+    <script src="${pageContext.request.contextPath}/js/jquery-2.2.4.min.js"></script>
+    <script src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>
+    <script src="${pageContext.request.contextPath}/js/chosen.jquery.min.js"></script>
+    <script src="${pageContext.request.contextPath}/js/EditJS.js"></script>  
+    <script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
+    <script>tinymce.init({selector: 'textarea'});</script>
+  </body>
 </html>

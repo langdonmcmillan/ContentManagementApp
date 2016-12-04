@@ -1,11 +1,19 @@
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+    margin-bottom: 60px;
+}
 
 #listScroll {
     height: 400px;
     overflow: scroll;
 }
-footer {
+/*footer {
     margin: 50px;
-}
+}*/
 
 #createNew {
     margin: 20px;

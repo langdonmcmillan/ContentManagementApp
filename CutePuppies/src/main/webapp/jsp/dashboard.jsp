@@ -58,13 +58,8 @@
       </div>
     </div>
 
-    <footer>
-      <div class="row">
-        <div class="col-md-12 text-center">
-          <p>Powered by Java and Bootstrap</p>
-        </div>
-      </div>
-    </footer>
+    <%@include file="includes/footer.jsp" %>
+
 
     <script>var contextPath = "${pageContext.request.contextPath}";</script>
     <script>var pageType = "${PageType}";</script>

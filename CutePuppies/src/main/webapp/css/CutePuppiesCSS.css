@@ -2,6 +2,11 @@
     font-family: 'McLaren', cursive;
 }
 
+html {
+  position: relative;
+  min-height: 100%;
+}
+
 #blog-main-pic {
     display: block;
     margin: auto;
@@ -17,11 +22,12 @@
 
 body {
     padding-top: 70px;
+    margin-bottom: 60px;
 }
 
-footer {
+/*footer {
     margin: 50px;
-}
+}*/
 
 #categoryDiv .category {
     padding-right: 20px;

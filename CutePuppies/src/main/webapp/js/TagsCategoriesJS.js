@@ -5,16 +5,17 @@
  */
 var type;
 $(document).ready(function () {
+    $("#tableBody").empty();
     type = $("#tagOrCategory").text();
     loadData();
     setTableHeight();
 });
 
 function loadData() {
-    $("#tableBody").empty();
+    
     if (type === "Tags") {
         populateTags();
-    } else {
+    } else if (type === "Categories") {
         populateCategories();
     }
 }
