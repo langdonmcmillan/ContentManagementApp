@@ -55,7 +55,7 @@ public class ContentDbImpl implements ContentDaoInterface {
             + " where c.PostId = ?";
     private static final String SQL_GET_PUBLISHED_CONTENT_BY_POST_ID = "select c.* from Content c join Post p "
             + "on c.PostId = p.PostId where c.ContentStatusCode = 'PUBLISHED' and c.PostId = ?";
-    
+
     private static final String SQL_GET_CONTENT_BY_ID = "select * from Content where ContentId = ?";
 
     private static final String SQL_GET_MOST_RECENT_CONTENT_BY_POST_ID
@@ -85,6 +85,12 @@ public class ContentDbImpl implements ContentDaoInterface {
 
     private static final String SQL_ARCHIVE_CONTENT_BY_STATUS = "update Content set ContentStatusCode = 'ARCHIVED'"
             + "where ContentStatusCode =:contentStatusCode and PostId = :postID";
+
+    private static final String SQL_SEARCH_EXISTING_URLS
+            = "select count(*) "
+            + " from Content "
+            + " where ContentTypeCode = 'STATIC PAGE' "
+            + " and UrlPattern = ?";
 
     @Override
     public List<Content> getAllContentsByPostId(int postID) {
@@ -189,11 +195,16 @@ public class ContentDbImpl implements ContentDaoInterface {
         return jdbcTemplate.query(SQL_GET_PUBLISHED_STATIC_PAGES, new ContentMapper());
     }
 
+    // use this method to throw error if urlPattern is 
     @Override
     public Content getStaticPageByURL(String urlPattern) {
-        MapSqlParameterSource namedParameters = new MapSqlParameterSource();
-        namedParameters.addValue("urlPattern", urlPattern);
-        return npJdbcTemplate.queryForObject(SQL_GET_STATIC_PAGE_BY_URL, namedParameters, new ContentMapper());
+        try {
+            MapSqlParameterSource namedParameters = new MapSqlParameterSource();
+            namedParameters.addValue("urlPattern", urlPattern);
+            return npJdbcTemplate.queryForObject(SQL_GET_STATIC_PAGE_BY_URL, namedParameters, new ContentMapper());
+        } catch (NullPointerException ex) {
+            return null;
+        }
     }
 
     @Override
@@ -246,7 +257,7 @@ public class ContentDbImpl implements ContentDaoInterface {
         namedParameters.addValue("postId", postId);
         npJdbcTemplate.update(SQL_ARCHIVE_POST, namedParameters);
     }
-    
+
     @Override
     public Content getContentById(int contentId) {
         return jdbcTemplate.queryForObject(SQL_GET_CONTENT_BY_ID, new ContentMapper(), contentId);
