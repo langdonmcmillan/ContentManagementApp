@@ -25,7 +25,17 @@ $(document).ready(function () {
     } else {
         loadData();
     }
+    resizeRightColumn();
 });
+
+$(window).resize(function() {
+   resizeRightColumn(); 
+});
+
+function resizeRightColumn() {
+    var width = $('#sidebarColumn').width() * .9;
+    $('ul.chosen-choices').width(width);
+}
 
 function loadData() {
     $('.chosenElement').chosen();
