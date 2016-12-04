@@ -6,13 +6,11 @@
 var postID;
 var contentID;
 var userID;
-
 $(document).ready(function () {
     postID = 0;
     contentID = 0;
     userID = 1;
     sessionStorage.setItem('pageNumber', 1);
-
     if (pageType === 'StaticPage') {
         $('#sidebarColumn').hide();
         $('#revisionRow').hide();
@@ -22,6 +20,9 @@ $(document).ready(function () {
         $('#urlText').text('Static Page URL (Required)');
         $('#postURL').prop('required', true);
         $('#bodyText').text('Static Page Body');
+        if (staticId !== "") {
+            populateStatic();
+        }
     } else {
         loadData();
     }
@@ -44,10 +45,10 @@ function loadData() {
     populateEdit();
 }
 
+
 $(document).on('click', '.revision', function () {
 
     var conId = $(this).attr("data-content-id");
-
     $.ajax({
         type: 'GET',
         url: contextPath + '/admin/ajax/edit/getContent/' + conId
@@ -59,13 +60,11 @@ $(document).on('click', '.revision', function () {
         $('#imageName').val(thisContent.contentImgAltTxt);
         $('#imageURL').val(thisContent.contentImgLink);
         tinyMCE.activeEditor.setContent(thisContent.body);
-
         highlightTags(thisContent.listOfTags);
         highlightCategories(thisContent.listOfCategories);
         $('#selectCategories').chosen().trigger('chosen:updated');
     });
 });
-
 $('#deleteButton').click(function () {
     if (postID === null || postID === 0) {
         window.location.assign('/CutePuppies/admin/dashboard');
@@ -90,7 +89,6 @@ $('#deleteButton').click(function () {
         });
     }
 });
-
 $('#deletePostButton').click(function () {
     if (postID === null || postID === 0) {
         window.location.assign('/CutePuppies/admin/dashboard');
@@ -111,7 +109,6 @@ $('#deletePostButton').click(function () {
         });
     }
 });
-
 function highlightTags(listOfTags) {
     $('#selectTags option').removeAttr('selected');
     var tagList = $('#selectTags');
@@ -141,20 +138,12 @@ function populateEdit() {
         }).success(function (thisPost) {
 
             clearContentTable();
-
             var summaryTable = $('#revisionRows');
-
             var contentCount = 0;
             $.each(thisPost.allContentRevisions, function (arrayPosition, content) {
                 contentCount++;
-
                 var contentCreateDate = new Date(content.createdOnDate);
-                var contentCreateDateString =
-                        contentCreateDate.getUTCFullYear() + "/" +
-                        ("0" + (contentCreateDate.getUTCMonth() + 1)).slice(-2) + "/" +
-                        ("0" + contentCreateDate.getUTCDate()).slice(-2) + " " +
-                        ("0" + contentCreateDate.getUTCHours()).slice(-2) + ":" +
-                        ("0" + contentCreateDate.getUTCMinutes()).slice(-2);
+                var contentCreateDateString = contentCreateDate.toLocaleDateString() + " " + contentCreateDate.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'});
                 summaryTable.append($('<tr>')
                         .append($('<td>').text(contentCount))
                         .append($('<td>')
@@ -169,7 +158,6 @@ function populateEdit() {
                         .append($('<td class="contentStatusCode">').text(content.contentStatusCode))
                         );
             });
-
             $(function () {
                 $("#revisionRows").each(function (row, index) {
                     var arr = $.makeArray($("tr", this).detach());
@@ -177,7 +165,6 @@ function populateEdit() {
                     $(this).append(arr);
                 });
             });
-
             $('#contentStatusText').html('<h4><span class="' + thisPost.mostRecentContent.contentStatusCode + 'TEXT">' + thisPost.mostRecentContent.contentStatusCode + '</span></h4>');
             $('#postTitle').val(thisPost.mostRecentContent.title);
             $('#postURL').val(thisPost.mostRecentContent.urlPattern);
@@ -185,12 +172,15 @@ function populateEdit() {
             $('#imageURL').val(thisPost.mostRecentContent.contentImgLink);
             tinyMCE.activeEditor.setContent(thisPost.mostRecentContent.body);
             contentID = thisPost.mostRecentContent.contentId;
-
             highlightTags(thisPost.mostRecentContent.listOfTags);
             highlightCategories(thisPost.mostRecentContent.listOfCategories);
-
         });
     }
+}
+
+function populateStaticEdit() {
+    staticId = $('#static-id').val();
+
 }
 
 function clearContentTable() {
@@ -214,7 +204,6 @@ function populateCategories() {
         });
         categoryList.trigger('chosen:updated');
     });
-
 }
 
 function populateTags() {
@@ -240,29 +229,43 @@ $('#publishButton').click(function () {
     var contentStatusCode = 'PUBLISHED';
     validateTitleAndUrl(contentStatusCode);
 });
-
 $('#saveButton').click(function () {
     var contentStatusCode = 'DRAFT';
     validateTitleAndUrl(contentStatusCode);
 });
-
 function validateTitleAndUrl(contentStatusCode) {
     var regexPattern = /^[a-zA-Z0-9_-]*$/i;
     var title = $('#postTitle').val();
-    var url = $('#postURL').val();
-
+    var urlPattern = $('#postURL').val();
     $('#titleEmptyError').empty();
     $('#urlEmptyError').empty();
     if (pageType === 'StaticPage') {
-        if (title === "" && url === "") {
+        if (title === "" && urlPattern === "") {
             $('#titleEmptyError').text("Please enter a title.");
             $('#urlEmptyError').text("Please enter a valid URL (only letters, numbers, dashes, underscores)");
         } else if (title === "") {
             $('#titleEmptyError').text("Please enter a title.");
-        } else if (url === "" || regexPattern.test(url) === false) {
+        } else if (urlPattern === "" || regexPattern.test(urlPattern) === false) {
             $('#urlEmptyError').text("Please enter a valid URL (only letters, numbers, dashes, underscores)");
         } else {
-            addStaticPage(contentStatusCode);
+            $.ajax({
+                type: 'GET',
+                url: contextPath + '/admin/ajax/isUniqueUrl/' + urlPattern,
+                contentType: 'application/json; charset=utf-8',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-type': 'application/json'
+                },
+                dataType: 'json'
+            }).success(function (data, status) {
+                if (data === null) {
+                    addStaticPage(contentStatusCode);
+                } else {
+                    $('#urlEmptyError').text("That URL Pattern already exists in our database. Please enter another valid URL (only letters, numbers, dashes, underscores.");
+                }
+            }).error(function (data, status) {
+                
+            });
         }
     } else {
         if (postID === null || postID === 0) {
@@ -455,7 +458,6 @@ $('#addCategoryButton').click(function () {
 
     });
 });
-
 $('#addTagButton').click(function () {
     var tagDescription = $('#addTagInput').val();
     $.ajax({

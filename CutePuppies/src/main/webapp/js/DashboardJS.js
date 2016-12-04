@@ -59,9 +59,11 @@ function fillTableWithAllStaticPages(listOfAllStaticPageContent) {
             contentUpdateName = '-';
             contentUpdateDateString = '-';
         }
+        
+        var staticPgUrl = contextPath + '/admin/edit/static/' + content.contentId;
         tbody.append($('<tr>')
 
-                .append($('<td>').append($('<a>').attr('href', 'edit/static/' + content.contentId)
+                .append($('<td>').append($('<a>').attr('href', staticPgUrl)
                         .text(content.title)))
                 .append($('<td>').addClass('contentCreateName').text(contentCreateName))
                 .append($('<td>').addClass('contentCreateDate').text(contentCreateDateString))
