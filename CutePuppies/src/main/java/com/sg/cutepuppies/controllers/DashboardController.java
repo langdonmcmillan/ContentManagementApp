@@ -132,7 +132,7 @@ public class DashboardController {
     public Content getContentById(@PathVariable("contentId") int contentId) {
 
         Content content = contentDao.getContentById(contentId);
-       
+
         content.setListOfCategories(categoryDao.getCategoriesByContentId(content.getContentId()));
         content.setListOfTags(tagDao.getTagsByContentId(content.getContentId()));
 
@@ -151,13 +151,13 @@ public class DashboardController {
         model.addAttribute("PageType", "post");
         return "edit";
     }
-    
+
     @RequestMapping(value = "/edit/static", method = RequestMethod.GET)
     public String displayAddStaticPage(Model model) {
         model.addAttribute("PageType", "StaticPage");
         return "edit";
     }
-    
+
     @RequestMapping(value = "/edit/static/{staticId}", method = RequestMethod.GET)
     public String displayEditStaticPage(@PathVariable("staticId") int staticId, Model model) {
         model.addAttribute("staticId", staticId);
@@ -186,6 +186,14 @@ public class DashboardController {
         return post;
     }
 
+    @RequestMapping(value = "ajax/addStaticPage", method = RequestMethod.POST)
+    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseBody
+    public Content addStaticPage(@Valid @RequestBody Content content) {
+        contentDao.addStaticPage(content);
+        return content;
+    }
+
     @RequestMapping(value = "ajax/archivePost/{postId}/{userId}", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void archivePost(@PathVariable("postId") int postID, @PathVariable("userId") int userId) {
@@ -194,38 +202,37 @@ public class DashboardController {
     }
 
     @RequestMapping(value = "ajax/archiveContent/{contentId}/{userId}", method = RequestMethod.PUT)
-
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void archiveContent(@PathVariable("contentId") int contentID, @PathVariable("userId") int userId) {
         contentDao.archiveContent(contentID, userId);
     }
-    
+
     @RequestMapping(value = "/manageTags", method = RequestMethod.GET)
     public String manageTags(Model model) {
         model.addAttribute("categoryTag", "Tags");
         return "tagcategory";
     }
-    
+
     @RequestMapping(value = "/manageCategories", method = RequestMethod.GET)
     public String manageCategories(Model model) {
         model.addAttribute("categoryTag", "Categories");
         return "tagcategory";
     }
-    
+
     @RequestMapping(value = "ajax/addTags", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     public Tag addTag(@Valid @RequestBody String tag) {
         return tagDao.addTag(tag);
     }
-    
+
     @RequestMapping(value = "ajax/addCategories", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     public Category addCategory(@Valid @RequestBody String category) {
         return categoryDao.addCategory(category);
     }
-    
+
     @RequestMapping(value = "ajax/editCategories/{categoryId}", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void editCategory(@Valid @RequestBody String categoryDescription, @PathVariable("categoryId") int categoryId) {
@@ -234,7 +241,7 @@ public class DashboardController {
         category.setCategoryDescription(categoryDescription);
         categoryDao.updateCategory(category);
     }
-    
+
     @RequestMapping(value = "ajax/editTags/{tagId}", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void editTag(@Valid @RequestBody String tagDescription, @PathVariable("tagId") int tagId) {
@@ -243,13 +250,13 @@ public class DashboardController {
         tag.setTagDescription(tagDescription);
         tagDao.updateTag(tag);
     }
-    
+
     @RequestMapping(value = "ajax/deleteCategories/{categoryId}", method = RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteCategory(@PathVariable("categoryId") int categoryId) {
         categoryDao.deleteCategory(categoryId);
     }
-    
+
     @RequestMapping(value = "ajax/deleteTags/{tagId}", method = RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void editTag(@PathVariable("tagId") int tagId) {
