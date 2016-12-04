@@ -111,7 +111,7 @@
                             <div class="row">
                                 <div id="categoryDivChosen" class="well">
                                     Categories
-                                    <div>
+                                    <div id="chosen-div">
                                         <select class="form-control chosenElement" id = "selectCategories" data-placeholder="Choose categories..." multiple = "multiple">
                                         </select>
                                     </div>
