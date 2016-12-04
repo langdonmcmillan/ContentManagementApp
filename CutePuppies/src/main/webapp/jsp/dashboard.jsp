@@ -31,19 +31,20 @@
                         </div>
                         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                             <ul class="nav navbar-nav">
-                                    <li><a href="${pageContext.request.contextPath}/admin/managePosts">Posts</a></li>
-                                    <li><a href="${pageContext.request.contextPath}/admin/manageStaticPages">Pages</a></li>
-                                    <li><a href="${pageContext.request.contextPath}/admin/manageUsers">Users</a></li>
-                                    <li><a href="${pageContext.request.contextPath}/admin/manageCategories">Categories</a></li>
-                                    <li><a href="${pageContext.request.contextPath}/admin/manageTags">Tags</a></li>
+                                <li><a href="${pageContext.request.contextPath}/admin/managePosts">Posts</a></li>
+                                <li><a href="${pageContext.request.contextPath}/admin/manageStaticPages">Pages</a></li>
+                                <li><a href="${pageContext.request.contextPath}/admin/manageUsers">Users</a></li>
+                                <li><a href="${pageContext.request.contextPath}/admin/manageCategories">Categories</a></li>
+                                <li><a href="${pageContext.request.contextPath}/admin/manageTags">Tags</a></li>
                             </ul>
                         </div>
                     </nav>
                 </div>
                 <div id = "dashboardContent" class="col-sm-9 col-lg-10">
+                    <input type="hidden" id="PageType" value="${PageType}"/>
                     <div class="row">
-                        <div class="col-sm-9 col-lg-10 text-center">
-                            <h3>List Of All Posts</h3>
+                        <div  class="col-sm-9 col-lg-10 text-center">
+                            <h3 id="listTitle">List Of All Posts</h3>
                         </div>
                     </div>
                     <div class="row">
@@ -83,8 +84,9 @@
                 </div>
             </div>
         </footer>
-                        
-        <script>var contextPath = "${pageContext.request.contextPath}"</script>
+
+        <script>var contextPath = "${pageContext.request.contextPath}";</script>
+        <script>var pageType = "${PageType}";</script>
         <script src="${pageContext.request.contextPath}/js/jquery-2.2.4.min.js"></script>
         <script src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>
         <script src="${pageContext.request.contextPath}/js/jquery.dotdotdot.js"></script>

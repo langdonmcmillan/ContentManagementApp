@@ -58,12 +58,24 @@ public class DashboardController {
     public String getDashBoardPage() {
         return "dashboard";
     }
-    
+
     @RequestMapping(value = {"/manageStaticPages"}, method = RequestMethod.GET)
     public String getPagesDashboard(Model model) {
-        List<Content> allStaticPages = contentDao.getAllStaticPages();
-        model.addAttribute("allStaticPages", allStaticPages);
+        model.addAttribute("PageType", "StaticPage");
         return "dashboard";
+    }
+
+    @RequestMapping(value = "/ajax/getStaticPages/{archiveBoxChecked}", method = RequestMethod.GET)
+    @ResponseBody
+    public List<Content> getStaticPages(@PathVariable("archiveBoxChecked") boolean showArchived) {
+        List<Content> listOfAllStaticPgs = contentDao.getAllStaticPages(showArchived);
+        listOfAllStaticPgs.forEach(content -> {
+            int contentId = content.getContentId();
+            content.setCreatedByUser(userDao.getUserWhoCreatedContent(contentId));
+            content.setUpdatedByUser(userDao.getUserWhoUpdatedContent(contentId));
+            content.setArchivedByUser(userDao.getUserWhoArchivedContent(contentId));
+        });
+        return listOfAllStaticPgs;
     }
 
     @RequestMapping(value = "/ajax/getAllPosts/{archiveBoxChecked}", method = RequestMethod.GET)
@@ -122,10 +134,10 @@ public class DashboardController {
     public Content getContentById(@PathVariable("contentId") int contentId) {
 
         Content content = contentDao.getContentById(contentId);
-        
+       
         content.setListOfCategories(categoryDao.getCategoriesByContentId(content.getContentId()));
         content.setListOfTags(tagDao.getTagsByContentId(content.getContentId()));
-        
+
         return content;
     }
 
