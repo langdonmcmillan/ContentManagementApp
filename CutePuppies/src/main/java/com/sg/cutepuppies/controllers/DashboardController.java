@@ -166,6 +166,14 @@ public class DashboardController {
         model.addAttribute("PageType", "StaticPage");
         return "edit";
     }
+    
+    @RequestMapping(value = "ajax/isUniqueUrl/{urlPattern}", method = RequestMethod.GET)
+    @ResponseBody
+    public Content isUniqueUrl(@PathVariable("urlPattern") String urlPattern) {
+        // this returns null if there were no Content for given url (actual success)
+        // this returns Content if there were Content for given url (fake success)
+        return contentDao.getStaticPageByURL(urlPattern);
+    }
 
     @RequestMapping(value = "ajax/addPost", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)

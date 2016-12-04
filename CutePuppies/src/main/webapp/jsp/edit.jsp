@@ -158,6 +158,7 @@
         </div>
         <script>var contextPath = "${pageContext.request.contextPath}";</script>
         <script>var pageType = "${PageType}";</script>
+        <script>var staticId = "${staticId}";</script>
         <script src="${pageContext.request.contextPath}/js/jquery-2.2.4.min.js"></script>
         <script src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>
         <script src="${pageContext.request.contextPath}/js/chosen.jquery.min.js"></script>
