@@ -13,7 +13,7 @@
       <li><a href="#" class="disableClick"><strong>Hello <sec:authentication property="principal.username" />!</strong></a></li>
       <li><a href="${pageContext.request.contextPath}/admin/dashboard">Posts</a></li>
       <sec:authorize access="hasRole('ROLE_ADMIN')">
-        <li><a href="#">Pages</a></li>
+        <li><a href="${pageContext.request.contextPath}/admin/manageStaticPages">Pages</a></li>
         <li><a href="${pageContext.request.contextPath}/manageUsers">Users</a></li>
         <li><a href="${pageContext.request.contextPath}/admin/manageCategories">Categories</a></li>
         <li><a href="${pageContext.request.contextPath}/admin/manageTags">Tags</a></li>
