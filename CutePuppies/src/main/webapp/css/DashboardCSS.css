@@ -7,7 +7,7 @@ footer {
     margin: 50px;
 }
 
-#createNewPost {
+#createNew {
     margin: 20px;
 }
 .category, .tag {
@@ -49,4 +49,12 @@ footer {
 
 .addDiv {
     margin-top: 15px;
+}
+
+#publishButton, #saveButton, #deleteButton {
+    margin: 5px;
+}
+
+p#titleEmptyError, p#urlEmptyError {
+    color: red;
 }

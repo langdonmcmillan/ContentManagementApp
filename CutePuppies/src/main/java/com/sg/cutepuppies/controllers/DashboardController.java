@@ -154,11 +154,23 @@ public class DashboardController {
         return "edit";
     }
 
+    @RequestMapping(value = "admin/edit/staticPage", method = RequestMethod.GET)
+    public String displayAddStaticPage(Model model) {
+        model.addAttribute("PageType", "StaticPage");
+        return "edit";
+    }
+
+    @RequestMapping(value = "admin/edit/staticPage/add", method = RequestMethod.POST)
+    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseBody
+    public Content addStaticPage(@Valid @RequestBody Content content) {
+        contentDao.addStaticPage(content);
+        return content;
+    }
+
     @RequestMapping(value = "admin/edit/{postId}", method = RequestMethod.GET)
     public String displayEditPostPage(@PathVariable("postId") int postId, Model model) {
-
         model.addAttribute(postId);
-
         return "edit";
     }
 

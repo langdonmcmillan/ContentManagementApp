@@ -6,13 +6,10 @@
 package com.sg.cutepuppies.daos;
 
 import com.sg.cutepuppies.models.Content;
-import com.sg.cutepuppies.models.Post;
-import com.sg.cutepuppies.models.User;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
@@ -200,6 +197,7 @@ public class ContentDbImpl implements ContentDaoInterface {
     @Override
     public Content addStaticPage(Content content) {
         MapSqlParameterSource namedParameters = new MapSqlParameterSource();
+        namedParameters.addValue("postID", null);
         namedParameters.addValue("title", content.getTitle());
         namedParameters.addValue("contentImgLink", content.getContentImgLink());
         namedParameters.addValue("contentImgAltTxt", content.getContentImgAltTxt());
@@ -210,8 +208,6 @@ public class ContentDbImpl implements ContentDaoInterface {
         namedParameters.addValue("contentTypeCode", content.getContentTypeCode());
         namedParameters.addValue("createdByUserID", content.getCreatedByUser().getUserId());
         namedParameters.addValue("createdOnDate", content.getCreatedOnDate());
-
-        archiveContentByStatus(content.getPostId(), content.getContentStatusCode());
 
         npJdbcTemplate.update(SQL_ADD_CONTENT_TO_POST, namedParameters);
         content.setContentId(jdbcTemplate.queryForObject("select LAST_INSERT_ID()", Integer.class));

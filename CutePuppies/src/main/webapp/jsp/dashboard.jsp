@@ -70,7 +70,7 @@
                     </div>
                     <div class="row">
                         <div class="col-sm-9 col-lg-10 text-center">
-                            <a id="createNewPost" href="${pageContext.request.contextPath}/admin/edit" class="btn btn-primary btn-lg active" role="button">Create A New Post</a>
+                            <a id="createNew" href="${pageContext.request.contextPath}/admin/edit" class="btn btn-primary btn-lg active" role="button">Create A New Post</a>
                         </div>
                     </div>
                 </div>
