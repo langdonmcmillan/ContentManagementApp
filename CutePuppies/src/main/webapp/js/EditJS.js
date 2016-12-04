@@ -219,9 +219,16 @@ $('#publishButton').click(function () {
     if (postID === null || postID === 0) {
         addPost(contentStatusCode);
     } else {
-
         addContent(contentStatusCode);
+    }
+});
 
+$('#requestPublishButton').click(function () {
+    var contentStatusCode = 'AWAITING';
+    if (postID === null || postID === 0) {
+        addPost(contentStatusCode);
+    } else {
+        addContent(contentStatusCode);
     }
 });
 

@@ -6,6 +6,7 @@
 package com.sg.cutepuppies.daos;
 
 import com.sg.cutepuppies.models.User;
+import java.util.List;
 
 /**
  *
@@ -15,7 +16,11 @@ public interface UserDaoInterface {
 
     public User addUser(User newUser);
 
-    public void deleteUser(String username);
+    public void updateUser(User user);
+
+    public void deleteUser(int userId);
+    
+    public List<User> getAllUsers();
 
     public User getUserWhoCreatedPost(int postId);
 
