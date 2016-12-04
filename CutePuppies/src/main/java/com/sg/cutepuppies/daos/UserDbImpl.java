@@ -163,6 +163,28 @@ public class UserDbImpl implements UserDaoInterface {
         return jdbcTemplate.query(SQL_RETURN_ALL_USERS, new UserMapper());
     }
 
+    @Override
+    public User addUser(User newUser) {
+        jdbcTemplate.update(SQL_INSERT_USER, newUser.getUserName(), newUser.getUserPassword(), newUser.getUserEmail(), newUser.getRoleCode());
+        newUser.setUserId(jdbcTemplate.queryForObject("select LAST_INSERT_ID()", Integer.class));
+        return newUser;
+    }
+
+    @Override
+    public void deleteUser(int userId) {
+        jdbcTemplate.update(SQL_DELETE_USER, userId);
+    }
+
+    @Override
+    public void updateUser(User user) {
+        jdbcTemplate.update(SQL_UPDATE_USER, user.getUserName(), user.getUserPassword(), user.getUserEmail(), user.getRoleCode(), user.getUserId());
+    }
+
+    @Override
+    public List<User> getAllUsers() {
+        return jdbcTemplate.query(SQL_RETURN_ALL_USERS, new UserMapper());
+    }
+
     private static final class UserMapper implements RowMapper<User> {
 
         @Override

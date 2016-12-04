@@ -232,6 +232,15 @@ $('#requestPublishButton').click(function () {
     }
 });
 
+$('#requestPublishButton').click(function () {
+    var contentStatusCode = 'AWAITING';
+    if (postID === null || postID === 0) {
+        addPost(contentStatusCode);
+    } else {
+        addContent(contentStatusCode);
+    }
+});
+
 $('#saveButton').click(function () {
     var contentStatusCode = 'DRAFT';
     if (postID === null || postID === 0) {
