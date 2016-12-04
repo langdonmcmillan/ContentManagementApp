@@ -52,7 +52,7 @@ public class CutePuppiesController {
         return "blog";
     }
 
-    @RequestMapping(value = "blog/", method = RequestMethod.GET)
+    @RequestMapping(value = "/ajax/getPagePosts/", method = RequestMethod.GET)
     @ResponseBody
     public List<Post> getPagePosts(String pageNumber, String postsPerPage, String tagId, String categoryId, String searchTerm) {
         // parse to int: newestPostId, oldestPostId, postsPerPage, tagId, categoryId

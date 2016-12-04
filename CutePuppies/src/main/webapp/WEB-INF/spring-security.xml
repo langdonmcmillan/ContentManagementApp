@@ -25,9 +25,14 @@
     <http pattern="/categories" security="none" />
     <http pattern="/tags" security="none" />
     <http pattern="/" security="none" />
+    <http pattern="/ajax/getPagePosts" security="none" />
+    <http pattern="/ajax/getCategories" security="none" />
+    <http pattern="/ajax/getTags/{onlyPublished}" security="none" />
     <http pattern="/css/**" security="none" />
     <http pattern="/js/**" security="none" />
-    <http pattern="/img/**" security="none" />
+    <http pattern="/img/**" security="none" />    
+    <!--<http pattern="/**" security="none" />-->
+
     <!-- #3 - Authentication/login form and protected endpoint configuration -->
     <http auto-config="true" use-expressions="false">
         <!-- #3a - Login via html form, use Spring to do the security check -->
@@ -62,8 +67,8 @@
         
         <!-- For Spring Security Hashing Passwords Examples -->
         <intercept-url pattern="/user/**" access="ROLE_ADMIN" />
-        <!-- #3f - Access to all other controller endpoints require user role -->
-        <intercept-url pattern="/**" access="ROLE_ADMIN" />
+        <!--#3f - Access to all other controller endpoints require user role--> 
+        <!--<intercept-url pattern="/**" access="ROLE_ADMIN" />-->
     </http>
     <!-- #4 - Authentication Manager config -->
     <authentication-manager>
