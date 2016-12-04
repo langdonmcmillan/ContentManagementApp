@@ -31,13 +31,13 @@ function loadContent() {
 function loadStaticPages(archiveBoxChecked) {
     $.ajax({
         type: 'GET',
-        url: 'displayPages/' + archiveBoxChecked
+        url: contextPath + '/admin/ajax/getStaticPages/' + archiveBoxChecked
     }).success(function (data, status) {
         fillTableWithAllStaticPages(data);
     }).error(function (data, status) {
 
     });
-    $('#createNew').attr("href", "/CutePuppies/admin/edit/staticPage");
+    $('#createNew').attr("href", "/CutePuppies/admin/edit/static");
     $('#createNew').text('Create New Static Page');
 }
 
@@ -61,7 +61,7 @@ function fillTableWithAllStaticPages(listOfAllStaticPageContent) {
         }
         tbody.append($('<tr>')
 
-                .append($('<td>').append($('<a>').attr('href', 'edit/' + content.contentId)
+                .append($('<td>').append($('<a>').attr('href', 'edit/static/' + content.contentId)
                         .text(content.title)))
                 .append($('<td>').addClass('contentCreateName').text(contentCreateName))
                 .append($('<td>').addClass('contentCreateDate').text(contentCreateDateString))
@@ -73,7 +73,7 @@ function fillTableWithAllStaticPages(listOfAllStaticPageContent) {
 function loadAllPosts(archiveBoxChecked) {
     $.ajax({
         type: 'GET',
-        url: 'getAllPosts/' + archiveBoxChecked
+        url: contextPath + '/admin/ajax/getAllPosts/' + archiveBoxChecked
     }).success(function (data, status) {
         fillTableWithAllPosts(data);
     }).error(function (data, status) {
@@ -100,9 +100,10 @@ function fillTableWithAllPosts(listOfAllPosts) {
             contentCreateName = '-';
             contentCreateDateString = '-';
         }
+        var url = contextPath + '/admin/edit/post/' + post.postId;
         tbody.append($('<tr>')
 
-                .append($('<td>').append($('<a>').attr('href', 'edit/' + post.postId)
+                .append($('<td>').append($('<a>').attr('href', url)
                         .text(contentTitle)))
                 .append($('<td>').addClass('postUser').text(postCreateName))
                 .append($('<td>').addClass('postDate').text(postCreateDateString))

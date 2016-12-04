@@ -54,7 +54,7 @@ function loadPagePosts(searchTerm) {
     $('#searchInput').val("");
     $.ajax({
         type: 'GET',
-        url: 'getPagePosts/',
+        url: contextPath + '/ajax/getPagePosts/',
         data: {
             pageNumber: sessionStorage.getItem('pageNumber'),
             postsPerPage: sessionStorage.getItem('postsPerPage'),
@@ -177,7 +177,7 @@ function updatePageNav(selectedPage) {
 
 function populateCategories() {
     $.ajax({
-        url: contextPath + '/categories'
+        url: contextPath + '/ajax/getCategories'
     }).success(function (data, status) {
         $.each(data, function (index, category) {
             $("#categoryList").append($('<a href="#"' + category.categoryID + '>')
@@ -192,7 +192,7 @@ function populateCategories() {
 
 function populateTags() {
     $.ajax({
-        url: contextPath + '/tags/true'
+        url: contextPath + '/ajax/getTags/true'
     }).success(function (data, status) {
         $.each(data, function (index, tag) {
             $("#tagList").append($('<li data-weight="' + tag.numUsed + '"><a href="#">' + tag.tagDescription + '</a></li>')

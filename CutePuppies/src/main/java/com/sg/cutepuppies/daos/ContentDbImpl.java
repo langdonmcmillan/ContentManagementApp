@@ -55,6 +55,8 @@ public class ContentDbImpl implements ContentDaoInterface {
             + " where c.PostId = ?";
     private static final String SQL_GET_PUBLISHED_CONTENT_BY_POST_ID = "select c.* from Content c join Post p "
             + "on c.PostId = p.PostId where c.ContentStatusCode = 'PUBLISHED' and c.PostId = ?";
+    
+    private static final String SQL_GET_CONTENT_BY_ID = "select * from Content where ContentId = ?";
 
     private static final String SQL_GET_MOST_RECENT_CONTENT_BY_POST_ID
             = " select c.* "
@@ -243,6 +245,11 @@ public class ContentDbImpl implements ContentDaoInterface {
         namedParameters.addValue("userId", userId);
         namedParameters.addValue("postId", postId);
         npJdbcTemplate.update(SQL_ARCHIVE_POST, namedParameters);
+    }
+    
+    @Override
+    public Content getContentById(int contentId) {
+        return jdbcTemplate.queryForObject(SQL_GET_CONTENT_BY_ID, new ContentMapper(), contentId);
     }
 
     private static final class ContentMapper implements RowMapper<Content> {

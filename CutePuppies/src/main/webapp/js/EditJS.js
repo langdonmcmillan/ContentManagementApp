@@ -23,12 +23,16 @@ $(document).ready(function () {
         $('#postURL').prop('required', true);
         $('#bodyText').text('Static Page Body');
     } else {
-        $('.chosenElement').chosen();
-        populateCategories();
-        populateTags();
-        populateEdit();
+        loadData();
     }
 });
+
+function loadData() {
+    $('.chosenElement').chosen();
+    populateCategories();
+    populateTags();
+    populateEdit();
+}
 
 $(document).on('click', '.revision', function () {
 
@@ -36,7 +40,7 @@ $(document).on('click', '.revision', function () {
 
     $.ajax({
         type: 'GET',
-        url: 'post/' + $('#post-id').val() + "/" + conId
+        url: contextPath + '/admin/ajax/edit/getContent/' + conId
     }).success(function (thisContent) {
 
         $('#contentStatusText').html('<h4><span class="' + thisContent.contentStatusCode + 'TEXT">' + thisContent.contentStatusCode + '</span></h4>');
@@ -62,7 +66,7 @@ $('#deleteButton').click(function () {
     } else {
         $.ajax({
             type: 'PUT',
-            url: 'content/' + contentID + '/' + userID,
+            url: contextPath + '/admin/ajax/archiveContent/' + contentID + '/' + userID,
             contentType: 'application/json; charset=utf-8',
             headers: {
                 'Accept': 'application/json',
@@ -83,7 +87,7 @@ $('#deletePostButton').click(function () {
     } else {
         $.ajax({
             type: 'PUT',
-            url: 'post/' + postID + '/' + userID,
+            url: contextPath + '/admin/ajax/archivePost/' + postID + '/' + userID,
             contentType: 'application/json; charset=utf-8',
             headers: {
                 'Accept': 'application/json',
@@ -123,7 +127,7 @@ function populateEdit() {
         postID = $('#post-id').val();
         $.ajax({
             type: 'GET',
-            url: 'post/' + $('#post-id').val()
+            url: contextPath + '/admin/ajax/edit/getPost/' + postID
         }).success(function (thisPost) {
 
             clearContentTable();
@@ -185,7 +189,7 @@ function clearContentTable() {
 
 function populateCategories() {
     $.ajax({
-        url: contextPath + '/categories'
+        url: contextPath + '/ajax/getCategories'
     }).success(function (data, status) {
         var categoryList = $('#selectCategories');
         categoryList.empty();
@@ -205,7 +209,7 @@ function populateCategories() {
 
 function populateTags() {
     $.ajax({
-        url: contextPath + '/tags/false'
+        url: contextPath + '/ajax/getTags/false'
     }).success(function (data, status) {
         var tagList = $('#selectTags');
         tagList.empty();
@@ -268,31 +272,6 @@ $('#saveButton').click(function () {
     }
 });
 
-$('#deleteButton').click(function () {
-    if (postID === null || postID === 0) {
-        window.location.assign('/CutePuppies/admin/dashboard');
-    } else if (checkIfAllArchived()) {
-        if (confirm('This post will be archived if this content is archived. Continue?')) {
-            $('#deletePostButton').click();
-        }
-    } else {
-        $.ajax({
-            type: 'PUT',
-            url: 'content/' + contentID + '/' + userID,
-            contentType: 'application/json; charset=utf-8',
-            headers: {
-                'Accept': 'application/json',
-                'Content-type': 'application/json'
-            },
-            dataType: 'json'
-        }).success(function (post, status) {
-            window.location.assign('/CutePuppies/admin/edit/' + postID);
-        }).error(function (post, status) {
-
-        });
-    }
-});
-
 function checkIfAllArchived() {
     var nonArchived = 0;
     $('.contentStatusCode').each(function () {
@@ -337,7 +316,7 @@ function addContent(contentStatusCode) {
     });
     $.ajax({
         type: 'POST',
-        url: 'content',
+        url: contextPath + '/admin/ajax/addContent',
         data: JSON.stringify({
             createdByUser: user,
             mostRecentContent: newContent
@@ -419,7 +398,7 @@ function addPost(contentStatusCode) {
     });
     $.ajax({
         type: 'POST',
-        url: contextPath + '/admin/post',
+        url: contextPath + '/admin/ajax/addPost',
         data: JSON.stringify({
             createdByUser: user,
             mostRecentContent: newContent
@@ -441,7 +420,7 @@ function addPost(contentStatusCode) {
 $('#addCategoryButton').click(function () {
     var categoryDescription = $('#addCategoryInput').val();
     $.ajax({
-        url: contextPath + "/admin/Categories",
+        url: contextPath + "/admin/ajax/addCategories",
         type: "POST",
         data: categoryDescription,
         contentType: 'application/json; charset=utf-8',
@@ -479,7 +458,7 @@ $('#addCategoryButton').click(function () {
 $('#addTagButton').click(function () {
     var tagDescription = $('#addTagInput').val();
     $.ajax({
-        url: contextPath + "/admin/Tags",
+        url: contextPath + "/admin/ajax/addTags",
         type: "POST",
         data: tagDescription,
         contentType: 'application/json; charset=utf-8',

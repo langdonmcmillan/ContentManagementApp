@@ -33,6 +33,7 @@ import org.springframework.ui.Model;
  *
  * @author apprentice
  */
+@RequestMapping(value = "/admin")
 @Controller
 public class DashboardController {
 
@@ -53,20 +54,20 @@ public class DashboardController {
         this.userDao = userDao;
     }
 
-    @RequestMapping(value = {"/admin/dashboard", "/admin"}, method = RequestMethod.GET)
+    @RequestMapping(value = {"/dashboard", "/", "managePosts"}, method = RequestMethod.GET)
     public String getDashBoardPage() {
         return "dashboard";
     }
 
-    @RequestMapping(value = "/admin/dashboard/pages", method = RequestMethod.GET)
+    @RequestMapping(value = {"/manageStaticPages"}, method = RequestMethod.GET)
     public String getPagesDashboard(Model model) {
         model.addAttribute("PageType", "StaticPage");
         return "dashboard";
     }
 
-    @RequestMapping(value = "/admin/dashboard/displayPages/{archiveBoxChecked}", method = RequestMethod.GET)
+    @RequestMapping(value = "/ajax/getStaticPages/{archiveBoxChecked}", method = RequestMethod.GET)
     @ResponseBody
-    public List<Content> displayPagesDashboard(@PathVariable("archiveBoxChecked") boolean showArchived) {
+    public List<Content> getStaticPages(@PathVariable("archiveBoxChecked") boolean showArchived) {
         List<Content> listOfAllStaticPgs = contentDao.getAllStaticPages(showArchived);
         listOfAllStaticPgs.forEach(content -> {
             int contentId = content.getContentId();
@@ -77,7 +78,7 @@ public class DashboardController {
         return listOfAllStaticPgs;
     }
 
-    @RequestMapping(value = "admin/getAllPosts/{archiveBoxChecked}", method = RequestMethod.GET)
+    @RequestMapping(value = "/ajax/getAllPosts/{archiveBoxChecked}", method = RequestMethod.GET)
     @ResponseBody
     public List<Post> getAllPosts(@PathVariable("archiveBoxChecked") boolean showArchived) {
         List<Post> listOfAllPosts = postDao.getAllPosts(showArchived);
@@ -97,7 +98,7 @@ public class DashboardController {
         return listOfAllPosts;
     }
 
-    @RequestMapping(value = "admin/edit/post/{postId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/ajax/edit/getPost/{postId}", method = RequestMethod.GET)
     @ResponseBody
     public Post getPostById(@PathVariable("postId") int postId) {
 
@@ -128,53 +129,45 @@ public class DashboardController {
         return post;
     }
 
-    @RequestMapping(value = "admin/edit/post/{postId}/{contentId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/ajax/edit/getContent/{contentId}", method = RequestMethod.GET)
     @ResponseBody
-    public Content getContentById(@PathVariable("postId") int postId, @PathVariable("contentId") int contentId) {
+    public Content getContentById(@PathVariable("contentId") int contentId) {
 
-        List<Content> allContent = contentDao.getAllContentsByPostId(postId);
-
-        Content content = new Content();
-
-        for (int x = 0; x < allContent.size(); x++) {
-
-            if (contentId == allContent.get(x).getContentId()) {
-                content = allContent.get(x);
-            }
-        }
-
+        Content content = contentDao.getContentById(contentId);
+       
         content.setListOfCategories(categoryDao.getCategoriesByContentId(content.getContentId()));
         content.setListOfTags(tagDao.getTagsByContentId(content.getContentId()));
 
         return content;
     }
 
-    @RequestMapping(value = "admin/edit", method = RequestMethod.GET)
-    public String displayAddPostPage() {
+    @RequestMapping(value = "/edit/post", method = RequestMethod.GET)
+    public String displayAddPostPage(Model model) {
+        model.addAttribute("PageType", "post");
         return "edit";
     }
 
-    @RequestMapping(value = "admin/edit/staticPage", method = RequestMethod.GET)
+    @RequestMapping(value = "/edit/post/{postId}", method = RequestMethod.GET)
+    public String displayEditPostPage(@PathVariable("postId") int postId, Model model) {
+        model.addAttribute("postId", postId);
+        model.addAttribute("PageType", "post");
+        return "edit";
+    }
+    
+    @RequestMapping(value = "/edit/static", method = RequestMethod.GET)
     public String displayAddStaticPage(Model model) {
         model.addAttribute("PageType", "StaticPage");
         return "edit";
     }
-
-    @RequestMapping(value = "admin/edit/staticPage/add", method = RequestMethod.POST)
-    @ResponseStatus(HttpStatus.CREATED)
-    @ResponseBody
-    public Content addStaticPage(@Valid @RequestBody Content content) {
-        contentDao.addStaticPage(content);
-        return content;
-    }
-
-    @RequestMapping(value = "admin/edit/{postId}", method = RequestMethod.GET)
-    public String displayEditPostPage(@PathVariable("postId") int postId, Model model) {
-        model.addAttribute(postId);
+    
+    @RequestMapping(value = "/edit/static/{staticId}", method = RequestMethod.GET)
+    public String displayEditStaticPage(@PathVariable("staticId") int staticId, Model model) {
+        model.addAttribute("staticId", staticId);
+        model.addAttribute("PageType", "StaticPage");
         return "edit";
     }
 
-    @RequestMapping(value = "admin/post", method = RequestMethod.POST)
+    @RequestMapping(value = "ajax/addPost", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     public Post addPost(@Valid @RequestBody Post post) {
@@ -184,7 +177,7 @@ public class DashboardController {
         return post;
     }
 
-    @RequestMapping(value = "admin/edit/content", method = RequestMethod.POST)
+    @RequestMapping(value = "ajax/addContent", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     public Post addContent(@Valid @RequestBody Post post) {
@@ -195,48 +188,47 @@ public class DashboardController {
         return post;
     }
 
-    @RequestMapping(value = "admin/edit/post/{postId}/{userId}", method = RequestMethod.PUT)
-
+    @RequestMapping(value = "ajax/archivePost/{postId}/{userId}", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void archivePost(@PathVariable("postId") int postID, @PathVariable("userId") int userId) {
         postDao.archivePost(postID, userId);
         contentDao.archivePost(postID, userId);
     }
 
-    @RequestMapping(value = "admin/edit/content/{contentId}/{userId}", method = RequestMethod.PUT)
+    @RequestMapping(value = "ajax/archiveContent/{contentId}/{userId}", method = RequestMethod.PUT)
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void archiveContent(@PathVariable("contentId") int contentID, @PathVariable("userId") int userId) {
         contentDao.archiveContent(contentID, userId);
     }
-
-    @RequestMapping(value = "admin/manageTags", method = RequestMethod.GET)
+    
+    @RequestMapping(value = "/manageTags", method = RequestMethod.GET)
     public String manageTags(Model model) {
         model.addAttribute("categoryTag", "Tags");
         return "tagcategory";
     }
-
-    @RequestMapping(value = "admin/manageCategories", method = RequestMethod.GET)
+    
+    @RequestMapping(value = "/manageCategories", method = RequestMethod.GET)
     public String manageCategories(Model model) {
         model.addAttribute("categoryTag", "Categories");
         return "tagcategory";
     }
-
-    @RequestMapping(value = "admin/Tags", method = RequestMethod.POST)
+    
+    @RequestMapping(value = "ajax/addTags", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     public Tag addTag(@Valid @RequestBody String tag) {
         return tagDao.addTag(tag);
     }
-
-    @RequestMapping(value = "admin/Categories", method = RequestMethod.POST)
+    
+    @RequestMapping(value = "ajax/addCategories", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     public Category addCategory(@Valid @RequestBody String category) {
         return categoryDao.addCategory(category);
     }
-
-    @RequestMapping(value = "admin/Categories/{categoryId}", method = RequestMethod.PUT)
+    
+    @RequestMapping(value = "ajax/editCategories/{categoryId}", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void editCategory(@Valid @RequestBody String categoryDescription, @PathVariable("categoryId") int categoryId) {
         Category category = new Category();
@@ -244,8 +236,8 @@ public class DashboardController {
         category.setCategoryDescription(categoryDescription);
         categoryDao.updateCategory(category);
     }
-
-    @RequestMapping(value = "admin/Tags/{tagId}", method = RequestMethod.PUT)
+    
+    @RequestMapping(value = "ajax/editTags/{tagId}", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void editTag(@Valid @RequestBody String tagDescription, @PathVariable("tagId") int tagId) {
         Tag tag = new Tag();
@@ -253,14 +245,14 @@ public class DashboardController {
         tag.setTagDescription(tagDescription);
         tagDao.updateTag(tag);
     }
-
-    @RequestMapping(value = "admin/Categories/{categoryId}", method = RequestMethod.DELETE)
+    
+    @RequestMapping(value = "ajax/deleteCategories/{categoryId}", method = RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteCategory(@PathVariable("categoryId") int categoryId) {
         categoryDao.deleteCategory(categoryId);
     }
-
-    @RequestMapping(value = "admin/Tags/{tagId}", method = RequestMethod.DELETE)
+    
+    @RequestMapping(value = "ajax/deleteTags/{tagId}", method = RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void editTag(@PathVariable("tagId") int tagId) {
         tagDao.deleteTag(tagId);
