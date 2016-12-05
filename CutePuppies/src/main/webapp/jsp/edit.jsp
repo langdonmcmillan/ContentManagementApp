@@ -56,7 +56,7 @@
                             <h4 id="bodyText">Post Body</h4>
                             <textarea></textarea>
                         </div>
-                        <c:if test="${empty PageType}">
+                        <c:if test="${PageType == 'post'}">
                             <div id="revisionRow">
                                 <div class="row">
                                     <div id="revisionsDiv" class="col-md-offset-2 col-md-8">
@@ -94,7 +94,7 @@
                         </div>
 
                         <div id="sidebarColumn" class="col-md-offset-1 col-md-3">
-                            <c:if test="${PageType == 'post'}}">
+                            <c:if test="${PageType == 'post'}">
                                 <div class="row">
                                     <div id="categoryDivChosen" class="well">
                                         Categories
