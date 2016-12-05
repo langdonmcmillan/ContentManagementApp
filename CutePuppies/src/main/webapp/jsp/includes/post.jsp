@@ -1,4 +1,5 @@
 
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <div class="singlePost">
     <h1 class="title">${post.publishedContent.title}</h1>
     <p class = "lead userName">created by <a href="#">${post.createdByUser.userName}</a></p>
@@ -12,7 +13,8 @@
     </p>
     <div id="categories${post.publishedContent.contentId}">
         <img src="/CutePuppies/img/folder.png" id="folderImg">
-        <c:forEach items="${post.publishedContent.listOfCategories}" var="category">
+        <c:forEach items="${post.publishedContent.listOfCategories}" var="category" varStatus="index">
+            <c:if test="${index.index > 0}">,&nbsp</c:if>
             <a href="#" class="category" data-categoryDescription="${category.categoryDescription}" data-categoryID="${category.categoryID}">
                 ${category.categoryDescription}
             </a>
@@ -20,7 +22,8 @@
     </div>
     <div id="tags${post.publishedContent.contentId}">
         <img src="/CutePuppies/img/tag.png">
-        <c:forEach items="${post.publishedContent.listOfTags}" var="tag">
+        <c:forEach items="${post.publishedContent.listOfTags}" var="tag" varStatus="index">
+            <c:if test="${index.index > 0}">,&nbsp</c:if>
             <a href="#" class="tag" data-tagDescription="${tag.tagDescription}" data-tagID="${tag.tagID}">
                 ${tag.tagDescription}
             </a>
