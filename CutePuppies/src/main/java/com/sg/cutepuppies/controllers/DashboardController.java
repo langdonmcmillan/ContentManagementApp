@@ -198,8 +198,13 @@ public class DashboardController {
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     public Content addStaticPage(@Valid @RequestBody Content content) {
-        contentDao.addStaticPage(content);
-        return content;
+        return contentDao.addStaticPage(content);
+    }
+    
+    @RequestMapping(value = "ajax/updateStaticPage/{staticId}", method = RequestMethod.PUT)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void updateStaticPage(@Valid @RequestBody Content content) {
+        contentDao.updateStaticPage(content);
     }
 
     @RequestMapping(value = "ajax/archivePost/{postId}/{userId}", method = RequestMethod.PUT)

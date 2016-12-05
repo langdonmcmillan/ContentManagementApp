@@ -65,73 +65,74 @@
               </div>
             </div>
 
-      <div class="text-center">
-        <button id="deletePostButton" class="btn btn-primary">Archive All Revisions</button>
-      </div>
+            <div class="text-center">
+              <button id="deletePostButton" class="btn btn-primary">Archive All Revisions</button>
+            </div>
 
-    </div>
-    <div class="col-md-offset-1 col-md-3">
-      <div class="row">
-        <div id="publishDiv">
-          <sec:authorize access="hasRole('ROLE_ADMIN')">
-              <button id="publishButton" class="btn btn-primary">Publish</button>
-          </sec:authorize>
-          <sec:authorize access="hasRole('ROLE_AUTHOR')">
-              <button id="requestPublishButton" class="btn btn-primary">Submit</button>
-          </sec:authorize>
-          <button id="saveButton" class="btn btn-primary">Save</button>
-          <button id="deleteButton" class="btn btn-primary">Delete</button>
+          </div>
+          <div class="col-md-offset-1 col-md-3">
+            <div class="row">
+              <div id="publishDiv">
+                <sec:authorize access="hasRole('ROLE_ADMIN')">
+                    <button id="publishButton" class="btn btn-primary">Publish</button>
+                </sec:authorize>
+                <sec:authorize access="hasRole('ROLE_AUTHOR')">
+                    <button id="requestPublishButton" class="btn btn-primary">Submit</button>
+                </sec:authorize>
+                <button id="saveButton" class="btn btn-primary">Save</button>
+                <button id="deleteButton" class="btn btn-primary">Delete</button>
+              </div>
+            </div>
+            <div class="row">
+              <div id="categoryDivChosen" class="well">
+                Categories
+                <div>
+                  <select class="form-control chosenElement" id = "selectCategories" data-placeholder="Choose categories..." multiple = "multiple">
+                  </select>
+                </div>
+                <div class="input-group addDiv">
+                  <input type="text" id="addCategoryInput" class="form-control" placeholder="Add New Category">
+                  <span class="input-group-btn">
+                    <button class="btn btn-primary" type="button" id="addCategoryButton">
+                      <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                    </button>
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div id="tagDivChosen" class="well">
+                Tags
+                <div>
+                  <select class="form-control chosenElement" id = "selectTags" data-placeholder="Choose tags..." multiple = "multiple">
+                  </select>
+                </div>
+                <div class="input-group addDiv">
+                  <input type="text" id="addTagInput" class="form-control" placeholder="Add New Tag">
+                  <span class="input-group-btn">
+                    <button class="btn btn-primary" type="button" id="addTagButton">
+                      <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                    </button>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="row">
-        <div id="categoryDivChosen" class="well">
-          Categories
-          <div>
-            <select class="form-control chosenElement" id = "selectCategories" data-placeholder="Choose categories..." multiple = "multiple">
-            </select>
-          </div>
-          <div class="input-group addDiv">
-            <input type="text" id="addCategoryInput" class="form-control" placeholder="Add New Category">
-            <span class="input-group-btn">
-              <button class="btn btn-primary" type="button" id="addCategoryButton">
-                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-              </button>
-            </span>
-          </div>
-        </div>
-      </div>
-      <div class="row">
-        <div id="tagDivChosen" class="well">
-          Tags
-          <div>
-            <select class="form-control chosenElement" id = "selectTags" data-placeholder="Choose tags..." multiple = "multiple">
-            </select>
-          </div>
-          <div class="input-group addDiv">
-            <input type="text" id="addTagInput" class="form-control" placeholder="Add New Tag">
-            <span class="input-group-btn">
-              <button class="btn btn-primary" type="button" id="addTagButton">
-                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-              </button>
-            </span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
 
-<%@include file="includes/footer.jsp" %>
+      <%@include file="includes/footer.jsp" %>
 
 
-<script>var contextPath = "${pageContext.request.contextPath}";</script>
-<script>var pageType = "${PageType}";</script>
-<script>var staticId = "${staticId}";</script>
-<script src="${pageContext.request.contextPath}/js/jquery-2.2.4.min.js"></script>
-<script src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>
-<script src="${pageContext.request.contextPath}/js/chosen.jquery.min.js"></script>
-<script src="${pageContext.request.contextPath}/js/EditJS.js"></script>  
-<script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
-<script>tinymce.init({selector: 'textarea'});</script>
-</body>
+      <script>var contextPath = "${pageContext.request.contextPath}";</script>
+      <script>var pageType = "${PageType}";</script>
+      <script>var staticId = "${staticId}";</script>
+      <script src="${pageContext.request.contextPath}/js/jquery-2.2.4.min.js"></script>
+      <script src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>
+      <script src="${pageContext.request.contextPath}/js/chosen.jquery.min.js"></script>
+      <script src="${pageContext.request.contextPath}/js/EditJS.js"></script>  
+      <script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
+      <script>tinymce.init({selector: 'textarea'});</script>
+      <script src="${pageContext.request.contextPath}/js/AdminJS.js"></script>
+  </body>
 </html>

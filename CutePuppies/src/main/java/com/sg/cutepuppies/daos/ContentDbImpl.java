@@ -86,11 +86,37 @@ public class ContentDbImpl implements ContentDaoInterface {
     private static final String SQL_ARCHIVE_CONTENT_BY_STATUS = "update Content set ContentStatusCode = 'ARCHIVED'"
             + "where ContentStatusCode =:contentStatusCode and PostId = :postID";
 
-    private static final String SQL_SEARCH_EXISTING_URLS
-            = "select count(*) "
-            + " from Content "
-            + " where ContentTypeCode = 'STATIC PAGE' "
-            + " and UrlPattern = ?";
+    private static final String SQL_UPDATE_STATIC_PAGE
+            = " update Content c "
+            + " set c.Title = :title, "
+            + " c.ContentImgLink = :contentImgLink, "
+            + " c.ContentImgAltTxt = :contentImgAltTxt, "
+            + " c.Body = :body, "
+            + " c.Snippet = :snippet, "
+            + " c.ContentStatusCode = :contentStatusCode, "
+            + " c.UrlPattern = :urlPattern, "
+            + " c.ContentTypeCode = :contentTypeCode, "
+            + " c.UpdatedByUserId = :updatedByUserID, "
+            + " c.updatedOnDate = now() "
+            + " where c.ContentId = :contentID";
+
+    @Override
+    public Content updateStaticPage(Content content) {
+        MapSqlParameterSource namedParameters = new MapSqlParameterSource();
+        namedParameters.addValue("postID", null);
+        namedParameters.addValue("title", content.getTitle());
+        namedParameters.addValue("contentImgLink", content.getContentImgLink());
+        namedParameters.addValue("contentImgAltTxt", content.getContentImgAltTxt());
+        namedParameters.addValue("body", content.getBody());
+        namedParameters.addValue("snippet", content.getSnippet());
+        namedParameters.addValue("contentStatusCode", content.getContentStatusCode());
+        namedParameters.addValue("urlPattern", content.getUrlPattern());
+        namedParameters.addValue("contentTypeCode", content.getContentTypeCode());
+        namedParameters.addValue("updatedByUserID", content.getUpdatedByUser().getUserId());
+        namedParameters.addValue("contentID", content.getContentId());
+        npJdbcTemplate.update(SQL_UPDATE_STATIC_PAGE, namedParameters);
+        return content;
+    }
 
     @Override
     public List<Content> getAllContentsByPostId(int postID) {
@@ -225,11 +251,6 @@ public class ContentDbImpl implements ContentDaoInterface {
         npJdbcTemplate.update(SQL_ADD_CONTENT_TO_POST, namedParameters);
         content.setContentId(jdbcTemplate.queryForObject("select LAST_INSERT_ID()", Integer.class));
         return content;
-    }
-
-    @Override
-    public Content updateStaticPage(Content content) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
