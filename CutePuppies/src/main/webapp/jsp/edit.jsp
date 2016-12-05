@@ -43,7 +43,7 @@
                             <h4 id="titleText">Post Title</h4>
                             <input id="postTitle" class="form-control" placeholder="Title">
                             <c:if test="${PageType == 'StaticPage'}">
-                                <h4>Post URL (optional)</h4>
+                                <h4 id="urlText">Post URL (optional)</h4>
                                 <input id="postURL" class="form-control" placeholder="Custom Post URL">
                             </c:if>
                             <h4>Image Name (optional)</h4>
