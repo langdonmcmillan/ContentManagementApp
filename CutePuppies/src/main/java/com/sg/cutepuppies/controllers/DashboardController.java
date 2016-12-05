@@ -26,6 +26,8 @@ import com.sg.cutepuppies.daos.PostDaoInterface;
 import com.sg.cutepuppies.daos.TagDaoInterface;
 import com.sg.cutepuppies.daos.UserDaoInterface;
 import com.sg.cutepuppies.models.User;
+import java.util.ArrayList;
+import java.util.regex.Pattern;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.ui.Model;
 
@@ -179,7 +181,7 @@ public class DashboardController {
         model.addAttribute("PageType", "StaticPage");
         return "edit";
     }
-    
+
     @RequestMapping(value = "ajax/isUniqueUrl/{urlPattern}", method = RequestMethod.GET)
     @ResponseBody
     public Content isUniqueUrl(@PathVariable("urlPattern") String urlPattern) {
@@ -225,7 +227,7 @@ public class DashboardController {
     public Content addStaticPage(@Valid @RequestBody Content content) {
         return contentDao.addStaticPage(content);
     }
-    
+
     @RequestMapping(value = "ajax/updateStaticPage/{staticId}", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void updateStaticPage(@Valid @RequestBody Content content) {
@@ -299,5 +301,46 @@ public class DashboardController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void editTag(@PathVariable("tagId") int tagId) {
         tagDao.deleteTag(tagId);
+    }
+
+    @RequestMapping(value = "ajax/getTagsByAlpha/{alphaId}", method = RequestMethod.GET)
+    @ResponseBody
+    public List<Tag> populateTagsByAlpha(@PathVariable("alphaId") String alphaId) {
+        List<Tag> listOfTags = tagDao.getAllTags(false);
+        List<Tag> smallList = new ArrayList();
+
+        if (alphaId.equals("all")) {
+
+            smallList = listOfTags;
+
+        } else if (alphaId.equals("num")) {
+
+            for (int x = 0; x < listOfTags.size(); x++) {
+
+                String first = listOfTags.get(x).getTagDescription().substring(0, 1);
+                
+                if (first.equals("0") || first.equals("1") || first.equals("2") ||
+                        first.equals("3") || first.equals("4") || first.equals("5") ||
+                        first.equals("6") || first.equals("7") || first.equals("8") ||
+                        first.equals("9")) {
+                    
+                    smallList.add(listOfTags.get(x));
+                    
+                }
+            }
+        } else {
+            for (int x = 0; x < listOfTags.size(); x++) {
+
+                String first = listOfTags.get(x).getTagDescription().substring(0, 1);
+                
+                if (first.equalsIgnoreCase(alphaId)) {
+                    
+                    smallList.add(listOfTags.get(x));
+                    
+                }
+
+            }
+        }
+        return smallList;
     }
 }

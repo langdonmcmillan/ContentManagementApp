@@ -124,7 +124,7 @@ public class CutePuppiesController {
         List<Category> listOfCategories = categoryDao.getAllCategories();
         return listOfCategories;
     }
-    
+
     @RequestMapping(value = "ajax/getTags/{onlyPublished}", method = RequestMethod.GET)
     @ResponseBody
     public List<Tag> populateTags(@PathVariable("onlyPublished") boolean onlyPublished) {
