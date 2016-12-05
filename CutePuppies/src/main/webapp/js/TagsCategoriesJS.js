@@ -12,7 +12,7 @@ $(document).ready(function () {
 });
 
 function loadData() {
-    
+
     if (type === "Tags") {
         populateTags();
     } else if (type === "Categories") {
@@ -20,12 +20,12 @@ function loadData() {
     }
 }
 
-function setTableHeight() { 
+function setTableHeight() {
     var maxHeight = $(window).height() - 120;
     $('#editTable').css('max-height', maxHeight); //set max height
 }
 
-$(window).on('resize', function(){
+$(window).on('resize', function () {
     setTableHeight();
 });
 
@@ -92,7 +92,7 @@ function populateTags() {
 $('#addButton').click(function () {
     var dataDescription = $('#addDataInput').val();
     $.ajax({
-        url: contextPath + "/admin/add" + type,
+        url: contextPath + "/admin/ajax/add" + type,
         type: "POST",
         data: dataDescription,
         contentType: 'application/json; charset=utf-8',
@@ -102,6 +102,7 @@ $('#addButton').click(function () {
         },
         dataType: 'json'
     }).success(function (data, status) {
+        $('#tableBody').empty();
         loadData();
         $('#addDataInput').val('');
     }).error(function (data, status) {
@@ -120,7 +121,7 @@ $(document).on('click', '.deleteLink', function () {
     if (confirm('Are you sure you want to delete?')) {
         $.ajax({
             type: 'DELETE',
-            url: contextPath + '/admin/delete' + type + '/' + id,
+            url: contextPath + '/admin/ajax/delete' + type + '/' + id,
             contentType: 'application/json; charset=utf-8',
             headers: {
                 'Accept': 'application/json',
@@ -128,6 +129,7 @@ $(document).on('click', '.deleteLink', function () {
             },
             dataType: 'json'
         }).success(function (data, status) {
+            $('#tableBody').empty();
             loadData();
         }).error(function (data, status) {
 
@@ -139,7 +141,7 @@ $(document).on('click', '.saveLink', function () {
     var id = $(this).parent().data('id');
     var dataDescription = $('#input' + id).val();
     $.ajax({
-        url: contextPath + "/admin/edit" + type + '/' + id,
+        url: contextPath + "/admin/ajax/edit" + type + '/' + id,
         type: "PUT",
         data: dataDescription,
         contentType: 'application/json; charset=utf-8',
@@ -149,6 +151,7 @@ $(document).on('click', '.saveLink', function () {
         },
         dataType: 'json'
     }).success(function (data, status) {
+        $('#tableBody').empty();
         loadData();
         $('#addDataInput').val('');
     }).error(function (data, status) {
