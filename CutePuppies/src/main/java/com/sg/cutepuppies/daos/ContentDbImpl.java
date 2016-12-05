@@ -12,6 +12,7 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -48,7 +49,7 @@ public class ContentDbImpl implements ContentDaoInterface {
             = "select c.* from Content c "
             + " where 1 = 1 "
             + " and c.ContentTypeCode = 'STATIC PAGE'"
-            + " and c.UrlPattern = :urlPattern";
+            + " and c.UrlPattern = ?";
     private static final String SQL_GET_ALL_REVISIONS_BY_POST_ID
             = "select c.* from Content c "
             + " join Post p on c.PostId = p.PostId "
@@ -224,12 +225,11 @@ public class ContentDbImpl implements ContentDaoInterface {
     // use this method to throw error if urlPattern is 
     @Override
     public Content getStaticPageByURL(String urlPattern) {
+        Content content = new Content();
         try {
-            MapSqlParameterSource namedParameters = new MapSqlParameterSource();
-            namedParameters.addValue("urlPattern", urlPattern);
-            return npJdbcTemplate.queryForObject(SQL_GET_STATIC_PAGE_BY_URL, namedParameters, new ContentMapper());
-        } catch (NullPointerException ex) {
-            return null;
+            return jdbcTemplate.queryForObject(SQL_GET_STATIC_PAGE_BY_URL, new ContentMapper(), urlPattern);
+        } catch (EmptyResultDataAccessException ex) {
+            return content;
         }
     }
 
