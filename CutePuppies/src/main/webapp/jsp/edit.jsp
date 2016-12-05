@@ -39,13 +39,13 @@
               <input id="postTitle" class="form-control" placeholder="Title">
               <h4>Post URL (optional)</h4>
               <input id="postURL" class="form-control" placeholder="Custom Post URL">
-              <h4>Image Name</h4>
+              <h4>Image Name (optional)</h4>
               <input id="imageName" class="form-control" placeholder="Image Name">
-              <h4>Image URL</h4>
+              <h4>Image URL (optional)</h4>
               <input id="imageURL" class="form-control" placeholder="Image URL">
             </div>
             <div class="row">
-              <h4>Post Body</h4>
+              <h4>Post Body (optional)</h4>
               <textarea></textarea>
             </div>
 
