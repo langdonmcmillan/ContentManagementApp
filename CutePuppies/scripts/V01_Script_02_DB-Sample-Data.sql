@@ -442,12 +442,6 @@ WHERE
     archivedondate IS NULL
         AND ContentStatusCode = 'ARCHIVED';
 
-INSERT INTO User (RoleCode, CreatedDate, UpdatedDate, DeletedDate, UserName, UserPassword, UserEmail)
-VALUES ('ADMIN', '1900-01-01', null, null, 'sadukie', 'password1234', 'sadukie@sadukie.com');
-
-INSERT INTO User (RoleCode, CreatedDate, UpdatedDate, DeletedDate, UserName, UserPassword, UserEmail)
-VALUES ('AUTHOR', '1900-01-01', null, null, 'marke_ting', 'password1234', 'marke@sadukie.com');
-
 -- update existing Post and Content table
 UPDATE Post p
     SET p.CreatedByUserId = CASE p.CreatedByUserId
