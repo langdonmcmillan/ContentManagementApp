@@ -25,6 +25,8 @@ import com.sg.cutepuppies.daos.ContentDaoInterface;
 import com.sg.cutepuppies.daos.PostDaoInterface;
 import com.sg.cutepuppies.daos.TagDaoInterface;
 import com.sg.cutepuppies.daos.UserDaoInterface;
+import com.sg.cutepuppies.models.User;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.ui.Model;
 
 /**
@@ -177,6 +179,9 @@ public class DashboardController {
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     public Post addPost(@Valid @RequestBody Post post) {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        int userId = userDao.getUserIdByUsername(username);
+        post.getCreatedByUser().setUserId(userId);
         post = postDao.addPost(post);
         post.getMostRecentContent().setPostId(post.getPostId());
         checkUrlPattern(post);

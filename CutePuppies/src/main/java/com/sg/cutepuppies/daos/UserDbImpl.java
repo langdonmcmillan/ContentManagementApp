@@ -69,6 +69,8 @@ public class UserDbImpl implements UserDaoInterface {
             = "update User set UserName = ?, UserPassword = ?, UserEmail = ?, RoleCode = ? where UserId = ?";
     private static final String SQL_DELETE_USER
             = "delete from User where UserId = ?";
+    private static final String SQL_GET_ID_FROM_USERNAME
+            = "select u.UserId from User u where u.UserName = ?";
 
     @Override
     public User getUserWhoCreatedPost(int postId) {
@@ -137,6 +139,11 @@ public class UserDbImpl implements UserDaoInterface {
     @Override
     public List<User> getAllUsers() {
         return jdbcTemplate.query(SQL_RETURN_ALL_USERS, new UserMapper());
+    }
+
+    @Override
+    public int getUserIdByUsername(String username) {
+        return jdbcTemplate.queryForObject(SQL_GET_ID_FROM_USERNAME, Integer.class, username);
     }
 
     private static final class UserMapper implements RowMapper<User> {
