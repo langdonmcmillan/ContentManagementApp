@@ -6,19 +6,17 @@
 var postID;
 var contentID;
 var userID;
-var pageType = $('#PageType').val();
+//var pageType = $('#PageType').val();
 $(document).ready(function () {
     postID = 0;
     contentID = 0;
     userID = 1;
     if (pageType === 'StaticPage') {
-        $('#sidebarColumn').hide();
+        $('#categoryDivChosen, #tagDivChosen').hide();
         $('#revisionRow').hide();
         $('#mainEditColumn').removeClass('col-md-8').addClass('col-md-12');
         $('#titleText').text('Static Page Title (Required)');
-        $('#postTitle').prop('required', true);
         $('#urlText').text('Static Page URL (Required)');
-        $('#postURL').prop('required', true);
         $('#bodyText').text('Static Page Body');
         if (staticId !== "") {
             populateStaticEdit();

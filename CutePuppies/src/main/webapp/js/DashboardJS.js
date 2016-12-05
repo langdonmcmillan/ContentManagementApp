@@ -28,6 +28,9 @@ function loadContent() {
 }
 
 function loadStaticPages(archiveBoxChecked) {
+    $('#listTitle').text('List Of All Static Pages');
+    $('#createNewPost').attr("href", contextPath + "/admin/edit/static");
+    $('#createNewPost').text('Create New Static Page');
     $.ajax({
         type: 'GET',
         url: contextPath + '/admin/ajax/getStaticPages/' + archiveBoxChecked
@@ -36,13 +39,11 @@ function loadStaticPages(archiveBoxChecked) {
     }).error(function (data, status) {
 
     });
-    $('#createNew').attr("href", contextPath + "/admin/edit/static");
-    $('#createNew').text('Create New Static Page');
 }
 
 
 function fillTableWithAllStaticPages(listOfAllStaticPageContent) {
-    $('#listTitle').text('List Of All Static Pages');
+    
     var tbody = $('#populateTable');
     tbody.empty();
     $.each(listOfAllStaticPageContent, function (index, content) {

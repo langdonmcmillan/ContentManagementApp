@@ -71,3 +71,7 @@ p#titleEmptyError, p#urlEmptyError {
     color: red;
 }
 
+#createNewPost {
+    margin: 30px;
+}
+
