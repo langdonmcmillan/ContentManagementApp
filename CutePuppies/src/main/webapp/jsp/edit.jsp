@@ -42,11 +42,13 @@
                             <div id="contentStatusText"></div>
                             <h4 id="titleText">Post Title</h4>
                             <input id="postTitle" class="form-control" placeholder="Title">
-                            <h4 id="urlText">Post URL (optional)</h4>
-                            <input id="postURL" class="form-control" placeholder="Custom Post URL">
-                            <h4>Image Name</h4>
+                            <c:if test="${PageType == 'StaticPage'}">
+                                <h4>Post URL (optional)</h4>
+                                <input id="postURL" class="form-control" placeholder="Custom Post URL">
+                            </c:if>
+                            <h4>Image Name (optional)</h4>
                             <input id="imageName" class="form-control" placeholder="Image Name">
-                            <h4>Image URL</h4>
+                            <h4>Image URL (optional)</h4>
                             <input id="imageURL" class="form-control" placeholder="Image URL">
                         </div>
                         <div class="row">
@@ -129,20 +131,19 @@
                 </div>
             </div>
         </div>
-    </div>
 
-    <%@include file="includes/footer.jsp" %>
+        <%@include file="includes/footer.jsp" %>
 
 
-    <script>var contextPath = "${pageContext.request.contextPath}";</script>
-    <script>var pageType = "${PageType}";</script>
-    <script>var staticId = "${staticId}";</script>
-    <script src="${pageContext.request.contextPath}/js/jquery-2.2.4.min.js"></script>
-    <script src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>
-    <script src="${pageContext.request.contextPath}/js/chosen.jquery.min.js"></script>
-    <script src="${pageContext.request.contextPath}/js/EditJS.js"></script>  
-    <script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
-    <script>tinymce.init({selector: 'textarea'});</script>
-    <script src="${pageContext.request.contextPath}/js/AdminJS.js"></script>
-</body>
+        <script>var contextPath = "${pageContext.request.contextPath}";</script>
+        <script>var pageType = "${PageType}";</script>
+        <script>var staticId = "${staticId}";</script>
+        <script src="${pageContext.request.contextPath}/js/jquery-2.2.4.min.js"></script>
+        <script src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>
+        <script src="${pageContext.request.contextPath}/js/chosen.jquery.min.js"></script>
+        <script src="${pageContext.request.contextPath}/js/EditJS.js"></script>  
+        <script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
+        <script>tinymce.init({selector: 'textarea'});</script>
+        <script src="${pageContext.request.contextPath}/js/AdminJS.js"></script>
+    </body>
 </html>

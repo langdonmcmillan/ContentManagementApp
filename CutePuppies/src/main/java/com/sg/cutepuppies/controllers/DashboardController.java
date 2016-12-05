@@ -179,15 +179,22 @@ public class DashboardController {
     public Post addPost(@Valid @RequestBody Post post) {
         post = postDao.addPost(post);
         post.getMostRecentContent().setPostId(post.getPostId());
+        checkUrlPattern(post);
         contentDao.updatePostContent(post.getMostRecentContent());
         return post;
+    }
+
+    private void checkUrlPattern(Post post) {
+        if (post.getMostRecentContent().getUrlPattern() == null) {
+            post.getMostRecentContent().setUrlPattern(String.valueOf(post.getPostId()));
+        }
     }
 
     @RequestMapping(value = "ajax/addContent", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     public Post addContent(@Valid @RequestBody Post post) {
-
+        checkUrlPattern(post);
         contentDao.updatePostContent(post.getMostRecentContent());
         post = postDao.updatePost(post);
 

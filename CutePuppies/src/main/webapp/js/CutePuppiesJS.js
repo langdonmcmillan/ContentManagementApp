@@ -149,9 +149,15 @@ function setSessionProperties() {
     if (sessionStorage.getItem('pageNumber') === null) {
         sessionStorage.setItem('pageNumber', 1);
     }
-//    sessionStorage.setItem('selectedTagId', 'null');
-//    sessionStorage.setItem('selectedCategoryId', 'null');
-//    sessionStorage.setItem('searchTerm', '');
+    if (sessionStorage.getItem('selectedTagId') === null) {
+        sessionStorage.setItem('selectedTagId', 'null');
+    }
+    if (sessionStorage.getItem('selectedCategoryId') === null) {
+        sessionStorage.setItem('selectedCategoryId', 'null');
+    }
+    if (sessionStorage.getItem('searchTerm') === null) {
+        sessionStorage.setItem('searchTerm', '');
+    }
 }
 
 function updatePageNav(selectedPage) {

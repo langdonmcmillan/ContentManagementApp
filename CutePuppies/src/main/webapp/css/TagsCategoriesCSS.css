@@ -28,3 +28,7 @@ th {
 td {
     width: 20%;
 }
+
+.disableClick{
+    pointer-events: none;
+}
