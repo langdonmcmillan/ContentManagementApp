@@ -37,8 +37,10 @@
               <div id="contentStatusText"></div>
               <h4>Post Title</h4>
               <input id="postTitle" class="form-control" placeholder="Title">
-              <h4>Post URL (optional)</h4>
-              <input id="postURL" class="form-control" placeholder="Custom Post URL">
+              <c:if test="${PageType == 'StaticPage'}">
+                  <h4>Post URL (optional)</h4>
+                  <input id="postURL" class="form-control" placeholder="Custom Post URL">
+              </c:if>
               <h4>Image Name</h4>
               <input id="imageName" class="form-control" placeholder="Image Name">
               <h4>Image URL</h4>
