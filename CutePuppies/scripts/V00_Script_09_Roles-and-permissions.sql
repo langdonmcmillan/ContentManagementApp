@@ -1,3 +1,5 @@
+use CutePuppies;
+
 insert into CutePuppies.Role values 
 	('ROLE_ADMIN','Administrator'),	
     ('ROLE_AUTHOR','Author'),
