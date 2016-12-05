@@ -71,6 +71,7 @@ function loadPagePosts() {
 ;
 function fillPostSnippetsContainer(posts) {
     var postSnippetContainer = $('#allPosts');
+
     postSnippetContainer.empty();
     $.each(posts, function (index, post) {
         var appendInput = '';
@@ -116,25 +117,30 @@ function fillPostSnippetsContainer(posts) {
                         )
                 .append('<hr>');
 
-
+        var delimiter = "";
         $.each(post.publishedContent.listOfCategories, function (index, category) {
             $('#categories' + post.publishedContent.contentId)
+                    .append(delimiter)
                     .append($('<a href="#">' + category.categoryDescription + '</a>')
                             .attr({
                                 'class': 'category',
                                 'data-categoryDescription': category.categoryDescription,
                                 'data-categoryID': category.categoryID
-                            }).append(' '));
+                            }));
+            delimiter = ", \u00A0";
         });
 
+        delimiter = "";
         $.each(post.publishedContent.listOfTags, function (index, tag) {
             $('#tags' + post.publishedContent.contentId)
+                    .append(delimiter)
                     .append($('<a href="#">' + tag.tagDescription + '</a>')
                             .attr({
                                 'class': 'tag',
                                 'data-tagDescription': tag.tagDescription,
                                 'data-tagID': tag.tagID
                             }).append(' '));
+            delimiter = ", \u00A0";
         });
     });
 
@@ -226,13 +232,13 @@ $(document).on('click', '.tag', function () {
     window.location.replace(contextPath);
 });
 
-$('#searchButton').click(function() {
+$('#searchButton').click(function () {
     sessionStorage.setItem('searchTerm', $('#searchInput').val());
     updatePageNav(1);
     window.location.replace(contextPath);
 });
 
-$('.homeLink').click(function() {
+$('.homeLink').click(function () {
     sessionStorage.setItem('selectedTagId', 'null');
     sessionStorage.setItem('selectedCategoryId', 'null');
     sessionStorage.setItem('searchTerm', '');
