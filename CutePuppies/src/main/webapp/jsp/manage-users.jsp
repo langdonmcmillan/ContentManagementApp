@@ -14,6 +14,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>SWG Cute Puppy Adoption Center Dashboard</title>
+        <link rel="shortcut icon" href="${pageContext.request.contextPath}/img/icon.png">
     <link href="${pageContext.request.contextPath}/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=McLaren" rel="stylesheet">
     <link href="${pageContext.request.contextPath}/css/navbar-fixed-side.css" rel="stylesheet">

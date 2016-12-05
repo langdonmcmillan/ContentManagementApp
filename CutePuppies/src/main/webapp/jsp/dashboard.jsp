@@ -12,6 +12,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>SWG Cute Puppy Adoption Center</title>
+        <link rel="shortcut icon" href="${pageContext.request.contextPath}/img/icon.png">
         <link href="/CutePuppies/css/bootstrap.min.css" rel="stylesheet">
         <link href="/CutePuppies/css/DashboardCSS.css" rel="stylesheet">
         <link href="/CutePuppies/css/navbar-fixed-side.css" rel="stylesheet">
@@ -55,7 +56,7 @@
                     </div>
                     <div class="row">
                         <div class="col-sm-9 col-lg-10 text-center">
-                            <a id="createNewPost" href="${pageContext.request.contextPath}/admin/edit" class="btn btn-primary btn-lg active" role="button">Create A New Post</a>
+                            <a id="createNewPost" href="${pageContext.request.contextPath}/admin/edit/post" class="btn btn-primary btn-lg active" role="button">Create A New Post</a>
                         </div>
                     </div>
                 </div>
