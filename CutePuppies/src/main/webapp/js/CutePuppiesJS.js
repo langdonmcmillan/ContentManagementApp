@@ -239,7 +239,9 @@ $('#searchButton').click(function () {
 });
 
 $('.homeLink').click(function () {
+    updatePageNav(1);
     sessionStorage.setItem('selectedTagId', 'null');
     sessionStorage.setItem('selectedCategoryId', 'null');
     sessionStorage.setItem('searchTerm', '');
+    window.location.replace(contextPath);
 });
