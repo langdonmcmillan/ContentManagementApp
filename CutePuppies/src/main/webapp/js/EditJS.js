@@ -293,12 +293,14 @@ function validateTitleAndUrl(contentStatusCode) {
                 },
                 dataType: 'json'
             }).success(function (content, status) {
-                if (content === null) {
+                if (content.title === null) {
                     addStaticPage(contentStatusCode);
+                    window.location.assign('/CutePuppies/admin/manageStaticPages');
                 } else if ($('#contentStatusText').is(':empty')) {
                     $('#urlEmptyError').text("That URL Pattern already exists in our database. Please enter another valid URL (only letters, numbers, dashes, underscores.");
                 } else {
                     updateStaticPage(contentStatusCode, staticId);
+                    window.location.assign('/CutePuppies/admin/manageStaticPages');
                 }
             }).error(function (data, status) {
 
