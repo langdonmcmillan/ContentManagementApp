@@ -81,6 +81,7 @@
         <intercept-url pattern="/admin/Tags/**" access="ROLE_ADMIN" />
         <intercept-url pattern="/admin/Categories" access="ROLE_ADMIN" />
         <intercept-url pattern="/admin/Categories/**" access="ROLE_ADMIN" />
+        <intercept-url pattern="/admin/ajax/getStaticPages/**" access="ROLE_ADMIN" />
         
         <intercept-url pattern="/admin/**" access="ROLE_ADMIN" />
         

@@ -68,15 +68,38 @@ public class PostDbImpl implements PostDaoInterface {
     private static final String SQL_UPDATE_EDITED_POST = "update Post set UpdatedByUserId = :userId, "
             + "UpdatedOnDate = Current_Timestamp where PostId = :postId";
     
+//    @Override
+//    public List<Post> getAllPosts(boolean showArchived) {
+//        String SQL_BASE = SQL_SELECT_ALL_POSTS;
+//        if (showArchived == false) {
+//            SQL_BASE += " and (select c.ContentStatusCode != 'ARCHIVED')";
+//        }
+//        SQL_BASE += " order by p.createdOnDate desc";
+//        return jdbcTemplate.query(SQL_BASE, new PostMapper());
+//
+//    }
+    
     @Override
-    public List<Post> getAllPosts(boolean showArchived) {
+    public List<Post> getAllPosts(String statusCode) {
+        // publish draft awaiting archived
         String SQL_BASE = SQL_SELECT_ALL_POSTS;
-        if (showArchived == false) {
-            SQL_BASE += " and (select c.ContentStatusCode != 'ARCHIVED')";
-        }
-        SQL_BASE += " order by p.createdOnDate desc";
+        
+        switch(statusCode) {
+            case "PUBLISHED":
+                SQL_BASE += " and (select c.ContentStatusCode = 'PUBLISHED')";
+                break;
+            case "DRAFT":
+                SQL_BASE += " and (select c.ContentStatusCode = 'DRAFT')";
+                break;
+            case "AWAITING":
+                SQL_BASE += " and (select c.ContentStatusCode = 'AWAITING')";
+                break;
+            case "ARCHIVED":
+                SQL_BASE += " and (select c.ContentStatusCode = 'ARCHIVED')";
+                break;
+        }   
+        SQL_BASE += " order by p.CreatedOnDate desc";
         return jdbcTemplate.query(SQL_BASE, new PostMapper());
-
     }
 
     @Override

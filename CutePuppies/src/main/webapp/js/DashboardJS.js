@@ -4,46 +4,42 @@
  * and open the template in the editor.
  */
 
-var archiveBoxChecked = $('#showArchivedPosts').is(':checked');
-
 $(document).ready(function () {
-    loadContent();
+    var statusCode = $("option:selected", this).val();
+    loadContent(statusCode);
 });
 
-$("#showArchivedPosts").change(function () {
-    var archiveBoxChecked = $('#showArchivedPosts').is(':checked');
-    if (pageType === 'StaticPage') {
-        loadStaticPages(archiveBoxChecked);
-    } else {
-        loadAllPosts(archiveBoxChecked);
-    }
+$('#contentStatusSelect').on('change', function (e) {
+    var statusCode = $("option:selected", this).val();
+    loadContent(statusCode);
 });
 
-function loadContent() {
+function loadContent(statusCode) {
     if (pageType === 'StaticPage') {
-        loadStaticPages(archiveBoxChecked);
+        loadStaticPages(statusCode);
     } else {
-        loadAllPosts(archiveBoxChecked);
+        loadAllPosts(statusCode);
     }
 }
 
-function loadStaticPages(archiveBoxChecked) {
+function loadStaticPages(statusCode) {
     $('#listTitle').text('List Of All Static Pages');
     $('#createNewPost').attr("href", contextPath + "/admin/edit/static");
     $('#createNewPost').text('Create New Static Page');
     $.ajax({
         type: 'GET',
-        url: contextPath + '/admin/ajax/getStaticPages/' + archiveBoxChecked
+        url: contextPath + '/admin/ajax/getStaticPages/' + statusCode
     }).success(function (data, status) {
-        fillTableWithAllStaticPages(data);
+        fillTableWithStaticPages(data);
     }).error(function (data, status) {
 
     });
+
 }
 
 
-function fillTableWithAllStaticPages(listOfAllStaticPageContent) {
-    
+function fillTableWithStaticPages(listOfAllStaticPageContent) {
+
     var tbody = $('#populateTable');
     tbody.empty();
     $.each(listOfAllStaticPageContent, function (index, content) {
@@ -59,7 +55,7 @@ function fillTableWithAllStaticPages(listOfAllStaticPageContent) {
             contentUpdateName = '-';
             contentUpdateDateString = '-';
         }
-        
+
         var staticPgUrl = contextPath + '/admin/edit/static/' + content.contentId;
         tbody.append($('<tr>')
 
@@ -72,10 +68,10 @@ function fillTableWithAllStaticPages(listOfAllStaticPageContent) {
     });
 }
 
-function loadAllPosts(archiveBoxChecked) {
+function loadAllPosts(statusCode) {
     $.ajax({
         type: 'GET',
-        url: contextPath + '/admin/ajax/getAllPosts/' + archiveBoxChecked
+        url: contextPath + '/admin/ajax/getAllPosts/' + statusCode
     }).success(function (data, status) {
         fillTableWithAllPosts(data);
     }).error(function (data, status) {
@@ -95,8 +91,8 @@ function fillTableWithAllPosts(listOfAllPosts) {
         var postCreateDate = new Date(post.createdOnDate);
         var contentCreateDate = new Date(post.mostRecentContent.createdOnDate);
 
-        var contentCreateDateString = contentCreateDate.toLocaleDateString() + " " + contentCreateDate.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-        var postCreateDateString = postCreateDate.toLocaleDateString() + " " + postCreateDate.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+        var contentCreateDateString = contentCreateDate.toLocaleDateString() + " " + contentCreateDate.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'});
+        var postCreateDateString = postCreateDate.toLocaleDateString() + " " + postCreateDate.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'});
 
         if ((postCreateName === contentCreateName) && (postCreateDateString === contentCreateDateString)) {
             contentCreateName = '-';

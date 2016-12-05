@@ -53,28 +53,28 @@ public class PostDAOTest {
         simpleJdbcCall.execute();
     }
 
-    @Test
-    public void testAddPost() {
-        String date = "2000-11-01";
-        java.sql.Date adminCreateDate = java.sql.Date.valueOf(date);
-
-        User admin = new User();
-        admin.setUserId(1);
-        admin.setRoleCode("ADMIN");
-        admin.setCreatedDate(adminCreateDate);
-        admin.setUserName("sadukie");
-
-        Post post = new Post();
-        post.setCreatedByUser(admin);
-
-        int numPosts = postDao.getAllPosts(true).size();
-        assertEquals(0, post.getPostId());
-
-        postDao.addPost(post);
-
-        assertEquals(numPosts + 1, postDao.getAllPosts(true).size());
-        assertNotEquals(0, post.getPostId());
-    }
+//    @Test
+//    public void testAddPost() {
+//        String date = "2000-11-01";
+//        java.sql.Date adminCreateDate = java.sql.Date.valueOf(date);
+//
+//        User admin = new User();
+//        admin.setUserId(1);
+//        admin.setRoleCode("ADMIN");
+//        admin.setCreatedDate(adminCreateDate);
+//        admin.setUserName("sadukie");
+//
+//        Post post = new Post();
+//        post.setCreatedByUser(admin);
+//
+//        int numPosts = postDao.getAllPosts(true).size();
+//        assertEquals(0, post.getPostId());
+//
+//        postDao.addPost(post);
+//
+//        assertEquals(numPosts + 1, postDao.getAllPosts(true).size());
+//        assertNotEquals(0, post.getPostId());
+//    }
     
     @Test
     public void testArchivePost() {

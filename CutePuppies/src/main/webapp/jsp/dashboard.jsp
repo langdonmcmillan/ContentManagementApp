@@ -34,8 +34,14 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-sm-9 col-lg-10 text-left">
-                            <input id = "showArchivedPosts" type="checkbox" name="archivedPosts" value="showArchivedPosts"> Show Archived Posts<br>
+                        <div class="col-sm-9 col-lg-10">
+                            <!--<input id = "showArchivedPosts" type="checkbox" name="archivedPosts" value="showArchivedPosts"> Include Archived Posts<br>-->
+                            <select id="contentStatusSelect">
+                                <option id="showOnlyPublished" value="PUBLISHED">Published</option>
+                                <option id="showOnlyDraft" value="DRAFT">Draft</option>
+                                <option id="showOnlyAwaiting" value="AWAITING">Awaiting</option>
+                                <option id="showOnlyArchived" value="ARCHIVED">Archived</option>
+                            </select>
                         </div>
                     </div>
                     <div class="row" id = "listScroll">

@@ -65,23 +65,36 @@ public class DashboardController {
         return "dashboard";
     }
 
-    @RequestMapping(value = "/ajax/getStaticPages/{archiveBoxChecked}", method = RequestMethod.GET)
+//    @RequestMapping(value = "/ajax/getStaticPages/{archiveBoxChecked}", method = RequestMethod.GET)
+//    @ResponseBody
+//    public List<Content> getStaticPages(@PathVariable("archiveBoxChecked") boolean showArchived) {
+//        List<Content> listOfAllStaticPgs = contentDao.getAllStaticPages(showArchived);
+//        listOfAllStaticPgs.forEach(content -> {
+//            int contentId = content.getContentId();
+//            content.setCreatedByUser(userDao.getUserWhoCreatedContent(contentId));
+//            content.setUpdatedByUser(userDao.getUserWhoUpdatedContent(contentId));
+//            content.setArchivedByUser(userDao.getUserWhoArchivedContent(contentId));
+//        });
+//        return listOfAllStaticPgs;
+//    }
+    
+    @RequestMapping (value = "/ajax/getStaticPages/{statusCode}", method = RequestMethod.GET)
     @ResponseBody
-    public List<Content> getStaticPages(@PathVariable("archiveBoxChecked") boolean showArchived) {
-        List<Content> listOfAllStaticPgs = contentDao.getAllStaticPages(showArchived);
-        listOfAllStaticPgs.forEach(content -> {
+    public List<Content> getStaticPagesOfStatus(@PathVariable("statusCode") String statusCode) {
+        List<Content> staticPagesOfStatus = contentDao.getStaticPageByStatus(statusCode);
+        staticPagesOfStatus.forEach(content -> {
             int contentId = content.getContentId();
             content.setCreatedByUser(userDao.getUserWhoCreatedContent(contentId));
             content.setUpdatedByUser(userDao.getUserWhoUpdatedContent(contentId));
             content.setArchivedByUser(userDao.getUserWhoArchivedContent(contentId));
         });
-        return listOfAllStaticPgs;
+        return staticPagesOfStatus;
     }
 
-    @RequestMapping(value = "/ajax/getAllPosts/{archiveBoxChecked}", method = RequestMethod.GET)
+    @RequestMapping(value = "/ajax/getAllPosts/{statusCode}", method = RequestMethod.GET)
     @ResponseBody
-    public List<Post> getAllPosts(@PathVariable("archiveBoxChecked") boolean showArchived) {
-        List<Post> listOfAllPosts = postDao.getAllPosts(showArchived);
+    public List<Post> getAllPosts(@PathVariable("statusCode") String statusCode) {
+        List<Post> listOfAllPosts = postDao.getAllPosts(statusCode);
         listOfAllPosts.forEach(post -> {
             int postId = post.getPostId();
             post.setCreatedByUser(userDao.getUserWhoCreatedPost(postId));
