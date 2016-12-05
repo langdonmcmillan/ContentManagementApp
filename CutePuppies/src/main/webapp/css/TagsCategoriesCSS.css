@@ -13,6 +13,10 @@ table tbody {
     display: block;
     overflow-y: scroll;
 }
+
+#alphaTable tbody{
+    overflow-y: hidden;
+}
 table tbody tr {
     width: 100%;
 }

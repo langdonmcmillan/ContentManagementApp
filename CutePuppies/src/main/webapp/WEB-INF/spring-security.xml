@@ -28,6 +28,7 @@
     <http pattern="/ajax/getPagePosts" security="none" />
     <http pattern="/ajax/getCategories" security="none" />
     <http pattern="/ajax/getTags/{onlyPublished}" security="none" />
+    <http pattern="/ajax/getTagsByAlpha/{alphaId}" security="none"/>
     <http pattern="/css/**" security="none" />
     <http pattern="/js/**" security="none" />
     <http pattern="/img/**" security="none" />    
@@ -72,6 +73,8 @@
         <intercept-url pattern="/manageUsers/add" access="ROLE_ADMIN" />
         <intercept-url pattern="/manageUsers/update" access="ROLE_ADMIN" />
         <intercept-url pattern="/manageUsers/remove/**" access="ROLE_ADMIN" />
+        
+        
         
         <intercept-url pattern="/admin/manageTags" access="ROLE_ADMIN" />
         <intercept-url pattern="/admin/manageCategories" access="ROLE_ADMIN" />
