@@ -197,6 +197,7 @@ public class DashboardController {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         int userId = userDao.getUserIdByUsername(username);
         post.getCreatedByUser().setUserId(userId);
+        post.getMostRecentContent().getCreatedByUser().setUserId(userId);
         post = postDao.addPost(post);
         post.getMostRecentContent().setPostId(post.getPostId());
         checkUrlPattern(post);
@@ -215,6 +216,11 @@ public class DashboardController {
     @ResponseBody
     public Post addContent(@Valid @RequestBody Post post) {
         checkUrlPattern(post);
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        int userId = userDao.getUserIdByUsername(username);
+        post.setUpdatedByUser(new User());
+        post.getUpdatedByUser().setUserId(userId);
+        post.getMostRecentContent().getCreatedByUser().setUserId(userId);
         contentDao.updatePostContent(post.getMostRecentContent());
         post = postDao.updatePost(post);
 

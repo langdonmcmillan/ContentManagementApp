@@ -391,6 +391,7 @@ function addContent(contentStatusCode) {
         type: 'POST',
         url: contextPath + '/admin/ajax/addContent',
         data: JSON.stringify({
+            postId: $('#post-id').val(),
             createdByUser: user,
             mostRecentContent: newContent
         }),
