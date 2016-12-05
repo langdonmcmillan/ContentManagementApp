@@ -207,7 +207,7 @@ $('#deleteButton').click(function () {
             window.location.assign('/CutePuppies/admin/manageStaticPages');
         });
     }
-    if (postID === null || postID === 0) {
+    else if (postID === null || postID === 0) {
         window.location.assign(contextPath + '/admin/dashboard');
     } else if (checkIfAllArchived()) {
         if (confirm('This post will be archived if this content is archived. Continue?')) {

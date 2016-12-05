@@ -61,9 +61,7 @@
         <intercept-url pattern="/admin/ajax/addContent" access="ROLE_ADMIN,ROLE_AUTHOR" />
         <intercept-url pattern="/admin/ajax/archivePost/**" access="ROLE_ADMIN,ROLE_AUTHOR" />
         <intercept-url pattern="/admin/ajax/archiveContent/**" access="ROLE_ADMIN,ROLE_AUTHOR" />
-        <intercept-url pattern="/admin//manageTags" access="ROLE_ADMIN" />
-        <intercept-url pattern="/admin/manageCategories" access="ROLE_ADMIN" />
-        <intercept-url pattern="/admin/ajax/addTags" access="ROLE_ADMIN" />
+        <intercept-url pattern="/admin/ajax/addTags" access="ROLE_ADMIN,ROLE_AUTHOR" />
         <intercept-url pattern="/admin/addCategories" access="ROLE_ADMIN" />
         <intercept-url pattern="/admin/ajax/editCategories/**" access="ROLE_ADMIN" />
         <intercept-url pattern="/admin/ajax/editTags/**" access="ROLE_ADMIN" />
