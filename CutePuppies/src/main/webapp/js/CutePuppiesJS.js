@@ -45,9 +45,7 @@ $(document).ajaxComplete(function () {
 
 function showStaticPage() {
     if ($.isEmptyObject(staticPage) === false) {
-        $('#sidebar').hide();
         $('#allPosts').removeClass('col-md-8').addClass('col-md-12');
-        $('#pagination').hide();
     }
 }
 function loadPagePosts() {

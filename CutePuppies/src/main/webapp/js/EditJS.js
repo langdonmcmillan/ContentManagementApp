@@ -12,8 +12,6 @@ $(document).ready(function () {
     contentID = 0;
     userID = 1;
     if (pageType === 'StaticPage') {
-        $('#categoryDivChosen, #tagDivChosen').hide();
-        $('#revisionRow').hide();
         $('#mainEditColumn').removeClass('col-md-8').addClass('col-md-12');
         $('#titleText').text('Static Page Title (Required)');
         $('#urlText').text('Static Page URL (Required)');
