@@ -39,7 +39,9 @@
                             <select id="contentStatusSelect">
                                 <option id="showOnlyPublished" value="PUBLISHED">Published</option>
                                 <option id="showOnlyDraft" value="DRAFT">Draft</option>
-                                <option id="showOnlyAwaiting" value="AWAITING">Awaiting</option>
+                                <c:if test="${empty PageType}">
+                                    <option id="showOnlyAwaiting" value="AWAITING">Awaiting</option>
+                                </c:if>
                                 <option id="showOnlyArchived" value="ARCHIVED">Archived</option>
                             </select>
                         </div>
