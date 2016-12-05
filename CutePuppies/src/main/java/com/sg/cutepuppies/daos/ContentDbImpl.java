@@ -45,6 +45,13 @@ public class ContentDbImpl implements ContentDaoInterface {
             + " and c.ContentTypeCode = 'STATIC PAGE' "
             + " and c.ContentStatusCode = 'PUBLISHED'";
 
+    private static final String SQL_GET_STATIC_PAGE_BY_STATUS_CODE 
+            = "select c.* from Content c "
+            + " where 1 = 1"
+            + " and c.ContentTypeCode = 'STATIC PAGE' "
+            + " and c.ContentStatusCode = ? "
+            + " order by c.CreatedOnDate desc";
+    
     private static final String SQL_GET_STATIC_PAGE_BY_URL
             = "select c.* from Content c "
             + " where 1 = 1 "
@@ -220,6 +227,11 @@ public class ContentDbImpl implements ContentDaoInterface {
     @Override
     public List<Content> getPublishedStaticPages() {
         return jdbcTemplate.query(SQL_GET_PUBLISHED_STATIC_PAGES, new ContentMapper());
+    }
+    
+    @Override
+    public List<Content> getStaticPageByStatus(String statusCode) {
+        return jdbcTemplate.query(SQL_GET_STATIC_PAGE_BY_STATUS_CODE, new ContentMapper(), statusCode);
     }
 
     // use this method to throw error if urlPattern is 

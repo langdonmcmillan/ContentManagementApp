@@ -11,13 +11,56 @@ $(document).ready(function () {
     setTableHeight();
 });
 
+$(document).on('click', '.alpha', function () {
+
+    var alphaId = $(this).attr("id");
+    $.ajax({
+        type: 'GET',
+        url: contextPath + '/admin/ajax/getTagsByAlpha/' + alphaId
+    }).success(function (data, status) {
+        clearTagTable();
+        $.each(data, function (index, tag) {
+            row = $("<tr id='row" + tag.tagID + "'>");
+            $("#tableBody").append(row);
+            $(row).append($('<th>')
+                    .html('<span id="cell' + tag.tagID + '">' + tag.tagDescription + '</span>' +
+                            '<input id="input' + tag.tagID + '" type="text" class="edit editInput form-control" value="' + tag.tagDescription + '">'))
+                    .append($('<td>')
+                            .attr({
+                                'data-description': tag.tagDescription,
+                                'data-id': tag.tagID
+                            })
+                            .html('<a href="#" class="view editLink"><span class="glyphicon glyphicon-pencil"></span></a>\n\
+                                   <a href="#" class="edit saveLink"><span class="glyphicon glyphicon-ok"></span></a>'))
+                    .append($('<td>')
+                            .attr({
+                                'data-description': tag.tagDescription,
+                                'data-id': tag.tagID
+                            })
+                            .html('<a href="#" class="view deleteLink"><span class="glyphicon glyphicon-trash"></span></a>\n\
+                                   <a href="#" class="edit cancelLink"><span class="glyphicon glyphicon-remove"></span></a>'));
+            showView(tag.tagID);
+        });
+    });
+});
+
+function clearTagTable() {
+    $('#tableBody').empty();
+}
+
 function loadData() {
 
     if (type === "Tags") {
+        showAlphaDiv();
         populateTags();
     } else if (type === "Categories") {
         populateCategories();
     }
+}
+
+function showAlphaDiv(){
+    
+    $('#alphaDiv').css({visibility : 'visible'});
 }
 
 function setTableHeight() {

@@ -28,6 +28,7 @@
     <http pattern="/ajax/getPagePosts" security="none" />
     <http pattern="/ajax/getCategories" security="none" />
     <http pattern="/ajax/getTags/{onlyPublished}" security="none" />
+    <http pattern="/ajax/getTagsByAlpha/{alphaId}" security="none"/>
     <http pattern="/css/**" security="none" />
     <http pattern="/js/**" security="none" />
     <http pattern="/img/**" security="none" />    
@@ -61,9 +62,7 @@
         <intercept-url pattern="/admin/ajax/addContent" access="ROLE_ADMIN,ROLE_AUTHOR" />
         <intercept-url pattern="/admin/ajax/archivePost/**" access="ROLE_ADMIN,ROLE_AUTHOR" />
         <intercept-url pattern="/admin/ajax/archiveContent/**" access="ROLE_ADMIN,ROLE_AUTHOR" />
-        <intercept-url pattern="/admin//manageTags" access="ROLE_ADMIN" />
-        <intercept-url pattern="/admin/manageCategories" access="ROLE_ADMIN" />
-        <intercept-url pattern="/admin/ajax/addTags" access="ROLE_ADMIN" />
+        <intercept-url pattern="/admin/ajax/addTags" access="ROLE_ADMIN,ROLE_AUTHOR" />
         <intercept-url pattern="/admin/addCategories" access="ROLE_ADMIN" />
         <intercept-url pattern="/admin/ajax/editCategories/**" access="ROLE_ADMIN" />
         <intercept-url pattern="/admin/ajax/editTags/**" access="ROLE_ADMIN" />
@@ -75,12 +74,15 @@
         <intercept-url pattern="/manageUsers/update" access="ROLE_ADMIN" />
         <intercept-url pattern="/manageUsers/remove/**" access="ROLE_ADMIN" />
         
+        
+        
         <intercept-url pattern="/admin/manageTags" access="ROLE_ADMIN" />
         <intercept-url pattern="/admin/manageCategories" access="ROLE_ADMIN" />
         <intercept-url pattern="/admin/Tags" access="ROLE_ADMIN" />
         <intercept-url pattern="/admin/Tags/**" access="ROLE_ADMIN" />
         <intercept-url pattern="/admin/Categories" access="ROLE_ADMIN" />
         <intercept-url pattern="/admin/Categories/**" access="ROLE_ADMIN" />
+        <intercept-url pattern="/admin/ajax/getStaticPages/**" access="ROLE_ADMIN" />
         
         <intercept-url pattern="/admin/**" access="ROLE_ADMIN" />
         

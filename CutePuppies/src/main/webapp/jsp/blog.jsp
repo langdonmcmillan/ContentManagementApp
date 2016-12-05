@@ -57,36 +57,38 @@
                         <%@include file="includes/staticPage.jsp" %>
                     </c:if>
                 </div>
-                <div id="sidebar" class="col-md-4">
-                    <div id="searchBox" class ="row">
-                        <div class="well">
-                            <h4>Filter Posts</h4>
-                            <div class="input-group">
-                                <input id="searchInput" type="text" class="form-control" placeholder="Filter posts">
-                                <span class="input-group-btn">
-                                    <button id="searchButton" class="btn btn-default" type="button">
-                                        <span class="glyphicon glyphicon-search"></span>
-                                    </button>
-                                </span>
+                <c:if test="${empty staticPage}">
+                    <div id="sidebar" class="col-md-4">
+                        <div id="searchBox" class ="row">
+                            <div class="well">
+                                <h4>Filter Posts</h4>
+                                <div class="input-group">
+                                    <input id="searchInput" type="text" class="form-control" placeholder="Filter posts">
+                                    <span class="input-group-btn">
+                                        <button id="searchButton" class="btn btn-default" type="button">
+                                            <span class="glyphicon glyphicon-search"></span>
+                                        </button>
+                                    </span>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div id="categoryBox" class="row">
-                        <div id="categoryDiv" class="well">
-                            <h4>Categories</h4>
-                            <div id="categoryList">
+                        <div id="categoryBox" class="row">
+                            <div id="categoryDiv" class="well">
+                                <h4>Categories</h4>
+                                <div id="categoryList">
 
+                                </div>
+                            </div>
+                        </div>
+                        <div id="tagBox" class="row">
+                            <div id="tagDiv" class="well">
+                                <h4>Tags</h4>
+                                <ul id="tagList">
+                                </ul>
                             </div>
                         </div>
                     </div>
-                    <div id="tagBox" class="row">
-                        <div id="tagDiv" class="well">
-                            <h4>Tags</h4>
-                            <ul id="tagList">
-                            </ul>
-                        </div>
-                    </div>
-                </div>
+                </c:if>
             </div>
             <hr>
             <c:if test="${empty post}">
@@ -127,6 +129,7 @@
         <script>
             var contextPath = "${pageContext.request.contextPath}";
             var staticPage = "${staticPage}";
+            var post = "${post}";
         </script>
         <script src="${pageContext.request.contextPath}/js/jquery-2.2.4.min.js"></script>
         <script src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>

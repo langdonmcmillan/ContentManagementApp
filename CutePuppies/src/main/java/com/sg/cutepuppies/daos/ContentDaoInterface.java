@@ -20,6 +20,7 @@ public interface ContentDaoInterface {
     public Content updatePostContent(Content content);
     public List<Content> getAllStaticPages(boolean showArchived);
     public List<Content> getPublishedStaticPages();
+    public List<Content> getStaticPageByStatus(String statusCode);
     public Content getStaticPageByURL(String urlPattern);
     public Content addStaticPage(Content content);
     public Content updateStaticPage(Content content);
