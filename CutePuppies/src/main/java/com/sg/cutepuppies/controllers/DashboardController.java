@@ -236,7 +236,8 @@ public class DashboardController {
         post.setUpdatedByUser(new User());
         post.getUpdatedByUser().setUserId(userId);
         post.getMostRecentContent().getCreatedByUser().setUserId(userId);
-        contentDao.setAwaitingToArchived(post.getPostId());
+        
+        contentDao.setAwaitingToArchived(post);
         contentDao.updatePostContent(post.getMostRecentContent());
         post = postDao.updatePost(post);
 

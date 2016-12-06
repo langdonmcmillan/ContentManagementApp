@@ -15,9 +15,9 @@ DELETE FROM Post;
 DELETE FROM `User`;
 
 insert into `User` values
-	(1,'ADMIN','2011-01-01 01:11:11',null,null,'admin','admin','admin@cutepuppies.com'),
-	(2,'AUTHOR','2012-02-02 02:22:22',null,null,'author1','author2','author2@cutepuppies.com'),
-	(3,'AUTHOR','2013-03-03 03:33:33',null,null,'author2','author2','author2@cutepuppies.com');
+	(1,'ROLE_ADMIN','2011-01-01 01:11:11',null,null,'admin','admin','admin@cutepuppies.com'),
+	(2,'ROLE_AUTHOR','2012-02-02 02:22:22',null,null,'author1','author2','author1@cutepuppies.com'),
+	(3,'ROLE_AUTHOR','2013-03-03 03:33:33',null,null,'author2','author2','author2@cutepuppies.com');
     
 insert into Tag values
 	(1, 'TestTag1'),

@@ -1,7 +1,7 @@
 SET SQL_SAFE_UPDATES = 0;
-DROP DATABASE IF EXISTS CutePuppies;
-CREATE DATABASE CutePuppies;
-USE CutePuppies;
+DROP DATABASE IF EXISTS CutePuppiesTest;
+CREATE DATABASE CutePuppiesTest;
+USE CutePuppiesTest;
 
 CREATE TABLE Content (
     ContentId INT NOT NULL AUTO_INCREMENT,
@@ -64,7 +64,7 @@ CREATE TABLE Role (
     RoleDescription VARCHAR(100),
     PRIMARY KEY (RoleCode)
 );
-insert into CutePuppies.Role values 
+insert into CutePuppiesTest.Role values 
 ('ROLE_ADMIN','Administrator'),	
     ('ROLE_AUTHOR','Author'),
     ('ROLE_GUEST','Guest'),

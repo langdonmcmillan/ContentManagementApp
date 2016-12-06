@@ -19,6 +19,9 @@
         <li><a href="${pageContext.request.contextPath}/admin/manageTags">Tags</a></li>
       </sec:authorize>
       <li role="presentation">
+        <a href="${pageContext.request.contextPath}/">Back to Blog</a>
+      </li> 
+      <li role="presentation">
         <a href="${pageContext.request.contextPath}/j_spring_security_logout">Log Out</a>
       </li> 
     </ul>
