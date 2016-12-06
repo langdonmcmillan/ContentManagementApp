@@ -28,6 +28,8 @@ public class Post {
     private Content mostRecentContent;
     private Content publishedContent;
     private List<Content> allContentRevisions;
+    private List<Content> postComments;
+    private Content newComment;
 
     public int getPostId() {
         return postId;
@@ -107,5 +109,21 @@ public class Post {
 
     public void setMostRecentContent(Content mostRecentContent) {
         this.mostRecentContent = mostRecentContent;
+    }
+
+    public List<Content> getPostComments() {
+        return postComments;
+    }
+
+    public void setPostComments(List<Content> postComments) {
+        this.postComments = postComments;
+    }
+
+    public Content getNewComment() {
+        return newComment;
+    }
+
+    public void setNewComment(Content newComment) {
+        this.newComment = newComment;
     }
 }

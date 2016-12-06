@@ -21,14 +21,17 @@
     <!-- #2 - Make sure we don't need authorization to get to the login or home page -->
     <http pattern="/login" security="none" />
     <http pattern="/blog/**" security="none" />
-    <http pattern="/post/**" security="none" />
+    <!--<http pattern="/post/**" security="none" />-->
     <http pattern="/categories" security="none" />
     <http pattern="/tags" security="none" />
-    <http pattern="/" security="none" />
+    <!--<http pattern="/" security="none" />-->
     <http pattern="/ajax/getPagePosts" security="none" />
     <http pattern="/ajax/getCategories" security="none" />
     <http pattern="/ajax/getTags/{onlyPublished}" security="none" />
     <http pattern="/ajax/getTagsByAlpha/{alphaId}" security="none"/>
+    <http pattern="/comments/ajax/addcomment" security="none"/>
+    <http pattern="/comments" security="none"/>
+    <http pattern="/comments/**" security="none"/>
     <http pattern="/css/**" security="none" />
     <http pattern="/js/**" security="none" />
     <http pattern="/img/**" security="none" />    
@@ -46,6 +49,9 @@
         <logout logout-success-url="/" />
         <!-- #3e - Access to these endpoints require admin role -->
         <!-- Multiple roles are allowed - the access list is comma-delimited -->
+        <intercept-url pattern="/" access="ROLE_ADMIN,ROLE_AUTHOR,IS_AUTHENTICATED_ANONYMOUSLY" />
+        <intercept-url pattern="/post/**" access="ROLE_ADMIN,ROLE_AUTHOR,IS_AUTHENTICATED_ANONYMOUSLY" />
+        <intercept-url pattern="/comments/archiveComment/**" access="ROLE_ADMIN" />
         <intercept-url pattern="/admin" access="ROLE_ADMIN,ROLE_AUTHOR" />
         <intercept-url pattern="/admin/dashboard" access="ROLE_ADMIN,ROLE_AUTHOR" />
         <intercept-url pattern="/admin/managePosts" access="ROLE_ADMIN,ROLE_AUTHOR" />
