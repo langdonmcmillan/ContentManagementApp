@@ -71,6 +71,8 @@ public class UserDbImpl implements UserDaoInterface {
             = "delete from User where UserId = ?";
     private static final String SQL_GET_ID_FROM_USERNAME
             = "select u.UserId from User u where u.UserName = ?";
+    private static final String SQL_GET_ID_FROM_EMAIL
+            = "select u.UserId from User u where u.UserEmail = ?";
 
     @Override
     public User getUserWhoCreatedPost(int postId) {
@@ -121,9 +123,13 @@ public class UserDbImpl implements UserDaoInterface {
 
     @Override
     public User addUser(User newUser) {
-        jdbcTemplate.update(SQL_INSERT_USER, newUser.getUserName(), newUser.getUserPassword(), newUser.getUserEmail(), newUser.getRoleCode());
-        newUser.setUserId(jdbcTemplate.queryForObject("select LAST_INSERT_ID()", Integer.class));
-        return newUser;
+        try {
+            jdbcTemplate.update(SQL_INSERT_USER, newUser.getUserName(), newUser.getUserPassword(), newUser.getUserEmail(), newUser.getRoleCode());
+            newUser.setUserId(jdbcTemplate.queryForObject("select LAST_INSERT_ID()", Integer.class));
+            return newUser;
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     @Override
@@ -143,7 +149,20 @@ public class UserDbImpl implements UserDaoInterface {
 
     @Override
     public int getUserIdByUsername(String username) {
-        return jdbcTemplate.queryForObject(SQL_GET_ID_FROM_USERNAME, Integer.class, username);
+        try {
+            return jdbcTemplate.queryForObject(SQL_GET_ID_FROM_USERNAME, Integer.class, username);
+        } catch (Exception e) {
+            return 0;
+        }
+    }
+
+    @Override
+    public int getUserIdByEmail(String username) {
+        try {
+            return jdbcTemplate.queryForObject(SQL_GET_ID_FROM_EMAIL, Integer.class, username);
+        } catch (Exception e) {
+            return 0;
+        }
     }
 
     private static final class UserMapper implements RowMapper<User> {
