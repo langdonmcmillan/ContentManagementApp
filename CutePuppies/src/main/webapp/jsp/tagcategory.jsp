@@ -25,7 +25,100 @@
         </div>
         <div class="col-sm-9 col-lg-10">
           <div id="tableDiv" class="row">
-            <div class="col-md-4 col-lg-3 col-sm-6">
+            <div class="col-md-7 col-lg-6 col-sm-9">
+                <div id="alphaDiv" style="visibility: hidden">
+                    <table class="table table-striped" id="alphaTable">
+                    <caption class="text-center">Starts With</caption>
+                    <tr>
+                        <td class="text-center">
+                            <a class="alpha" id="a">a</a>
+                        </td>
+                        <td class="text-center">
+                            <a  class="alpha" id="b">b</a>
+                        </td>
+                        <td class="text-center">
+                            <a  class="alpha" id="c">c</a>
+                        </td>
+                        <td class="text-center">
+                            <a  class="alpha" id="d">d</a>
+                        </td>
+                        <td class="text-center">
+                            <a  class="alpha" id="e">e</a>
+                        </td>
+                        <td class="text-center">
+                            <a  class="alpha" id="f">f</a>
+                        </td>
+                        <td class="text-center">
+                            <a  class="alpha" id="g">g</a>
+                        </td>
+                        <td class="text-center">
+                            <a  class="alpha" id="h">h</a>
+                        </td>
+                        <td class="text-center">
+                            <a  class="alpha" id="i">i</a>
+                        </td>
+                        <td class="text-center">
+                            <a  class="alpha" id="j">j</a>
+                        </td>
+                        <td class="text-center">
+                            <a  class="alpha" id="k">k</a>
+                        </td>
+                        <td class="text-center">
+                            <a  class="alpha" id="l">l</a>
+                        </td>
+                        <td class="text-center">
+                            <a  class="alpha" id="m">m</a>
+                        </td>
+                        <td class="text-center">
+                            <a  class="alpha" id="n">n</a>
+                        </td>
+                        <td class="text-center">
+                            <a  class="alpha" id="o">o</a>
+                        </td>
+                        <td class="text-center">
+                            <a  class="alpha" id="p">p</a>
+                        </td>
+                        <td class="text-center">
+                            <a  class="alpha" id="q">q</a>
+                        </td>
+                        <td class="text-center">
+                            <a  class="alpha" id="r">r</a>
+                        </td>
+                        <td class="text-center">
+                            <a  class="alpha" id="s">s</a>
+                        </td>
+                        <td class="text-center">
+                            <a  class="alpha" id="t">t</a>
+                        </td>
+                        <td class="text-center">
+                            <a  class="alpha" id="u">u</a>
+                        </td>
+                        <td class="text-center">
+                            <a  class="alpha" id="v">v</a>
+                        </td>
+                        <td class="text-center">
+                            <a  class="alpha" id="w">w</a>
+                        </td>
+                        <td class="text-center">
+                            <a  class="alpha" id="x">x</a>
+                        </td>
+                        <td class="text-center">
+                            <a  class="alpha" id="y">y</a>
+                        </td>
+                        <td class="text-center">
+                            <a  class="alpha" id="z">z</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-center">
+                            <a class="alpha" id="all">All</a>
+                        </td>
+                        <td class="text-center">
+                            <a class="alpha" id="num">Number</a>
+                        </td>
+                    </tr>
+                  </table>
+                </div>
               <div>
                 <table id="editTable" class="table table-striped table-responsive">
                   <caption id="tagOrCategory" class="text-center">${categoryTag}</caption>

@@ -12,8 +12,6 @@ $(document).ready(function () {
     contentID = 0;
     userID = 1;
     if (pageType === 'StaticPage') {
-        $('#categoryDivChosen, #tagDivChosen').hide();
-        $('#revisionRow').hide();
         $('#mainEditColumn').removeClass('col-md-8').addClass('col-md-12');
         $('#titleText').text('Static Page Title (Required)');
         $('#urlText').text('Static Page URL (Required)');
@@ -207,7 +205,7 @@ $('#deleteButton').click(function () {
             window.location.assign('/CutePuppies/admin/manageStaticPages');
         });
     }
-    if (postID === null || postID === 0) {
+    else if (postID === null || postID === 0) {
         window.location.assign(contextPath + '/admin/dashboard');
     } else if (checkIfAllArchived()) {
         if (confirm('This post will be archived if this content is archived. Continue?')) {
@@ -393,6 +391,7 @@ function addContent(contentStatusCode) {
         type: 'POST',
         url: contextPath + '/admin/ajax/addContent',
         data: JSON.stringify({
+            postId: $('#post-id').val(),
             createdByUser: user,
             mostRecentContent: newContent
         }),
