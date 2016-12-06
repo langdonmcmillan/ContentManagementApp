@@ -91,9 +91,9 @@ public class PostDAOTest {
     
     @Test
     public void testGetAllPosts() {
-        // All archived - 2, 3, 8
-        
-        //assertEquals(3, postDao.getAllPosts("ARCHIVED").size());
+        // All archived - 3, 8
+        List<Post> allArchived = postDao.getAllPosts("ARCHIVED");
+        assertEquals(2, postDao.getAllPosts("ARCHIVED").size());
         
         // All Published
         

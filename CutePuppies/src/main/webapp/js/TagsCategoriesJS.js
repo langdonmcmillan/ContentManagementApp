@@ -63,8 +63,8 @@ function showAlphaDiv(){
     $('#alphaDiv').css({visibility : 'visible'});
 }
 
-function setTableHeight() {
-    var maxHeight = $(window).height() - 120;
+function setTableHeight() { 
+    var maxHeight = $(window).height() - 200;
     $('#editTable').css('max-height', maxHeight); //set max height
 }
 
