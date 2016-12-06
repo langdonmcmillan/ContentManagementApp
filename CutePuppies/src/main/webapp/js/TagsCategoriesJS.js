@@ -14,57 +14,84 @@ $(document).ready(function () {
 $(document).on('click', '.alpha', function () {
 
     var alphaId = $(this).attr("id");
-    $.ajax({
-        type: 'GET',
-        url: contextPath + '/admin/ajax/getTagsByAlpha/' + alphaId
-    }).success(function (data, status) {
-        clearTagTable();
-        $.each(data, function (index, tag) {
-            row = $("<tr id='row" + tag.tagID + "'>");
-            $("#tableBody").append(row);
-            $(row).append($('<th>')
-                    .html('<span id="cell' + tag.tagID + '">' + tag.tagDescription + '</span>' +
-                            '<input id="input' + tag.tagID + '" type="text" class="edit editInput form-control" value="' + tag.tagDescription + '">'))
-                    .append($('<td>')
-                            .attr({
-                                'data-description': tag.tagDescription,
-                                'data-id': tag.tagID
-                            })
-                            .html('<a href="#" class="view editLink"><span class="glyphicon glyphicon-pencil"></span></a>\n\
-                                   <a href="#" class="edit saveLink"><span class="glyphicon glyphicon-ok"></span></a>'))
-                    .append($('<td>')
-                            .attr({
-                                'data-description': tag.tagDescription,
-                                'data-id': tag.tagID
-                            })
-                            .html('<a href="#" class="view deleteLink"><span class="glyphicon glyphicon-trash"></span></a>\n\
-                                   <a href="#" class="edit cancelLink"><span class="glyphicon glyphicon-remove"></span></a>'));
-            showView(tag.tagID);
+
+    if (type === 'Tags') {
+        $.ajax({
+            type: 'GET',
+            url: contextPath + '/admin/ajax/getTagsByAlpha/' + alphaId
+        }).success(function (data, status) {
+            clearTagCatTable();
+            $.each(data, function (index, tag) {
+                row = $("<tr id='row" + tag.tagID + "'>");
+                $("#tableBody").append(row);
+                $(row).append($('<th>')
+                        .html('<span id="cell' + tag.tagID + '">' + tag.tagDescription + '</span>' +
+                                '<input id="input' + tag.tagID + '" type="text" class="edit editInput form-control" value="' + tag.tagDescription + '">'))
+                        .append($('<td>')
+                                .attr({
+                                    'data-description': tag.tagDescription,
+                                    'data-id': tag.tagID
+                                })
+                                .html('<a href="#" class="view editLink"><span class="glyphicon glyphicon-pencil"></span></a>\n\
+                                       <a href="#" class="edit saveLink"><span class="glyphicon glyphicon-ok"></span></a>'))
+                        .append($('<td>')
+                                .attr({
+                                    'data-description': tag.tagDescription,
+                                    'data-id': tag.tagID
+                                })
+                                .html('<a href="#" class="view deleteLink"><span class="glyphicon glyphicon-trash"></span></a>\n\
+                                       <a href="#" class="edit cancelLink"><span class="glyphicon glyphicon-remove"></span></a>'));
+                showView(tag.tagID);
+            });
         });
-    });
+    } else if (type === "Categories") {
+        $.ajax({
+            type: 'GET',
+            url: contextPath + '/admin/ajax/getCategoriesByAlpha/' + alphaId
+        }).success(function (data, status) {
+            clearTagCatTable();
+            $.each(data, function (index, category) {
+                row = $("<tr id='row" + category.categoryID + "'>");
+                $("#tableBody").append(row);
+                $(row).append($('<th>')
+                        .html('<span id="cell' + category.categoryID + '">' + category.categoryDescription + '</span>' +
+                                '<input id="input' + category.categoryID + '" type="text" class="edit editInput form-control" value="' + category.categoryDescription + '">'))
+                        .append($('<td>')
+                                .attr({
+                                    'data-description': category.categoryDescription,
+                                    'data-id': category.categoryID
+                                })
+                                .html('<a href="#" class="view editLink"><span class="glyphicon glyphicon-pencil"></span></a>\n\
+                                   <a href="#" class="edit saveLink"><span class="glyphicon glyphicon-ok"></span></a>'))
+                        .append($('<td>')
+                                .attr({
+                                    'data-description': category.categoryDescription,
+                                    'data-id': category.categoryID
+                                })
+                                .html('<a href="#" class="view deleteLink"><span class="glyphicon glyphicon-trash"></span></a>\n\
+                                   <a href="#" class="edit cancelLink"><span class="glyphicon glyphicon-remove"></span></a>'));
+                showView(category.categoryID);
+            });
+        });
+    }
 });
 
-function clearTagTable() {
+function clearTagCatTable() {
     $('#tableBody').empty();
 }
 
 function loadData() {
 
-    if (type === "Tags") {
-        showAlphaDiv();
+    if (type === "Tags") {      
         populateTags();
     } else if (type === "Categories") {
         populateCategories();
     }
 }
 
-function showAlphaDiv(){
-    
-    $('#alphaDiv').css({visibility : 'visible'});
-}
 
 function setTableHeight() {
-    var maxHeight = $(window).height() - 120;
+    var maxHeight = $(window).height() - 200 - $('#alphaDiv').height();
     $('#editTable').css('max-height', maxHeight); //set max height
 }
 
