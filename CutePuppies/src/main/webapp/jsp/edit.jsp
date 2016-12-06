@@ -47,10 +47,6 @@
                                 <h4 id="urlText">Post URL (optional)</h4>
                                 <input id="postURL" class="form-control" placeholder="Custom Post URL">
                             </c:if>
-                            <h4>Image Name (optional)</h4>
-                            <input id="imageName" class="form-control" placeholder="Image Name">
-                            <h4>Image URL (optional)</h4>
-                            <input id="imageURL" class="form-control" placeholder="Image URL">
                         </div>
                         <div class="row">
                             <h4 id="bodyText">Post Body</h4>
@@ -147,7 +143,16 @@
         <script src="${pageContext.request.contextPath}/js/chosen.jquery.min.js"></script>
         <script src="${pageContext.request.contextPath}/js/EditJS.js"></script>  
         <script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
-        <script>tinymce.init({selector: 'textarea'});</script>
+        <script>tinymce.init({selector: 'textarea',
+                plugins: [
+                    'advlist autolink lists link image charmap preview hr',
+                    'searchreplace wordcount visualblocks visualchars code fullscreen',
+                    'insertdatetime nonbreaking table contextmenu',
+                    'emoticons paste textcolor colorpicker textpattern imagetools codesample'
+                ],
+                toolbar1: 'undo redo | preview | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent',
+                toolbar2: ' link image emoticons | forecolor backcolor | codesample',
+                image_advtab: true});</script>
         <script src="${pageContext.request.contextPath}/js/AdminJS.js"></script>
     </body>
 </html>

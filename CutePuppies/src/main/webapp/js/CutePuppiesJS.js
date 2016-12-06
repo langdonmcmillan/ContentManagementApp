@@ -28,10 +28,13 @@ $(document).ready(function () {
 
     $('#tagList').height($('#tagWell').height());
     $('#tagList').width($('#tagWell').width());
+    
+    
 
     populateCategories();
     populateTags();
     showStaticPage();
+    
 });
 
 $(document).ajaxComplete(function () {
@@ -62,6 +65,7 @@ function loadPagePosts() {
         }
     }).success(function (data, status) {
         fillPostSnippetsContainer(data);
+        $('img').addClass('img-responsive');
     }).error(function (data, status) {
 // TODO: display message that data could not be loaded
     });
