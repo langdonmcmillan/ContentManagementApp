@@ -90,6 +90,25 @@ public class PostDAOTest {
     }
     
     @Test
+    public void testGetAllPosts() {
+        // All archived - 2, 3, 8
+        
+        //assertEquals(3, postDao.getAllPosts("ARCHIVED").size());
+        
+        // All Published
+        
+        assertEquals(6, postDao.getAllPosts("PUBLISHED").size());
+        
+        // All Draft
+        
+        assertEquals(5, postDao.getAllPosts("DRAFT").size());
+        
+        // All Awaiting
+        
+        assertEquals(2, postDao.getAllPosts("AWAITING").size());
+    }
+    
+    @Test
     public void testGetPostsByAllCriteria() {
         // Arrange
         int pageNumber = 1;

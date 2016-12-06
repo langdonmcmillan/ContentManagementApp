@@ -66,6 +66,7 @@
         <intercept-url pattern="/admin/edit/static/**" access="ROLE_ADMIN" />
         <intercept-url pattern="/admin/ajax/addPost" access="ROLE_ADMIN,ROLE_AUTHOR" />
         <intercept-url pattern="/admin/ajax/addContent" access="ROLE_ADMIN,ROLE_AUTHOR" />
+        <intercept-url pattern="/admin/ajax/publishAwaiting" access="ROLE_ADMIN" />
         <intercept-url pattern="/admin/ajax/archivePost/**" access="ROLE_ADMIN,ROLE_AUTHOR" />
         <intercept-url pattern="/admin/ajax/archiveContent/**" access="ROLE_ADMIN,ROLE_AUTHOR" />
         <intercept-url pattern="/admin/ajax/addTags" access="ROLE_ADMIN,ROLE_AUTHOR" />

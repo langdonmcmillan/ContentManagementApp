@@ -58,7 +58,6 @@ function fillTableWithStaticPages(listOfAllStaticPageContent) {
 
         var staticPgUrl = contextPath + '/admin/edit/static/' + content.contentId;
         tbody.append($('<tr>')
-
                 .append($('<td>').append($('<a>').attr('href', staticPgUrl)
                         .text(content.title)))
                 .append($('<td>').addClass('contentCreateName').text(contentCreateName))
@@ -100,7 +99,6 @@ function fillTableWithAllPosts(listOfAllPosts) {
         }
         var url = contextPath + '/admin/edit/post/' + post.postId;
         tbody.append($('<tr>')
-
                 .append($('<td>').append($('<a>').attr('href', url)
                         .text(contentTitle)))
                 .append($('<td>').addClass('postUser').text(postCreateName))
@@ -112,7 +110,7 @@ function fillTableWithAllPosts(listOfAllPosts) {
     });
 
 
-    $("tr").click(function () {
+    $("tbody tr").click(function () {
         window.location.href = $(this).find("a").attr("href");
     });
 

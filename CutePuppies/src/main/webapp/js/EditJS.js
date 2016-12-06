@@ -222,7 +222,7 @@ $('#deleteButton').click(function () {
             },
             dataType: 'json'
         }).success(function (post, status) {
-            window.location.assign('/CutePuppies/admin/edit/' + postID);
+            window.location.assign('/CutePuppies/admin/edit/post/' + postID);
         }).error(function (post, status) {
 
         });
@@ -387,9 +387,14 @@ function addContent(contentStatusCode) {
         'listOfTags': tagList,
         'postId': $('#post-id').val()
     });
+    var url = '/admin/ajax/addContent';
+    var prevStatusCode = $('#contentStatusText').text();
+    if (prevStatusCode === 'AWAITING') {
+        url = '/admin/ajax/publishAwaiting';
+    }
     $.ajax({
         type: 'POST',
-        url: contextPath + '/admin/ajax/addContent',
+        url: contextPath + url,
         data: JSON.stringify({
             postId: $('#post-id').val(),
             createdByUser: user,

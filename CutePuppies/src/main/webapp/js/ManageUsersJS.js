@@ -7,16 +7,22 @@ var type;
 $(document).ready(function () {
     setTableHeight();
     $("#password, #password2").keyup(checkMatch);
+    $("#passwordWarning").hide();
 });
 
 function checkMatch() {
     var password = $("#password").val();
     var confirmPassword = $("#password2").val();
 
-    if (password !== confirmPassword)
-        $("#password2").css('background-color', 'salmon');
-    else
-        $("#password2").css('background-color', '');
+    if (password !== confirmPassword) {
+        $(".passwordDiv").addClass('has-error');
+        $(".passwordDiv").removeClass('has-success');
+        return false;
+    } else {
+        $(".passwordDiv").removeClass('has-error');
+        $(".passwordDiv").addClass('has-success');
+        return true;
+    }
 }
 
 function setTableHeight() {
@@ -28,6 +34,6 @@ $(window).on('resize', function () {
     setTableHeight();
 });
 
-
-$('#addButton').click(function () {
-});
+function remove(userId) {
+    $('#removeForm' + userId).submit();
+}

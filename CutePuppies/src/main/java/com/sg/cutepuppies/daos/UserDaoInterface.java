@@ -35,5 +35,8 @@ public interface UserDaoInterface {
     public User getUserWhoArchivedContent(int contentId);
 
     public int getUserIdByUsername(String username);
+    
+    public int getUserIdByEmail(String email);
 
+    public User getUserById(int userId);
 }

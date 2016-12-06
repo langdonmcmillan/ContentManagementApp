@@ -1,4 +1,4 @@
-use CutePuppies;
+use CutePuppiesTest;
 
 INSERT INTO Category (CategoryDescription) VALUES ('Ask An Expert');
 INSERT INTO Category (CategoryDescription) VALUES ('Adoption Story');
@@ -491,3 +491,10 @@ INSERT INTO Content (Title, Body, ContentStatusCode,  UrlPattern, ContentTypeCod
 VALUES ('Sample Static Page 3', 'This is a static page body', 'PUBLISHED', 'about-puppy-adoption', 'STATIC PAGE', 1, '2016-12-01 20:27:00');
 INSERT INTO Content (Title, Body, ContentStatusCode,  UrlPattern, ContentTypeCode, CreatedByUserId, CreatedOnDate) 
 VALUES ('Sample Static Page 4', 'This is a static page body', 'PUBLISHED', 'someOtherStaticPage', 'STATIC PAGE', 1, '2016-12-01 20:37:00');
+
+create or replace view nonArchived 
+as select c.PostId, count(c.ContentStatusCode) 
+from Content c
+join Post p on p.PostId = c.PostId
+where c.ContentStatusCode != 'ARCHIVED'
+group by p.PostId;

@@ -1,7 +1,7 @@
 SET SQL_SAFE_UPDATES = 0;
-DROP DATABASE IF EXISTS CutePuppies;
-CREATE DATABASE CutePuppies;
-USE CutePuppies;
+DROP DATABASE IF EXISTS CutePuppiesTest;
+CREATE DATABASE CutePuppiesTest;
+USE CutePuppiesTest;
 
 CREATE TABLE Content (
     ContentId INT NOT NULL AUTO_INCREMENT,

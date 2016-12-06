@@ -6,6 +6,7 @@
 package com.sg.cutepuppies.daos;
 
 import com.sg.cutepuppies.models.Content;
+import com.sg.cutepuppies.models.Post;
 import java.util.List;
 
 /**
@@ -17,6 +18,7 @@ public interface ContentDaoInterface {
     public List<Content> getAllContentsByPostId(int postID);
     public Content getPublishedPostContent(int postID);
     public Content getMostRecentPostContent(int postID);
+    public void setAwaitingToArchived(Post post);
     public Content updatePostContent(Content content);
     public List<Content> getAllStaticPages(boolean showArchived);
     public List<Content> getPublishedStaticPages();

@@ -6,7 +6,6 @@
 package com.sg.cutepuppies.daos;
 
 import com.sg.cutepuppies.models.Post;
-import com.sg.cutepuppies.models.User;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
@@ -61,65 +60,36 @@ public class PostDbImpl implements PostDaoInterface {
 
     private static final String SQL_ADD_POST = "insert into Post (CreatedByUserId) "
             + "values(:createdByUserId)";
-    
+
     private static final String SQL_ARCHIVE_POST = "update Post set ArchivedByUserId = :userId, "
-            + "UpdatedByUserId = :userId, ArchivedOnDate = Current_Timestamp where PostId = :postId";
+            + "UpdatedByUserId = :userId, ArchivedOnDate = now() where PostId = :postId";
 
     private static final String SQL_UPDATE_EDITED_POST = "update Post set UpdatedByUserId = :userId, "
             + "UpdatedOnDate = now() where PostId = :postId";
-    
-//    @Override
-//    public List<Post> getAllPosts(boolean showArchived) {
-//        String SQL_BASE = SQL_SELECT_ALL_POSTS;
-//        if (showArchived == false) {
-//            SQL_BASE += " and (select c.ContentStatusCode != 'ARCHIVED')";
-//        }
-//        SQL_BASE += " order by p.createdOnDate desc";
-//        return jdbcTemplate.query(SQL_BASE, new PostMapper());
-//
-//    }
-    
+
     @Override
     public List<Post> getAllPosts(String statusCode) {
         // publish draft awaiting archived
         String SQL_BASE = SQL_SELECT_ALL_POSTS;
-        
-        switch(statusCode) {
-            case "PUBLISHED":
-                SQL_BASE += " and (select c.ContentStatusCode = 'PUBLISHED')";
-                break;
-            case "DRAFT":
-                SQL_BASE += " and (select c.ContentStatusCode = 'DRAFT')";
-                break;
-            case "AWAITING":
-                SQL_BASE += " and (select c.ContentStatusCode = 'AWAITING')";
-                break;
-            case "ARCHIVED":
-                SQL_BASE += " and (select c.ContentStatusCode = 'ARCHIVED')";
-                break;
-        }   
+        if (statusCode.equals("ARCHIVED")) {
+            SQL_BASE = " select * from Post p "
+                    + " left join nonArchived na on p.PostId = na.PostId "
+                    + " where not exists (select na.PostId from nonArchived where na.PostId = p.PostId)";
+        } else {
+            switch (statusCode) {
+                case "PUBLISHED":
+                    SQL_BASE += " and (select c.ContentStatusCode = 'PUBLISHED')";
+                    break;
+                case "DRAFT":
+                    SQL_BASE += " and (select c.ContentStatusCode = 'DRAFT')";
+                    break;
+                case "AWAITING":
+                    SQL_BASE += " and (select c.ContentStatusCode = 'AWAITING')";
+                    break;
+            }
+        }
         SQL_BASE += " order by p.CreatedOnDate desc";
         return jdbcTemplate.query(SQL_BASE, new PostMapper());
-    }
-
-    @Override
-    public List<Post> getAllPostsInclArchived() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public List<Post> getPostByTag(int tagID) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public List<Post> getPostByCategory(int categoryID) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public List<Post> getPostBySearch(String searchTerm) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
@@ -151,7 +121,7 @@ public class PostDbImpl implements PostDaoInterface {
         namedParameters.addValue("userId", post.getUpdatedByUser().getUserId());
         namedParameters.addValue("postId", post.getPostId());
         npJdbcTemplate.update(SQL_UPDATE_EDITED_POST, namedParameters);
-        
+
         return post;
     }
 
@@ -197,7 +167,7 @@ public class PostDbImpl implements PostDaoInterface {
             post.setCreatedOnDate(createDate);
             post.setUpdatedOnDate(updateDate);
             post.setArchivedOnDate(archiveDate);
-            
+
             return post;
 
         }

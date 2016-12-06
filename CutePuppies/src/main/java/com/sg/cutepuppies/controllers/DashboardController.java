@@ -79,8 +79,7 @@ public class DashboardController {
 //        });
 //        return listOfAllStaticPgs;
 //    }
-    
-    @RequestMapping (value = "/ajax/getStaticPages/{statusCode}", method = RequestMethod.GET)
+    @RequestMapping(value = "/ajax/getStaticPages/{statusCode}", method = RequestMethod.GET)
     @ResponseBody
     public List<Content> getStaticPagesOfStatus(@PathVariable("statusCode") String statusCode) {
         List<Content> staticPagesOfStatus = contentDao.getStaticPageByStatus(statusCode);
@@ -227,6 +226,24 @@ public class DashboardController {
         return post;
     }
 
+    @RequestMapping(value = "ajax/publishAwaiting", method = RequestMethod.POST)
+    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseBody
+    public Post publishAwaiting(@Valid @RequestBody Post post) {
+        checkUrlPattern(post);
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        int userId = userDao.getUserIdByUsername(username);
+        post.setUpdatedByUser(new User());
+        post.getUpdatedByUser().setUserId(userId);
+        post.getMostRecentContent().getCreatedByUser().setUserId(userId);
+        
+        contentDao.setAwaitingToArchived(post);
+        contentDao.updatePostContent(post.getMostRecentContent());
+        post = postDao.updatePost(post);
+
+        return post;
+    }
+
     @RequestMapping(value = "ajax/addStaticPage", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
@@ -324,25 +341,66 @@ public class DashboardController {
             for (int x = 0; x < listOfTags.size(); x++) {
 
                 String first = listOfTags.get(x).getTagDescription().substring(0, 1);
-                
-                if (first.equals("0") || first.equals("1") || first.equals("2") ||
-                        first.equals("3") || first.equals("4") || first.equals("5") ||
-                        first.equals("6") || first.equals("7") || first.equals("8") ||
-                        first.equals("9")) {
-                    
+
+                if (first.equals("0") || first.equals("1") || first.equals("2")
+                        || first.equals("3") || first.equals("4") || first.equals("5")
+                        || first.equals("6") || first.equals("7") || first.equals("8")
+                        || first.equals("9")) {
+
                     smallList.add(listOfTags.get(x));
-                    
+
                 }
             }
         } else {
             for (int x = 0; x < listOfTags.size(); x++) {
 
                 String first = listOfTags.get(x).getTagDescription().substring(0, 1);
-                
+
                 if (first.equalsIgnoreCase(alphaId)) {
-                    
+
                     smallList.add(listOfTags.get(x));
-                    
+
+                }
+
+            }
+        }
+        return smallList;
+    }
+
+    @RequestMapping(value = "ajax/getCategoriesByAlpha/{alphaId}", method = RequestMethod.GET)
+    @ResponseBody
+    public List<Category> populateCategoriesByAlpha(@PathVariable("alphaId") String alphaId) {
+        List<Category> listOfCategories = categoryDao.getAllCategories();
+        List<Category> smallList = new ArrayList();
+
+        if (alphaId.equals("all")) {
+
+            smallList = listOfCategories;
+
+        } else if (alphaId.equals("num")) {
+
+            for (int x = 0; x < listOfCategories.size(); x++) {
+
+                String first = listOfCategories.get(x).getCategoryDescription().substring(0, 1);
+
+                if (first.equals("0") || first.equals("1") || first.equals("2")
+                        || first.equals("3") || first.equals("4") || first.equals("5")
+                        || first.equals("6") || first.equals("7") || first.equals("8")
+                        || first.equals("9")) {
+
+                    smallList.add(listOfCategories.get(x));
+
+                }
+            }
+        } else {
+            for (int x = 0; x < listOfCategories.size(); x++) {
+
+                String first = listOfCategories.get(x).getCategoryDescription().substring(0, 1);
+
+                if (first.equalsIgnoreCase(alphaId)) {
+
+                    smallList.add(listOfCategories.get(x));
+
                 }
 
             }

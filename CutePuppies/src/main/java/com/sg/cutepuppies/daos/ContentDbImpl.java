@@ -6,6 +6,7 @@
 package com.sg.cutepuppies.daos;
 
 import com.sg.cutepuppies.models.Content;
+import com.sg.cutepuppies.models.Post;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -85,14 +86,28 @@ public class ContentDbImpl implements ContentDaoInterface {
             + ":urlPattern, :contentTypeCode, :createdByUserID)";
     private static final String SQL_ARCHIVE_OLD_CONTENT = "update Content set ContentStatusCode = 'ARCHIVED' "
             + "where ContentStatusCode = 'PUBLISHED' and ContentTypeCode = 'POST' and postID = :postID";
+    private static final String SQL_GET_CONTENT_AWAITING
+            = " select c.* "
+            + " from Content c "
+            + " join Post p "
+            + " on c.PostId = p.PostId "
+            + " where c.ContentStatusCode = 'AWAITING' "
+            + " and p.PostId = ?";
+    private static final String SQL_SET_AWAITING_TO_ARCHIVED 
+            = " update Content "
+            + " set ContentStatusCode = 'ARCHIVED', "
+            + " ArchivedOnDate = now(), "
+            + " ArchivedByUserId = ?"
+            + " where ContentStatusCode = 'AWAITING' "
+            + " and PostId = ?";
     private static final String SQL_UPDATE_CONTENT_CATEGORIES = "insert into content_category (ContentId, CategoryId) "
             + "values (?, ?)";
     private static final String SQL_UPDATE_CONTENT_TAGS = "insert into content_tag (ContentId, TagId) "
             + "values (?, ?)";
     private static final String SQL_ARCHIVE_POST = "update Content set ArchivedByUserId = :userId, "
-            + "UpdatedByUserId = :userId, ArchivedOnDate = Current_Timestamp, ContentStatusCode = 'ARCHIVED' where PostId = :postId";
+            + "UpdatedByUserId = :userId, ArchivedOnDate = now(), ContentStatusCode = 'ARCHIVED' where PostId = :postId";
     private static final String SQL_ARCHIVE_CONTENT = "update Content set ArchivedByUserId = :userId, "
-            + "UpdatedByUserId = :userId, ArchivedOnDate = Current_Timestamp, ContentStatusCode = 'ARCHIVED' where ContentId = :contentId";
+            + "UpdatedByUserId = :userId, ArchivedOnDate = now(), ContentStatusCode = 'ARCHIVED' where ContentId = :contentId";
 
     private static final String SQL_ARCHIVE_CONTENT_BY_STATUS = "update Content set ContentStatusCode = 'ARCHIVED'"
             + " where ContentStatusCode =:contentStatusCode and ContentTypeCode = 'POST' and PostId = :postID";
@@ -139,6 +154,11 @@ public class ContentDbImpl implements ContentDaoInterface {
     @Override
     public List<Content> getAllContentsByPostId(int postID) {
         return jdbcTemplate.query(SQL_GET_ALL_REVISIONS_BY_POST_ID, new ContentMapper(), postID);
+    }
+    
+    @Override
+    public void setAwaitingToArchived(Post post) {
+        jdbcTemplate.update(SQL_SET_AWAITING_TO_ARCHIVED, post.getUpdatedByUser().getUserId(), post.getPostId());
     }
 
     @Override
