@@ -63,7 +63,7 @@ public class PostDbImpl implements PostDaoInterface {
             + "values(:createdByUserId)";
     
     private static final String SQL_ARCHIVE_POST = "update Post set ArchivedByUserId = :userId, "
-            + "UpdatedByUserId = :userId, ArchivedOnDate = Current_Timestamp where PostId = :postId";
+            + "UpdatedByUserId = :userId, ArchivedOnDate = now() where PostId = :postId";
 
     private static final String SQL_UPDATE_EDITED_POST = "update Post set UpdatedByUserId = :userId, "
             + "UpdatedOnDate = now() where PostId = :postId";
