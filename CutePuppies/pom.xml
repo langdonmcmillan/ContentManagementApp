@@ -7,7 +7,7 @@
     <packaging>war</packaging>
     <name>CutePuppies Spring MVC Webapp</name>
     <url>http://maven.apache.org</url>
-  
+    
     <properties>
         <spring.version>4.2.1.RELEASE</spring.version>
         <junit.version>4.12</junit.version>

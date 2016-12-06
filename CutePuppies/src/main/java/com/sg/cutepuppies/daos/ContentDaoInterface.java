@@ -29,4 +29,7 @@ public interface ContentDaoInterface {
     public void archiveContent(int contentID, int userID);
     public void archivePost(int postID, int userID);
     public Content getContentById(int contentId);
+    public Content addPostComment(Content newComment);
+    public Content archivePostComment(int commentId);
+    public List<Content> getAllPostComments(int postId);
 }

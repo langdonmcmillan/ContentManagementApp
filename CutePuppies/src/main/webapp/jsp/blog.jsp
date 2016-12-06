@@ -52,6 +52,7 @@
                 <div id = "allPosts" class="col-md-8">
                     <c:if test="${not empty post}">
                         <%@include file="includes/post.jsp" %>
+                        <%@include file="includes/commentsPanel.jsp" %>
                     </c:if>
                     <c:if test="${not empty staticPage}">
                         <%@include file="includes/staticPage.jsp" %>
@@ -130,6 +131,7 @@
             var contextPath = "${pageContext.request.contextPath}";
             var staticPage = "${staticPage}";
             var post = "${post}";
+            var postId = "${post.postId}";
         </script>
         <script src="${pageContext.request.contextPath}/js/jquery-2.2.4.min.js"></script>
         <script src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>

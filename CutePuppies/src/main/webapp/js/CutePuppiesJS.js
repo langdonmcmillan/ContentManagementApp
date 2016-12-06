@@ -247,3 +247,58 @@ $('.homeLink').click(function () {
     sessionStorage.setItem('searchTerm', '');
     window.location.replace(contextPath);
 });
+
+$('#commentModal').on('show.bs.modal', function () {
+  resetCaptcha();
+});
+
+function checkCaptcha() {
+    var answer = $('#captchaAnswer').val();
+    if (answer == sessionStorage.getItem('captchaSum')) {
+        saveUserComment();
+        clearModalFields();
+        $('#commentModal').modal('toggle');
+    } else {
+        resetCaptcha();
+        alert('answer is wrong!');
+    }
+}
+
+function resetCaptcha() {
+    $('#captchaAnswer').val('');
+    sessionStorage.setItem('captchaNum1', Math.floor((Math.random() * 10) + 1));
+    sessionStorage.setItem('captchaNum2', Math.floor((Math.random() * 10) + 1));
+    sessionStorage.setItem('captchaQuestion', 'Enter the sum of ' + sessionStorage.getItem('captchaNum1') + ' and ' + sessionStorage.getItem('captchaNum2') + ':');
+    sessionStorage.setItem('captchaSum', parseInt(sessionStorage.getItem('captchaNum1'))+parseInt(sessionStorage.getItem('captchaNum2')));
+    $('#captchaQuestion').text(sessionStorage.getItem('captchaQuestion'));
+    
+}
+
+function saveUserComment() {
+    $.ajax({
+        type: 'POST',
+        url: contextPath + '/comments/ajax/addComment',
+        data: JSON.stringify({
+            postId: postId,
+            createdByUser: {userName: $('#commentorName').val()},
+            body: tinyMCE.activeEditor.getContent()
+        }),
+        contentType: 'application/json; charset=utf-8',
+        headers: {
+            'Accept': 'application/json',
+            'Content-type': 'application/json'
+        },
+        dataType: 'json'
+    }).success(function () {
+        window.location.replace(contextPath + '/post/' + postId);
+    });
+}
+
+function clearModalFields() {
+    $('#commentorName').val('');
+    tinyMCE.activeEditor.setContent('');
+}
+
+function archiveComment(contentId) {
+    window.location.replace(contextPath + '/comments/archiveComment/' + postId + '/' + contentId);
+}

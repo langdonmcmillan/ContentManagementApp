@@ -11,6 +11,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.Date;
 import java.util.List;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -61,9 +62,10 @@ public class ContentDbImpl implements ContentDaoInterface {
     private static final String SQL_GET_ALL_REVISIONS_BY_POST_ID
             = "select c.* from Content c "
             + " join Post p on c.PostId = p.PostId "
-            + " where c.PostId = ?";
+            + " where c.ContentTypeCode = 'POST' "
+            + " and c.PostId = ?";
     private static final String SQL_GET_PUBLISHED_CONTENT_BY_POST_ID = "select c.* from Content c join Post p "
-            + "on c.PostId = p.PostId where c.ContentStatusCode = 'PUBLISHED' and c.PostId = ?";
+            + "on c.PostId = p.PostId where c.ContentStatusCode = 'PUBLISHED' and c.ContentTypeCode = 'POST' and c.PostId = ?";
 
     private static final String SQL_GET_CONTENT_BY_ID = "select * from Content where ContentId = ?";
 
@@ -73,6 +75,7 @@ public class ContentDbImpl implements ContentDaoInterface {
             + " join Post p "
             + " on c.PostId = p.PostId"
             + " where p.PostId = ? "
+            + " and c.ContentTypeCode = 'POST' "
             + " order by c.ContentId desc"
             + " limit 1";
 
@@ -82,7 +85,7 @@ public class ContentDbImpl implements ContentDaoInterface {
             + "values (:postID, :title, :contentImgLink, :contentImgAltTxt, :body, :snippet, :contentStatusCode, "
             + ":urlPattern, :contentTypeCode, :createdByUserID)";
     private static final String SQL_ARCHIVE_OLD_CONTENT = "update Content set ContentStatusCode = 'ARCHIVED' "
-            + "where ContentStatusCode = 'PUBLISHED' and postID = :postID";
+            + "where ContentStatusCode = 'PUBLISHED' and ContentTypeCode = 'POST' and postID = :postID";
     private static final String SQL_GET_CONTENT_AWAITING
             = " select c.* "
             + " from Content c "
@@ -107,7 +110,7 @@ public class ContentDbImpl implements ContentDaoInterface {
             + "UpdatedByUserId = :userId, ArchivedOnDate = now(), ContentStatusCode = 'ARCHIVED' where ContentId = :contentId";
 
     private static final String SQL_ARCHIVE_CONTENT_BY_STATUS = "update Content set ContentStatusCode = 'ARCHIVED'"
-            + "where ContentStatusCode =:contentStatusCode and PostId = :postID";
+            + " where ContentStatusCode =:contentStatusCode and ContentTypeCode = 'POST' and PostId = :postID";
 
     private static final String SQL_UPDATE_STATIC_PAGE
             = " update Content c "
@@ -122,6 +125,13 @@ public class ContentDbImpl implements ContentDaoInterface {
             + " c.UpdatedByUserId = :updatedByUserID, "
             + " c.updatedOnDate = now() "
             + " where c.ContentId = :contentID";
+    
+    private static final String SQL_GET_POST_COMMENTS
+            = "select c.* from Content c "
+            + " where 1 = 1 "
+            + " and c.ContentTypeCode = 'COMMENT'"
+            + " and c.ContentStatusCode = 'PUBLISHED'"
+            + " and PostId = ?";
 
     @Override
     public Content updateStaticPage(Content content) {
@@ -310,6 +320,36 @@ public class ContentDbImpl implements ContentDaoInterface {
     @Override
     public Content getContentById(int contentId) {
         return jdbcTemplate.queryForObject(SQL_GET_CONTENT_BY_ID, new ContentMapper(), contentId);
+    }
+
+    @Override
+    public Content addPostComment(Content newComment) {
+        MapSqlParameterSource namedParameters = new MapSqlParameterSource();
+        namedParameters.addValue("postID", newComment.getPostId());
+        namedParameters.addValue("title", null);
+        namedParameters.addValue("contentImgLink", null);
+        namedParameters.addValue("contentImgAltTxt", null);
+        namedParameters.addValue("body", newComment.getBody());
+        namedParameters.addValue("snippet", null);
+        namedParameters.addValue("contentStatusCode", "PUBLISHED");
+        namedParameters.addValue("urlPattern", "");
+        namedParameters.addValue("contentTypeCode", "COMMENT");
+        namedParameters.addValue("createdByUserID", newComment.getCreatedByUser().getUserId());
+        namedParameters.addValue("createdOnDate", "now()");
+
+        npJdbcTemplate.update(SQL_ADD_CONTENT_TO_POST, namedParameters);
+        newComment.setContentId(jdbcTemplate.queryForObject("select LAST_INSERT_ID()", Integer.class));
+        return newComment;
+    }
+
+    @Override
+    public Content archivePostComment(int commentId) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public List<Content> getAllPostComments(int postId) {
+        return jdbcTemplate.query(SQL_GET_POST_COMMENTS, new ContentMapper(), postId);
     }
 
     private static final class ContentMapper implements RowMapper<Content> {
