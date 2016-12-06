@@ -53,7 +53,7 @@ public class ContentDAOTest {
     }
 
     @Test
-    public void testAddPostContent() {
+    public void testUpdatePostContent() {
         String date = "2000-11-01";
         java.sql.Date adminCreateDate = java.sql.Date.valueOf(date);
 
@@ -154,7 +154,71 @@ public class ContentDAOTest {
             }
         }
     }
-    
-    
 
+    
+    @Test
+    public void testAddStaticPage() {
+        User user = new User();
+        user.setUserId(4);
+        user.setRoleCode("ROLE_ADMIN");
+
+        Content newStatPgPublish = new Content();
+        newStatPgPublish.setTitle("new static page");
+        newStatPgPublish.setContentImgLink("http://placehold.it/900x300");
+        newStatPgPublish.setContentImgAltTxt("alt text for img");
+        newStatPgPublish.setBody("body for new static page");
+        newStatPgPublish.setContentStatusCode("PUBLISHED");
+        newStatPgPublish.setUrlPattern("static_pg_url_pattern");
+        newStatPgPublish.setContentTypeCode("STATIC PAGE");
+        newStatPgPublish.setCreatedByUser(user);
+        newStatPgPublish.getCreatedByUser().setUserId(user.getUserId());
+
+        contentDao.addStaticPage(newStatPgPublish);
+        int actualContentId = newStatPgPublish.getContentId();
+        Content publishedStatPgFromDB = contentDao.getContentById(actualContentId);
+
+        assertNotEquals(0, actualContentId);
+        assertEquals(0, publishedStatPgFromDB.getPostId());
+        assertEquals("new static page", publishedStatPgFromDB.getTitle());
+        assertEquals("STATIC PAGE", publishedStatPgFromDB.getContentTypeCode());
+        assertEquals("PUBLISHED", publishedStatPgFromDB.getContentStatusCode());
+        assertEquals(user.getUserId(), publishedStatPgFromDB.getCreatedByUser().getUserId());
+
+        Content newStatPgDraft = new Content();
+        newStatPgDraft.setTitle("new static page 2");
+        newStatPgDraft.setContentImgLink("http://placehold.it/900x300");
+        newStatPgDraft.setContentImgAltTxt("alt text for img for page 2");
+        newStatPgDraft.setBody("body for new static page 2");
+        newStatPgDraft.setContentStatusCode("DRAFT");
+        newStatPgDraft.setUrlPattern("static_pg_url_pattern_1");
+        newStatPgDraft.setContentTypeCode("STATIC PAGE");
+        newStatPgDraft.setCreatedByUser(user);
+
+        contentDao.addStaticPage(newStatPgDraft);
+        int statPgContentId = newStatPgDraft.getContentId();
+        Content savedStatPgFromDB = contentDao.getContentById(statPgContentId);
+        assertNotEquals(0, statPgContentId);
+        assertEquals(0, savedStatPgFromDB.getPostId());
+        assertEquals("new static page 2", savedStatPgFromDB.getTitle());
+        assertEquals("STATIC PAGE", savedStatPgFromDB.getContentTypeCode());
+        assertEquals("DRAFT", savedStatPgFromDB.getContentStatusCode());
+
+    }
+    
+    @Test
+    public void testUpdateStaticPage() {
+        User user = new User();
+        user.setUserId(4);
+        user.setRoleCode("ROLE_ADMIN");
+        
+        Content newStatPgDraft = new Content();
+        newStatPgDraft.setTitle("new static page 2");
+        newStatPgDraft.setContentImgLink("http://placehold.it/900x300");
+        newStatPgDraft.setContentImgAltTxt("alt text for img for page 2");
+        newStatPgDraft.setBody("body for new static page 2");
+        newStatPgDraft.setContentStatusCode("DRAFT");
+        newStatPgDraft.setUrlPattern("static_pg_url_pattern_1");
+        newStatPgDraft.setContentTypeCode("STATIC PAGE");
+        newStatPgDraft.setCreatedByUser(user);
+    }
 }

@@ -141,6 +141,7 @@ public class ContentDbImpl implements ContentDaoInterface {
         return content;
     }
 
+    // test written.
     @Override
     public List<Content> getAllContentsByPostId(int postID) {
         return jdbcTemplate.query(SQL_GET_ALL_REVISIONS_BY_POST_ID, new ContentMapper(), postID);
@@ -150,7 +151,8 @@ public class ContentDbImpl implements ContentDaoInterface {
     public void setAwaitingToArchived(Post post) {
         jdbcTemplate.update(SQL_SET_AWAITING_TO_ARCHIVED, post.getUpdatedByUser().getUserId(), post.getPostId());
     }
-
+    
+    // test written.
     @Override
     public Content updatePostContent(Content content) {
         MapSqlParameterSource namedParameters = new MapSqlParameterSource();
@@ -261,6 +263,7 @@ public class ContentDbImpl implements ContentDaoInterface {
         }
     }
 
+    // test written.
     @Override
     public Content addStaticPage(Content content) {
         MapSqlParameterSource namedParameters = new MapSqlParameterSource();
@@ -291,6 +294,7 @@ public class ContentDbImpl implements ContentDaoInterface {
         return jdbcTemplate.queryForObject(SQL_GET_MOST_RECENT_CONTENT_BY_POST_ID, new ContentMapper(), postID);
     }
 
+    // test written.
     @Override
     public void archiveContent(int contentId, int userId) {
         MapSqlParameterSource namedParameters = new MapSqlParameterSource();
@@ -299,6 +303,7 @@ public class ContentDbImpl implements ContentDaoInterface {
         npJdbcTemplate.update(SQL_ARCHIVE_CONTENT, namedParameters);
     }
 
+    // test written.
     @Override
     public void archivePost(int postId, int userId) {
         MapSqlParameterSource namedParameters = new MapSqlParameterSource();
