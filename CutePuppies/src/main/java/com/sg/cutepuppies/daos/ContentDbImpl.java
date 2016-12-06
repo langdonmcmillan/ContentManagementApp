@@ -102,9 +102,9 @@ public class ContentDbImpl implements ContentDaoInterface {
     private static final String SQL_UPDATE_CONTENT_TAGS = "insert into content_tag (ContentId, TagId) "
             + "values (?, ?)";
     private static final String SQL_ARCHIVE_POST = "update Content set ArchivedByUserId = :userId, "
-            + "UpdatedByUserId = :userId, ArchivedOnDate = Current_Timestamp, ContentStatusCode = 'ARCHIVED' where PostId = :postId";
+            + "UpdatedByUserId = :userId, ArchivedOnDate = now(), ContentStatusCode = 'ARCHIVED' where PostId = :postId";
     private static final String SQL_ARCHIVE_CONTENT = "update Content set ArchivedByUserId = :userId, "
-            + "UpdatedByUserId = :userId, ArchivedOnDate = Current_Timestamp, ContentStatusCode = 'ARCHIVED' where ContentId = :contentId";
+            + "UpdatedByUserId = :userId, ArchivedOnDate = now(), ContentStatusCode = 'ARCHIVED' where ContentId = :contentId";
 
     private static final String SQL_ARCHIVE_CONTENT_BY_STATUS = "update Content set ContentStatusCode = 'ARCHIVED'"
             + "where ContentStatusCode =:contentStatusCode and PostId = :postID";
