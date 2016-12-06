@@ -49,13 +49,13 @@ insert into Post values
 	(11,1,'2011-01-11 01:11:11',null,null,null,null), -- Author 1 created, approved by admin
 	(12,1,'2011-01-12 01:11:11',null,null,null,null), -- Author 1 created, saved draft, author 2 edited, saved draft
 	(13,1,'2011-01-13 01:11:11',null,null,null,null), -- Author 1 created, saved draft, author 2 edited, approved by admin
-	(14,1,'2011-01-14 01:11:11',null,null,null,null), -- Created and published, author 1 created new draft (published version stays)
-	(15,1,'2011-01-15 01:11:11',null,null,null,null), -- Created and published, author 1 created new draft awaiting approval (published version stays)
-	(16,1,'2011-01-16 01:11:11',null,null,null,null), -- Created and published, author 1 created new draft awaiting approval, new version published
-	(17,1,'2011-01-17 01:11:11',null,null,null,null),
-	(18,1,'2011-01-18 01:11:11',null,null,null,null),
-	(19,1,'2011-01-19 01:11:11',null,null,null,null),
-	(20,1,'2011-01-20 01:11:11',null,null,null,null);
+	(14,1,'2011-01-14 01:11:11',null,null,null,null); -- Created and published, author 1 created new draft (published version stays)
+-- 	(15,1,'2011-01-15 01:11:11',null,null,null,null), -- Created and published, author 1 created new draft awaiting approval (published version stays)
+-- 	(16,1,'2011-01-16 01:11:11',null,null,null,null), -- Created and published, author 1 created new draft awaiting approval, new version published
+-- 	(17,1,'2011-01-17 01:11:11',null,null,null,null),
+-- 	(18,1,'2011-01-18 01:11:11',null,null,null,null),
+-- 	(19,1,'2011-01-19 01:11:11',null,null,null,null),
+-- 	(20,1,'2011-01-20 01:11:11',null,null,null,null);
     
 insert into Content values
 	(1,1,'Post 1, Content 1','http://placehold.it/900x300','Post 1, Content 1 Image','<p>Post 1, Content 1 test content body</p>',null,'DRAFT','','POST',1,'2011-01-01 01:11:11',null,null,null,null),
@@ -82,6 +82,9 @@ insert into Content values
 	(22,14,'Post 14, Content 1','http://placehold.it/900x300','Post 14, Content 1 Image','<p>Post 14, Content 1 test content body</p>',null,'PUBLISHED','','POST',1,'2011-01-14 01:11:11',null,null,null,null),
 	(23,14,'Post 14, Content 2','http://placehold.it/900x300','Post 14, Content 2 Image','<p>Post 14, Content 2 test content body</p>',null,'DRAFT','','POST',3,'2011-01-14 02:11:11',1,'2011-01-14 03:11:11',null,null);
 
+-- static page insertions.
+insert into Content (ContentId, Title, ContentImgLink, ContentImgAltTxt, Body, ContentStatusCode, UrlPattern, ContentTypeCode, CreatedByUserId, CreatedOnDate) VALUES
+(24,'StaticPage1Content24','http://placehold.it/900x300','StaticPage1Content24Img','<p>Post 14, Content 2 test content body</p>','PUBLISHED','statPgUrlPattern','STATIC PAGE',1,'2011-01-14 02:11:11');
 -- post 5 has no tags
 insert into content_tag values
 	(1,1),
