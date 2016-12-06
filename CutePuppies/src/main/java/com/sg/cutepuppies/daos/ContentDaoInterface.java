@@ -17,6 +17,7 @@ public interface ContentDaoInterface {
     public List<Content> getAllContentsByPostId(int postID);
     public Content getPublishedPostContent(int postID);
     public Content getMostRecentPostContent(int postID);
+    public void setAwaitingToArchived(int postID);
     public Content updatePostContent(Content content);
     public List<Content> getAllStaticPages(boolean showArchived);
     public List<Content> getPublishedStaticPages();
