@@ -73,6 +73,8 @@ public class UserDbImpl implements UserDaoInterface {
             = "select u.UserId from User u where u.UserName = ?";
     private static final String SQL_GET_ID_FROM_EMAIL
             = "select u.UserId from User u where u.UserEmail = ?";
+    private static final String SQL_GET_USER_BY_ID
+            = "select * from User u where u.UserId = ?";
 
     @Override
     public User getUserWhoCreatedPost(int postId) {
@@ -162,6 +164,15 @@ public class UserDbImpl implements UserDaoInterface {
             return jdbcTemplate.queryForObject(SQL_GET_ID_FROM_EMAIL, Integer.class, username);
         } catch (Exception e) {
             return 0;
+        }
+    }
+    
+    @Override
+    public User getUserById(int userId) {
+        try {
+            return jdbcTemplate.queryForObject(SQL_GET_USER_BY_ID, new UserMapper(), userId);
+        } catch (Exception e) {
+            return null;
         }
     }
 

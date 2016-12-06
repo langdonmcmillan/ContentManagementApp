@@ -44,21 +44,27 @@
                                                     <c:out value="${user.userName}"/> 
                                                 </td>
                                                 <td>
-                                                    <a onClick="editUser(${user.userId})"><span class="glyphicon glyphicon-pencil"></span></a>
+                                                    <a href="${pageContext.request.contextPath}/manageUsers/edit/${user.userId}"><span class="glyphicon glyphicon-pencil"></span></a>
                                                 </td>
                                                 <td>
-                                                    <a onClick="deleteUser(${user.userId})"><span class="glyphicon glyphicon-trash"></span></a>
-                                                </td>
-                                            </tr>
+                                                    <form id="removeForm${user.userId}" action="${pageContext.request.contextPath}/manageUsers/remove" method="POST">
+                                                        <a href="#" onclick="remove(${user.userId})"><span class="glyphicon glyphicon-trash"></a>
+                                                        <input type="text" class="hidden" value="${user.userId}" name="userId">
+                                                        <c:if test="${isCurrentUser == true && userId == user.userId}"><div id="isCurrentUser" class="label label-danger text-center">You cannot delete yourself</div></c:if>
+                                                        </form>
+                                                    </td>
+                                                </tr>
                                         </c:forEach>
                                     </tbody>
                                 </table>
                             </div>
                         </div>
+
                         <div class="col-sm-6">
                             <sf:form class="form-horizontal" modelAttribute="formUser"
-                                     action="${pageContext.request.contextPath}/manageUsers/add" 
+                                     action="${pageContext.request.contextPath}/manageUsers/${addEdit}" 
                                      method="POST">
+                                <input class="hidden" value="${formUser.userId}" name="userId">
                                 <div class="form-group">
                                     <label for="username" 
                                            class="col-md-4 control-label">Username</label>
@@ -122,12 +128,21 @@
                                         </div>
                                     </div>
                                     <div class="form-group">
+                                    <c:if test="${addEdit == 'add'}">
                                         <div class="col-md-offset-4 col-md-8">
-                                            <input hidden="true" id="edit_dvd_id">
-                                            <button type="submit" id="edit-dvd-button"
+                                            <button type="submit" id="addButton"
                                                     class="btn btn-primary">Add User</button>
                                         </div>
-                                    </div>
+                                    </c:if>
+                                    <c:if test="${addEdit == 'edit'}">
+                                        <div class="col-md-offset-4 col-md-8">
+                                            <button type="submit" id="editButton"
+                                                    class="btn btn-primary">Save Edits</button>
+                                            <a id="edit-dvd-button" href="${pageContext.request.contextPath}/manageUsers/userList"
+                                                    class="btn btn-primary">Cancel</a>
+                                        </div>
+                                    </c:if>
+                                </div>
                             </sf:form>
                         </div>
                     </div>

@@ -34,6 +34,6 @@ $(window).on('resize', function () {
     setTableHeight();
 });
 
-
-$('#addButton').click(function () {
-});
+function remove(userId) {
+    $('#removeForm' + userId).submit();
+}
