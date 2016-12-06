@@ -93,26 +93,6 @@ public class PostDbImpl implements PostDaoInterface {
     }
 
     @Override
-    public List<Post> getAllPostsInclArchived() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public List<Post> getPostByTag(int tagID) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public List<Post> getPostByCategory(int categoryID) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public List<Post> getPostBySearch(String searchTerm) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
     public Post getPostByID(int postID) {
         MapSqlParameterSource namedParameters = new MapSqlParameterSource("postId", postID);
         return npJdbcTemplate.queryForObject(SQL_GET_POST_BY_ID, namedParameters, new PostMapper());
