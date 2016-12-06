@@ -112,7 +112,7 @@ function fillTableWithAllPosts(listOfAllPosts) {
     });
 
 
-    $("tr").click(function () {
+    $("tbody tr").click(function () {
         window.location.href = $(this).find("a").attr("href");
     });
 

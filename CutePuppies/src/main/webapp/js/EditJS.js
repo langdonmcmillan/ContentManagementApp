@@ -222,7 +222,7 @@ $('#deleteButton').click(function () {
             },
             dataType: 'json'
         }).success(function (post, status) {
-            window.location.assign('/CutePuppies/admin/edit/' + postID);
+            window.location.assign('/CutePuppies/admin/edit/post/' + postID);
         }).error(function (post, status) {
 
         });

@@ -6,6 +6,7 @@
 package com.sg.cutepuppies.daos;
 
 import com.sg.cutepuppies.models.Content;
+import com.sg.cutepuppies.models.Post;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -82,10 +83,18 @@ public class ContentDbImpl implements ContentDaoInterface {
             + ":urlPattern, :contentTypeCode, :createdByUserID)";
     private static final String SQL_ARCHIVE_OLD_CONTENT = "update Content set ContentStatusCode = 'ARCHIVED' "
             + "where ContentStatusCode = 'PUBLISHED' and postID = :postID";
-    
+    private static final String SQL_GET_CONTENT_AWAITING
+            = " select c.* "
+            + " from Content c "
+            + " join Post p "
+            + " on c.PostId = p.PostId "
+            + " where c.ContentStatusCode = 'AWAITING' "
+            + " and p.PostId = ?";
     private static final String SQL_SET_AWAITING_TO_ARCHIVED 
             = " update Content "
-            + " set ContentStatusCode = 'ARCHIVED' "
+            + " set ContentStatusCode = 'ARCHIVED', "
+            + " ArchivedOnDate = now(), "
+            + " ArchivedByUserId = ?"
             + " where ContentStatusCode = 'AWAITING' "
             + " and PostId = ?";
     private static final String SQL_UPDATE_CONTENT_CATEGORIES = "insert into content_category (ContentId, CategoryId) "
@@ -138,8 +147,8 @@ public class ContentDbImpl implements ContentDaoInterface {
     }
     
     @Override
-    public void setAwaitingToArchived(int postID) {
-        jdbcTemplate.update(SQL_SET_AWAITING_TO_ARCHIVED, postID);
+    public void setAwaitingToArchived(Post post) {
+        jdbcTemplate.update(SQL_SET_AWAITING_TO_ARCHIVED, post.getUpdatedByUser().getUserId(), post.getPostId());
     }
 
     @Override
