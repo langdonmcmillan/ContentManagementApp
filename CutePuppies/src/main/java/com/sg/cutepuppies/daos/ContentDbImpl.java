@@ -82,6 +82,12 @@ public class ContentDbImpl implements ContentDaoInterface {
             + ":urlPattern, :contentTypeCode, :createdByUserID)";
     private static final String SQL_ARCHIVE_OLD_CONTENT = "update Content set ContentStatusCode = 'ARCHIVED' "
             + "where ContentStatusCode = 'PUBLISHED' and postID = :postID";
+    
+    private static final String SQL_SET_AWAITING_TO_ARCHIVED 
+            = " update Content "
+            + " set ContentStatusCode = 'ARCHIVED' "
+            + " where ContentStatusCode = 'AWAITING' "
+            + " and PostId = ?";
     private static final String SQL_UPDATE_CONTENT_CATEGORIES = "insert into content_category (ContentId, CategoryId) "
             + "values (?, ?)";
     private static final String SQL_UPDATE_CONTENT_TAGS = "insert into content_tag (ContentId, TagId) "
@@ -130,14 +136,15 @@ public class ContentDbImpl implements ContentDaoInterface {
     public List<Content> getAllContentsByPostId(int postID) {
         return jdbcTemplate.query(SQL_GET_ALL_REVISIONS_BY_POST_ID, new ContentMapper(), postID);
     }
+    
+    @Override
+    public void setAwaitingToArchived(int postID) {
+        jdbcTemplate.update(SQL_SET_AWAITING_TO_ARCHIVED, postID);
+    }
 
     @Override
     public Content updatePostContent(Content content) {
         MapSqlParameterSource namedParameters = new MapSqlParameterSource();
-        /*
-        Calendar today = Calendar.getInstance();
-        java.sql.Date currentDate = new java.sql.Date((today.getTime()).getTime());
-        content.setCreatedOnDate(currentDate); */
         namedParameters.addValue("postID", content.getPostId());
         namedParameters.addValue("title", content.getTitle());
         namedParameters.addValue("contentImgLink", content.getContentImgLink());

@@ -226,6 +226,23 @@ public class DashboardController {
 
         return post;
     }
+    
+    @RequestMapping(value = "ajax/publishAwaiting", method = RequestMethod.POST)
+    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseBody
+    public Post publishAwaiting(@Valid @RequestBody Post post) {
+        checkUrlPattern(post);
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        int userId = userDao.getUserIdByUsername(username);
+        post.setUpdatedByUser(new User());
+        post.getUpdatedByUser().setUserId(userId);
+        post.getMostRecentContent().getCreatedByUser().setUserId(userId);
+        contentDao.setAwaitingToArchived(post.getPostId());
+        contentDao.updatePostContent(post.getMostRecentContent());
+        post = postDao.updatePost(post);
+
+        return post;
+    }
 
     @RequestMapping(value = "ajax/addStaticPage", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
