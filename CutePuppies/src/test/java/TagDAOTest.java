@@ -60,31 +60,31 @@ public class TagDAOTest {
         assertEquals(numTags + 1, tagDao.getAllTags(false).size());
     }
 
-    @Test
-    public void testUpdateTag() {
-        Tag tag = tagDao.getAllTags(false).get(0);
-        
-        tag.setTagDescription("ZZUPDATED TAG");
-        int tagId = tag.getTagID();
-        
-        int numTags = tagDao.getAllTags(false).size();
-        
-        tagDao.updateTag(tag);
-        
-        assertEquals(numTags, tagDao.getAllTags(false).size());
-        assertEquals("ZZUPDATED TAG", tagDao.getAllTags(false).get(numTags - 1).getTagDescription());
-    }
-
-    @Test
-    public void testDeleteTag() {
-        List<Tag> tags = new ArrayList<>();
-        tags = tagDao.getAllTags(false);
-        int numTags = tags.size();
-        int firstTagID = tags.get(0).getTagID();
-        
-        tagDao.deleteTag(firstTagID);
-        
-        assertEquals(numTags - 1, tagDao.getAllTags(false).size());
-        assertNotEquals(firstTagID, tagDao.getAllTags(false).get(0).getTagID());
-    }
+//    @Test
+//    public void testUpdateTag() {
+//        Tag tag = tagDao.getAllTags(false).get(0);
+//        
+//        tag.setTagDescription("ZZUPDATED TAG");
+//        int tagId = tag.getTagID();
+//        
+//        int numTags = tagDao.getAllTags(false).size();
+//        
+//        tagDao.updateTag(tag);
+//        
+//        assertEquals(numTags, tagDao.getAllTags(false).size());
+//        assertEquals("ZZUPDATED TAG", tagDao.getAllTags(false).get(numTags - 1).getTagDescription());
+//    }
+//
+//    @Test
+//    public void testDeleteTag() {
+//        List<Tag> tags = new ArrayList<>();
+//        tags = tagDao.getAllTags(false);
+//        int numTags = tags.size();
+//        int firstTagID = tags.get(0).getTagID();
+//        
+//        tagDao.deleteTag(firstTagID);
+//        
+//        assertEquals(numTags - 1, tagDao.getAllTags(false).size());
+//        assertNotEquals(firstTagID, tagDao.getAllTags(false).get(0).getTagID());
+//    }
 }
