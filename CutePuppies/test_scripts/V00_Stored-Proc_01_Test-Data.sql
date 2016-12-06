@@ -83,8 +83,13 @@ insert into Content values
 	(23,14,'Post 14, Content 2','http://placehold.it/900x300','Post 14, Content 2 Image','<p>Post 14, Content 2 test content body</p>',null,'DRAFT','','POST',3,'2011-01-14 02:11:11',1,'2011-01-14 03:11:11',null,null);
 
 -- static page insertions.
-insert into Content (ContentId, Title, ContentImgLink, ContentImgAltTxt, Body, ContentStatusCode, UrlPattern, ContentTypeCode, CreatedByUserId, CreatedOnDate) VALUES
-(24,'StaticPage1Content24','http://placehold.it/900x300','StaticPage1Content24Img','<p>Post 14, Content 2 test content body</p>','PUBLISHED','statPgUrlPattern','STATIC PAGE',1,'2011-01-14 02:11:11');
+insert into Content (ContentId, Title, ContentImgLink, ContentImgAltTxt, Body, ContentStatusCode, UrlPattern, ContentTypeCode, CreatedByUserId, CreatedOnDate, UpdatedByUserId, UpdatedOnDate, ArchivedByUserId, ArchivedOnDate) VALUES
+(24,'StaticPage1Content24','http://placehold.it/900x300','StaticPage1Content24Img','<p>Content24 test content body</p>','PUBLISHED','statPgUrlPattern','STATIC PAGE',1,'2011-01-14 02:11:11', null, null, null, null),
+(25,'StaticPage2Content25','http://placehold.it/900x300','StaticPage2Content25Img','<p>Content25 test content body</p>','ARCHIVED','statPgUrlPattern','STATIC PAGE',1,'2011-01-14 02:24:11', null, null, 1, '2014-01-14 02:24:11'),
+(26,'StaticPage3Content26','http://placehold.it/900x300','StaticPage3Content26Img','<p>Content26 test content body</p>','DRAFT','statPgUrlPattern','STATIC PAGE',1,'2011-01-14 02:41:11', null, null, null, null),
+(27,'StaticPage4Content27','http://placehold.it/900x300','StaticPage4Content27Img','<p>Content27 test content body</p>','PUBLISHED','statPgUrlPattern','STATIC PAGE',1,'2011-01-14 02:11:11', 1, '2013-01-14 02:11:11', null, null),
+(28,'StaticPage4Content28','http://placehold.it/900x300','StaticPage5Content28Img','<p>Content28 test content body</p>','PUBLISHED','statPgUrlPattern','STATIC PAGE',1,'2011-01-14 02:21:11', null, null, null, null);
+
 -- post 5 has no tags
 insert into content_tag values
 	(1,1),
