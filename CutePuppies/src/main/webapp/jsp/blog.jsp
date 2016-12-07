@@ -22,31 +22,33 @@
 
         <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
             <div class="container-fluid">
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    <a class="navbar-brand homeLink" href="${pageContext.request.contextPath}/">SWG Cute Puppies</a>
-                </div>
-                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                    <ul class="nav navbar-nav">
-                        <li><a class="homeLink" href="${pageContext.request.contextPath}/" >Blog</a></li>
-                            <c:forEach items="${allStaticPages}" var="staticPage">
-                            <li><a href="${pageContext.request.contextPath}/${staticPage.urlPattern}">${staticPage.title}</a></li>
-                            </c:forEach>
-                    </ul>
+                <div class="row">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <a class="navbar-brand homeLink" href="${pageContext.request.contextPath}/">SWG Cute Puppies</a>
+                    </div>
+                    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                        <ul class="nav navbar-nav">
+                            <li><a class="homeLink" href="${pageContext.request.contextPath}/" >Blog</a></li>
+                                <c:forEach items="${allStaticPages}" var="staticPage">
+                                <li><a href="${pageContext.request.contextPath}/${staticPage.urlPattern}">${staticPage.title}</a></li>
+                                </c:forEach>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </nav>
         <%--<%@include file="includes/blogNavbar.jsp" %>--%>
 
 
-        <div class="container">
+        <div class="container" style="padding-top: 90px">
             <div class="row">
-                <img class = "img-responsive" id = "blog-main-pic" src="http://4.bp.blogspot.com/-FHl93z8Tavw/U3A4mwjmwRI/AAAAAAAAJWI/uiuJ9wlhNE4/s1600/Nine+Brothers+and+Sisters.jpg" alt="logo?">
+                <h1 id="blogTitle">CUTE PUPPIES++</h1>
             </div>
             <div class="row">
                 <div id = "allPosts" class="col-md-8">

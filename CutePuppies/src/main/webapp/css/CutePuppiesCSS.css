@@ -7,6 +7,12 @@ html {
   min-height: 100%;
 }
 
+#blogTitle {
+    font-size: 500%;
+    font-weight: bold;
+    color: #33b770;
+}
+
 #blog-main-pic {
     display: block;
     margin: auto;
