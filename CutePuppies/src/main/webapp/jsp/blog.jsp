@@ -33,7 +33,7 @@
                 </div>
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
-                        <li><a class="homeLink" href="" >Blog</a></li>
+                        <li><a class="homeLink" href="${pageContext.request.contextPath}/" >Blog</a></li>
                             <c:forEach items="${allStaticPages}" var="staticPage">
                             <li><a href="${pageContext.request.contextPath}/${staticPage.urlPattern}">${staticPage.title}</a></li>
                             </c:forEach>
@@ -137,6 +137,7 @@
         <script src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>
         <script src="${pageContext.request.contextPath}/js/jquery.dotdotdot.js"></script>
         <script src="${pageContext.request.contextPath}/js/CutePuppiesJS.js"></script> 
+        <script src="${pageContext.request.contextPath}/js/AdminJS.js"></script>
         <script src="${pageContext.request.contextPath}/js/jquery.tx3-tag-cloud.js"></script>
     </body>
 </html>

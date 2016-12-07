@@ -34,7 +34,7 @@ $(document).ready(function () {
     populateCategories();
     populateTags();
     showStaticPage();
-    
+    $('img').addClass('img-responsive');
 });
 
 $(document).ajaxComplete(function () {
@@ -61,7 +61,8 @@ function loadPagePosts() {
             postsPerPage: sessionStorage.getItem('postsPerPage'),
             tagId: sessionStorage.getItem('selectedTagId'),
             categoryId: sessionStorage.getItem('selectedCategoryId'),
-            searchTerm: sessionStorage.getItem('searchTerm')
+            searchTerm: sessionStorage.getItem('searchTerm'),
+            userId: sessionStorage.getItem('postCreatedByUserId')
         }
     }).success(function (data, status) {
         fillPostSnippetsContainer(data);
@@ -83,16 +84,16 @@ function fillPostSnippetsContainer(posts) {
         if (!post.createdByUser.userName === post.publishedContent.createdByUser.userName) {
             appendInput = $('<p class = "lead userName">').html('updated by <a href="#">' + post.publishedContent.createdByUser.userName + '</a>');
         }
-        postSnippetContainer.append($('<div class="singlePost">')
+        postSnippetContainer.append($('<div class="row singlePost">')
                 .append($('<a href="' + contextPath + '/post/' + post.postId + '">')
                         .append($('<h1 class="title readMoreLink">')
                                 .text(post.publishedContent.title)
                                 .attr({'data-postId': post.postId})))
-                .append($('<p class = "lead userName">').html('created by <a href="#">' + post.createdByUser.userName + '</a>'))
+                .append($('<p class = "lead userName">').html('created by <a href="#" class="authorId" data-userId="' + post.createdByUser.userId + '">' + post.createdByUser.userName + '</a>'))
                 .append(appendInput)
                 .append('<hr>')
                 .append($('<p>')
-                        .html('<span class="glyphicon glyphicon-time createdOnDate"></span><span>' + ' ' + postCreateDateString + '</span>')))
+                        .html('<span class="glyphicon glyphicon-time createdOnDate"></span><span>' + ' ' + postCreateDateString + '</span>'))
                 .append($('<div>')
                         .attr('id', 'categories' + post.publishedContent.contentId)
                         .append($('<img>')
@@ -117,7 +118,7 @@ function fillPostSnippetsContainer(posts) {
                         .text('Read more »')
                         .attr({'data-postId': post.postId})
                         )
-                .append('<hr>');
+                .append('<hr>'));
 
         var delimiter = "";
         $.each(post.publishedContent.listOfCategories, function (index, category) {
@@ -162,6 +163,9 @@ function setSessionProperties() {
     }
     if (sessionStorage.getItem('selectedCategoryId') === null) {
         sessionStorage.setItem('selectedCategoryId', 'null');
+    }
+    if (sessionStorage.getItem('postCreatedByUserId') === null) {
+        sessionStorage.setItem('postCreatedByUserId', 'null');
     }
     if (sessionStorage.getItem('searchTerm') === null) {
         sessionStorage.setItem('searchTerm', '');
@@ -221,6 +225,7 @@ $(document).on('click', '.category', function () {
     sessionStorage.setItem('selectedTagId', 'null');
     sessionStorage.setItem('selectedCategoryId', $(this).data('categoryid'));
     sessionStorage.setItem('searchTerm', '');
+    sessionStorage.setItem('postCreatedByUserId', 'null');
     updatePageNav(1);
     window.location.replace(contextPath);
 });
@@ -228,6 +233,17 @@ $(document).on('click', '.category', function () {
 $(document).on('click', '.tag', function () {
     var tagId = $(this).data('tagid');
     sessionStorage.setItem('selectedTagId', $(this).data('tagid'));
+    sessionStorage.setItem('selectedCategoryId', 'null');
+    sessionStorage.setItem('searchTerm', '');
+    sessionStorage.setItem('postCreatedByUserId', 'null');
+    updatePageNav(1);
+    window.location.replace(contextPath);
+});
+
+$(document).on('click', '.authorId', function () {
+    var userId = $(this).data('userid');
+    sessionStorage.setItem('postCreatedByUserId', userId);
+    sessionStorage.setItem('selectedTagId', 'null');
     sessionStorage.setItem('selectedCategoryId', 'null');
     sessionStorage.setItem('searchTerm', '');
     updatePageNav(1);
@@ -242,9 +258,7 @@ $('#searchButton').click(function () {
 
 $('.homeLink').click(function () {
     updatePageNav(1);
-    sessionStorage.setItem('selectedTagId', 'null');
-    sessionStorage.setItem('selectedCategoryId', 'null');
-    sessionStorage.setItem('searchTerm', '');
+    resetSessionProperties();
     window.location.replace(contextPath);
 });
 

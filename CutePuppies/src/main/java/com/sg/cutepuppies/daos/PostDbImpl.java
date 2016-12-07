@@ -45,6 +45,7 @@ public class PostDbImpl implements PostDaoInterface {
             + " left join Tag t on ct.TagId = t.TagId"
             + " left join content_category cc on c.ContentId = cc.ContentId"
             + " left join Category ctg on cc.CategoryId = ctg.CategoryId"
+            + " left join User u on u.UserId = p.CreatedByUserId"
             + " where 1 = 1"
             + " and c.ContentStatusCode = 'PUBLISHED'"
             + " and (c.Title like :searchTerm or c.Body like :searchTerm)";
@@ -126,7 +127,7 @@ public class PostDbImpl implements PostDaoInterface {
     }
 
     @Override
-    public List<Post> getPostsByAllCriteria(int pageNumberInt, int postsPerPageInt, int tagIdInt, int categoryIdInt, String searchTerm) {
+    public List<Post> getPostsByAllCriteria(int pageNumberInt, int postsPerPageInt, int tagIdInt, int categoryIdInt, String searchTerm, int userId) {
         MapSqlParameterSource namedParameters = new MapSqlParameterSource();
         // set base query
         String SQL_QUERY = SQL_GET_POSTS_BY_ALL_CRITERIA;
@@ -139,6 +140,11 @@ public class PostDbImpl implements PostDaoInterface {
         if (categoryIdInt != 0) {
             SQL_QUERY += " and ctg.CategoryId = :categoryId";
             namedParameters.addValue("categoryId", categoryIdInt);
+        }
+        // if filtering by category
+        if (userId != 0) {
+            SQL_QUERY += " and p.CreatedByUserId = :userId";
+            namedParameters.addValue("userId", userId);
         }
         // always order by date and limit to selected posts per page
         SQL_QUERY += " order by p.CreatedOnDate desc limit :postsPerPage offset :postOffset";

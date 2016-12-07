@@ -51,7 +51,7 @@ insert into Post values
 	(11,1,'2011-01-11 01:11:11',null,null,null,null), -- Author 1 created, approved by admin
 	(12,1,'2011-01-12 01:11:11',null,null,null,null), -- Author 1 created, saved draft, author 2 edited, saved draft
 	(13,1,'2011-01-13 01:11:11',null,null,null,null), -- Author 1 created, saved draft, author 2 edited, approved by admin
-	(14,1,'2011-01-14 01:11:11',null,null,null,null); -- Created and published, author 1 created new draft (published version stays)
+	(14,2,'2011-01-14 01:11:11',null,null,null,null); -- Created and published, author 1 created new draft (published version stays)
 -- 	(15,1,'2011-01-15 01:11:11',null,null,null,null), -- Created and published, author 1 created new draft awaiting approval (published version stays)
 -- 	(16,1,'2011-01-16 01:11:11',null,null,null,null), -- Created and published, author 1 created new draft awaiting approval, new version published
 -- 	(17,1,'2011-01-17 01:11:11',null,null,null,null),

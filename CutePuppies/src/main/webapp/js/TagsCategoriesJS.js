@@ -246,3 +246,10 @@ function showView(id) {
     $('.view').show();
     $('.edit').hide();
 }
+
+$(document).on("keypress", "#addDataInput", function (e) {
+    if (e.which === 13) {
+        $("#addButton").click();
+        return false;
+    }
+});

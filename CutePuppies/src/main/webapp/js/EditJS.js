@@ -23,6 +23,7 @@ $(document).ready(function () {
         loadData();
     }
     resizeRightColumn();
+    $('#postTitle').focus();
 });
 
 $(window).resize(function () {
@@ -569,4 +570,18 @@ $('#addTagButton').click(function () {
     }).error(function (data, status) {
 
     });
+});
+
+$(document).on("keypress", "#addCategoryInput", function (e) {
+    if (e.which === 13) {
+        $("#addCategoryButton").click();
+        return false;
+    }
+});
+
+$(document).on("keypress", "#addTagInput", function (e) {
+    if (e.which === 13) {
+        $("#addTagButton").click();
+        return false;
+    }
 });

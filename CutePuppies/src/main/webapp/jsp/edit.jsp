@@ -43,9 +43,11 @@
                             <div id="contentStatusText"></div>
                             <h4 id="titleText">Post Title</h4>
                             <input id="postTitle" class="form-control" placeholder="Title">
+                            <p id="titleEmptyError" class="label label-danger"></p>
                             <c:if test="${PageType == 'StaticPage'}">
                                 <h4 id="urlText">Post URL (optional)</h4>
                                 <input id="postURL" class="form-control" placeholder="Custom Post URL">
+                                <p id="urlEmptyError" class="label label-danger"></p>
                             </c:if>
                         </div>
                         <div class="row">
@@ -145,13 +147,13 @@
         <script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
         <script>tinymce.init({selector: 'textarea',
                 plugins: [
-                    'autoresize advlist autolink lists link image charmap preview hr',
+                    'autoresize advlist autolink lists link image media charmap preview hr',
                     'searchreplace wordcount visualblocks visualchars code fullscreen',
                     'insertdatetime nonbreaking table contextmenu',
                     'emoticons paste textcolor colorpicker textpattern imagetools codesample'
                 ],
                 toolbar1: 'undo redo | preview | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent',
-                toolbar2: ' link image emoticons | forecolor backcolor | codesample',
+                toolbar2: ' link image media emoticons | forecolor backcolor | codesample',
                 image_advtab: true});</script>
         <script src="${pageContext.request.contextPath}/js/AdminJS.js"></script>
     </body>

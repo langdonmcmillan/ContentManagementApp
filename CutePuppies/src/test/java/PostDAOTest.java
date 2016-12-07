@@ -42,8 +42,6 @@ public class PostDAOTest {
         simpleJdbcCall.execute();
 
         postDao = ctx.getBean("PostDBImplTest", PostDaoInterface.class);
-        JdbcTemplate template = (JdbcTemplate) ctx.getBean("jdbcTemplate");
-
     }
     
     @After
@@ -119,24 +117,30 @@ public class PostDAOTest {
         int pageNumber = 1;
         int fivePostsPerPg = 5;
         // Act
-        List<Post> posts = postDao.getPostsByAllCriteria(pageNumber, fivePostsPerPg, 0, 0, "");
+        List<Post> posts = postDao.getPostsByAllCriteria(pageNumber, fivePostsPerPg, 0, 0, "", 0);
         // Assert
         assertEquals("This should return 5. 6 was published, but showing 5 posts per page.", 5, posts.size());
         assertNotNull("CreatedOnDate should not be null", posts.get(3).getCreatedOnDate());
     
         int tenPostsPerPg = 10;
         
-        List<Post> posts2 = postDao.getPostsByAllCriteria(pageNumber, tenPostsPerPg, 0, 0, "");
+        List<Post> posts2 = postDao.getPostsByAllCriteria(pageNumber, tenPostsPerPg, 0, 0, "", 0);
         assertEquals("This should return 6. 6 was published, showing 10 posts per page.", 6, posts2.size());
         
-        List<Post> posts3 = postDao.getPostsByAllCriteria(pageNumber, tenPostsPerPg, 0, 0, "test");
+        List<Post> posts3 = postDao.getPostsByAllCriteria(pageNumber, tenPostsPerPg, 0, 0, "test", 0);
         assertEquals("This should return 6. 6 was published (all have 'test' in body), showing 10 posts per page.", 6, posts3.size());
     
-        List<Post> posts4 = postDao.getPostsByAllCriteria(pageNumber, tenPostsPerPg, 0, 0, "Post 4, Content 1");
+        List<Post> posts4 = postDao.getPostsByAllCriteria(pageNumber, tenPostsPerPg, 0, 0, "Post 4, Content 1", 0);
         assertEquals("Should only return 1 - only 1 has this title", 1, posts4.size());
     
-        List<Post> posts5 = postDao.getPostsByAllCriteria(pageNumber, tenPostsPerPg, 0, 0, "abc it's easy as 123");
+        List<Post> posts5 = postDao.getPostsByAllCriteria(pageNumber, tenPostsPerPg, 0, 0, "abc it's easy as 123", 0);
         assertEquals("Should return 0 - no title or body matches", 0, posts5.size());
+        
+        List<Post> posts6 = postDao.getPostsByAllCriteria(pageNumber, tenPostsPerPg, 0, 0, "", 1);
+        assertEquals("Should return 5 - 1 is by userId 1", 5, posts6.size());
+        
+        List<Post> posts7 = postDao.getPostsByAllCriteria(pageNumber, tenPostsPerPg, 0, 0, "", 2);
+        assertEquals("Should return 1 only 1 post published by userId 2", 1, posts7.size());
     
     }
 

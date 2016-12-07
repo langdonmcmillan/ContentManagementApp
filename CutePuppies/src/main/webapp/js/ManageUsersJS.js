@@ -8,6 +8,7 @@ $(document).ready(function () {
     setTableHeight();
     $("#password, #password2").keyup(checkMatch);
     $("#passwordWarning").hide();
+    $("#username").focus();
 });
 
 function checkMatch() {

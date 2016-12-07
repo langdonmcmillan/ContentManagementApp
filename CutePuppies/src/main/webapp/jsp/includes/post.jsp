@@ -2,9 +2,9 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <div class="singlePost">
     <h1 class="title">${post.publishedContent.title}</h1>
-    <p class = "lead userName">created by <a href="#">${post.createdByUser.userName}</a></p>
+    <p class = "lead userName">created by <a href="#" class="authorId" data-userId="${post.createdByUser.userId}">${post.createdByUser.userName}</a></p>
         <c:if test="${post.createdByUser.userName != post.publishedContent.createdByUser.userName}">
-        <p class = "lead userName">updated by <a href="#">${post.publishedContent.createdByUser.userName}</a></p>
+        <p class = "lead userName">updated by <span>${post.publishedContent.createdByUser.userName}</span></p>
         </c:if>
     <hr>
     <p>
@@ -37,6 +37,6 @@
         <img class="img-responsive contentImgLink" src=${post.publishedContent.contentImgLink} alt=${post.publishedContent.contentImgAltTxt}>
     </c:if>
     <hr>
-    <div class = "body">${post.publishedContent.body}</div>
+    <div id="postBody" class = "body">${post.publishedContent.body}</div>
     <hr>
 </div>
