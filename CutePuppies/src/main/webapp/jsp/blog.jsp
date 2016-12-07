@@ -137,6 +137,7 @@
         <script src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>
         <script src="${pageContext.request.contextPath}/js/jquery.dotdotdot.js"></script>
         <script src="${pageContext.request.contextPath}/js/CutePuppiesJS.js"></script> 
+        <script src="${pageContext.request.contextPath}/js/AdminJS.js"></script>
         <script src="${pageContext.request.contextPath}/js/jquery.tx3-tag-cloud.js"></script>
     </body>
 </html>

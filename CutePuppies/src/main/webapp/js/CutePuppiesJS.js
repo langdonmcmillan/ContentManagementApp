@@ -34,7 +34,7 @@ $(document).ready(function () {
     populateCategories();
     populateTags();
     showStaticPage();
-    
+    $('img').addClass('img-responsive');
 });
 
 $(document).ajaxComplete(function () {
@@ -258,9 +258,7 @@ $('#searchButton').click(function () {
 
 $('.homeLink').click(function () {
     updatePageNav(1);
-    sessionStorage.setItem('selectedTagId', 'null');
-    sessionStorage.setItem('selectedCategoryId', 'null');
-    sessionStorage.setItem('searchTerm', '');
+    resetSessionProperties();
     window.location.replace(contextPath);
 });
 
