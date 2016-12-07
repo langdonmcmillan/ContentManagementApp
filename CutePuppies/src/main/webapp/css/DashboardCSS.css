@@ -1,6 +1,6 @@
 html {
-  position: relative;
-  min-height: 100%;
+  /*position: relative;*/
+  /*min-height: 100%;*/
 }
 
 body {
@@ -8,7 +8,7 @@ body {
 }
 
 #listScroll {
-    height: 400px;
+    max-height: 400px;
     overflow-y: scroll;
 }
 /*footer {
