@@ -47,7 +47,7 @@ $(document).ajaxComplete(function () {
 });
 
 function showStaticPage() {
-    if ($.isEmptyObject(staticPage) === false) {
+    if (staticPage !== "") {
         $('#allPosts').removeClass('col-md-8').addClass('col-md-12');
     }
 }

@@ -94,7 +94,7 @@
                 </c:if>
             </div>
             <hr>
-            <c:if test="${empty post}">
+            <c:if test="${(empty post) && (empty staticPage)}">
                 <div id="pagination">
                     <nav class = "text-center" aria-label="Page navigation">
                         <ul class="pagination">
