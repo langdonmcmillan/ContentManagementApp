@@ -41,8 +41,6 @@ public class TagDAOTest {
         simpleJdbcCall.execute();
 
         tagDao = ctx.getBean("TagDBImplTest", TagDaoInterface.class);
-        JdbcTemplate template = (JdbcTemplate) ctx.getBean("jdbcTemplate");
-
     }
 
     @After

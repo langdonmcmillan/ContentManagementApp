@@ -40,8 +40,6 @@ public class CategoryDAOTest {
         simpleJdbcCall.execute();
 
         categoryDao = ctx.getBean("CategoryDBImplTest", CategoryDaoInterface.class);
-        JdbcTemplate template = (JdbcTemplate) ctx.getBean("jdbcTemplate");
-
     }
 
     @After

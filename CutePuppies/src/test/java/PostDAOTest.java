@@ -42,8 +42,6 @@ public class PostDAOTest {
         simpleJdbcCall.execute();
 
         postDao = ctx.getBean("PostDBImplTest", PostDaoInterface.class);
-        JdbcTemplate template = (JdbcTemplate) ctx.getBean("jdbcTemplate");
-
     }
     
     @After
