@@ -63,27 +63,28 @@ public class CommentControllerIntegrationTest {
         User commenter1 = new User();
         commenter1.setUserName("commenter1");
         commenter1.setRoleCode("ROLE_GUEST");
-        commenter1.setUserEmail("");
-        commenter1.setUserPassword("");
-        
+        commenter1.setUserEmail("444");
+        commenter1.setUserPassword("444");
+        commenter1 = userDao.addUser(commenter1);
+
         Content comment1 = new Content();
         comment1.setPostId(13);
         comment1.setBody("FIRST!!!!!");
-        comment1.setCreatedByUser(userDao.addUser(commenter1));
+        comment1.setCreatedByUser(commenter1);
         
         contentDao.addPostComment(comment1);
-        
         
         User commenter2 = new User();
         commenter2.setUserName("commenter2");
         commenter2.setRoleCode("ROLE_GUEST");
-        commenter2.setUserEmail("");
-        commenter2.setUserPassword("");
+        commenter2.setUserEmail("555");
+        commenter2.setUserPassword("555");
+        commenter2 = userDao.addUser(commenter2);
         
         Content comment2 = new Content();
         comment2.setPostId(13);
         comment2.setBody("SECOND!!!!!");
-        comment2.setCreatedByUser(userDao.addUser(commenter2));
+        comment2.setCreatedByUser(commenter2);
         
         contentDao.addPostComment(comment2);
         
@@ -98,7 +99,8 @@ public class CommentControllerIntegrationTest {
         assertEquals(expectedComment1Body, actualComment1Body);
         
         String expectedComment2UserName = "commenter2";
-        String actualComment2UserName = commentsOfPost13.get(1).getCreatedByUser().getUserName();
+        User userWhoCreatedComment2 = userDao.getUserWhoCreatedContent(commentsOfPost13.get(1).getContentId());
+        String actualComment2UserName = userWhoCreatedComment2.getUserName();
         
         assertEquals(expectedComment2UserName, actualComment2UserName);
     }
