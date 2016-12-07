@@ -47,13 +47,13 @@ public class ContentDbImpl implements ContentDaoInterface {
             + " and c.ContentTypeCode = 'STATIC PAGE' "
             + " and c.ContentStatusCode = 'PUBLISHED'";
 
-    private static final String SQL_GET_STATIC_PAGE_BY_STATUS_CODE 
+    private static final String SQL_GET_STATIC_PAGE_BY_STATUS_CODE
             = "select c.* from Content c "
             + " where 1 = 1"
             + " and c.ContentTypeCode = 'STATIC PAGE' "
             + " and c.ContentStatusCode = ? "
             + " order by c.CreatedOnDate desc";
-    
+
     private static final String SQL_GET_STATIC_PAGE_BY_URL
             = "select c.* from Content c "
             + " where 1 = 1 "
@@ -93,7 +93,7 @@ public class ContentDbImpl implements ContentDaoInterface {
             + " on c.PostId = p.PostId "
             + " where c.ContentStatusCode = 'AWAITING' "
             + " and p.PostId = ?";
-    private static final String SQL_SET_AWAITING_TO_ARCHIVED 
+    private static final String SQL_SET_AWAITING_TO_ARCHIVED
             = " update Content "
             + " set ContentStatusCode = 'ARCHIVED', "
             + " ArchivedOnDate = now(), "
@@ -125,7 +125,7 @@ public class ContentDbImpl implements ContentDaoInterface {
             + " c.UpdatedByUserId = :updatedByUserID, "
             + " c.updatedOnDate = now() "
             + " where c.ContentId = :contentID";
-    
+
     private static final String SQL_GET_POST_COMMENTS
             = "select c.* from Content c "
             + " where 1 = 1 "
@@ -133,6 +133,7 @@ public class ContentDbImpl implements ContentDaoInterface {
             + " and c.ContentStatusCode = 'PUBLISHED'"
             + " and PostId = ?";
 
+    // test written.
     @Override
     public Content updateStaticPage(Content content) {
         MapSqlParameterSource namedParameters = new MapSqlParameterSource();
@@ -156,12 +157,13 @@ public class ContentDbImpl implements ContentDaoInterface {
     public List<Content> getAllContentsByPostId(int postID) {
         return jdbcTemplate.query(SQL_GET_ALL_REVISIONS_BY_POST_ID, new ContentMapper(), postID);
     }
-    
+
+    // void return value. unit test NOT written.
     @Override
     public void setAwaitingToArchived(Post post) {
         jdbcTemplate.update(SQL_SET_AWAITING_TO_ARCHIVED, post.getUpdatedByUser().getUserId(), post.getPostId());
     }
-    
+
     // test written.
     @Override
     public Content updatePostContent(Content content) {
@@ -187,6 +189,7 @@ public class ContentDbImpl implements ContentDaoInterface {
         return content;
     }
 
+    // private method, void return value. unit test NOT written.
     private void archiveContentByStatus(int postId, String contentStatusCode) {
 
         MapSqlParameterSource namedParameters = new MapSqlParameterSource();
@@ -196,12 +199,14 @@ public class ContentDbImpl implements ContentDaoInterface {
 
     }
 
+    // private method, void return value. unit test NOT written.
     private void archiveOldContent(int postID) {
         MapSqlParameterSource namedParameters = new MapSqlParameterSource();
         namedParameters.addValue("postID", postID);
         npJdbcTemplate.update(SQL_ARCHIVE_OLD_CONTENT, namedParameters);
     }
 
+    // private method, void return value. unit test NOT written.
     private void updateContentCategories(Content content) {
         try {
             jdbcTemplate.batchUpdate(SQL_UPDATE_CONTENT_CATEGORIES, new BatchPreparedStatementSetter() {
@@ -221,6 +226,7 @@ public class ContentDbImpl implements ContentDaoInterface {
         }
     }
 
+    // private method, void return value. unit test NOT written.
     private void updateContentTags(Content content) {
         try {
             jdbcTemplate.batchUpdate(SQL_UPDATE_CONTENT_TAGS, new BatchPreparedStatementSetter() {
@@ -241,27 +247,19 @@ public class ContentDbImpl implements ContentDaoInterface {
 
     }
 
-    @Override
-    public List<Content> getAllStaticPages(boolean showArchived) {
-        String SQL_BASE = SQL_GET_ALL_STATIC_PAGES;
-        if (showArchived == false) {
-            SQL_BASE += " and (select c.ContentStatusCode != 'ARCHIVED')";
-        }
-        SQL_BASE += " order by c.CreatedOnDate desc";
-
-        return jdbcTemplate.query(SQL_BASE, new ContentMapper());
-    }
-
+    // test written.
     @Override
     public List<Content> getPublishedStaticPages() {
         return jdbcTemplate.query(SQL_GET_PUBLISHED_STATIC_PAGES, new ContentMapper());
     }
-    
+
+    // test written.
     @Override
     public List<Content> getStaticPageByStatus(String statusCode) {
         return jdbcTemplate.query(SQL_GET_STATIC_PAGE_BY_STATUS_CODE, new ContentMapper(), statusCode);
     }
 
+    // test written.
     // use this method to throw error if urlPattern is 
     @Override
     public Content getStaticPageByURL(String urlPattern) {
