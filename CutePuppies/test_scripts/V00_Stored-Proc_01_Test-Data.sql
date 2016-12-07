@@ -59,53 +59,58 @@ insert into Post values
 -- 	(20,1,'2011-01-20 01:11:11',null,null,null,null);
     
 insert into Content values
-	(1,1,'Post 1, Content 1','http://placehold.it/900x300','Post 1, Content 1 Image','<p>Post 1, Content 1 test content body</p>',null,'DRAFT','','POST',1,'2011-01-01 01:11:11',null,null,null,null),
-	(2,2,'Post 2, Content 1','http://placehold.it/900x300','Post 2, Content 1 Image','<p>Post 2, Content 1 test content body</p>',null,'ARCHIVED','','POST',1,'2011-01-02 01:11:11',null,null,1,'2011-01-02 02:11:11'),
-	(3,2,'Post 2, Content 2','http://placehold.it/900x300','Post 2, Content 2 Image','<p>Post 2, Content 2 test content body</p>',null,'DRAFT','','POST',1,'2011-01-02 02:11:11',null,null,null,null),
-	(4,3,'Post 3, Content 1','http://placehold.it/900x300','Post 3, Content 1 Image','<p>Post 3, Content 1 test content body</p>',null,'ARCHIVED','','POST',1,'2011-01-03 01:11:11',null,null,1,'2011-01-03 02:11:11'),
-	(5,3,'Post 3, Content 2','http://placehold.it/900x300','Post 3, Content 2 Image','<p>Post 3, Content 2 test content body</p>',null,'ARCHIVED','','POST',1,'2011-01-03 02:11:11',null,null,1,'2011-01-03 03:11:11'),
-	(6,4,'Post 4, Content 1','http://placehold.it/900x300','Post 4, Content 1 Image','<p>Post 4, Content 1 test content body</p>',null,'PUBLISHED','','POST',1,'2011-01-04 01:11:11',null,null,null,null),
-	(7,5,'Post 5, Content 1','http://placehold.it/900x300','Post 5, Content 1 Image','<p>Post 5, Content 1 test content body</p>',null,'ARCHIVED','','POST',1,'2011-01-05 01:11:11',null,null,1,'2011-01-05 02:11:11'),
-	(8,5,'Post 5, Content 2','http://placehold.it/900x300','Post 5, Content 2 Image','<p>Post 5, Content 2 test content body</p>',null,'PUBLISHED','','POST',1,'2011-01-05 02:11:11',null,null,1,'2011-01-05 03:11:11'),
-	(9,6,'Post 6, Content 1','http://placehold.it/900x300','Post 6, Content 1 Image','<p>Post 6, Content 1 test content body</p>',null,'ARCHIVED','','POST',1,'2011-01-06 01:11:11',null,null,2,'2011-01-06 02:11:11'),
-	(10,6,'Post 6, Content 2','http://placehold.it/900x300','Post 6, Content 2 Image','<p>Post 6, Content 2 test content body</p>',null,'AWAITING','','POST',2,'2011-01-06 02:11:11',null,null,null,null),
-	(11,7,'Post 7, Content 1','http://placehold.it/900x300','Post 7, Content 1 Image','<p>Post 7, Content 1 test content body</p>',null,'ARCHIVED','','POST',1,'2011-01-07 01:11:11',null,null,3,'2011-01-07 02:11:11'),
-	(12,7,'Post 7, Content 2','http://placehold.it/900x300','Post 7, Content 2 Image','<p>Post 7, Content 2 test content body</p>',null,'PUBLISHED','','POST',3,'2011-01-07 02:11:11',1,'2011-01-07 03:11:11',null,null),
-	(13,8,'Post 8, Content 1','http://placehold.it/900x300','Post 8, Content 1 Image','<p>Post 8, Content 1 test content body</p>',null,'ARCHIVED','','POST',1,'2011-01-08 01:11:11',null,null,2,'2011-01-08 02:11:11'), -- created by admin
-	(14,8,'Post 8, Content 2','http://placehold.it/900x300','Post 8, Content 2 Image','<p>Post 8, Content 2 test content body</p>',null,'ARCHIVED','','POST',2,'2011-01-08 02:11:11',null,null,1,'2011-01-08 03:11:11'), -- updated by author 1, rejected by admin
-	(15,9,'Post 9, Content 1','http://placehold.it/900x300','Post 9, Content 1 Image','<p>Post 9, Content 1 test content body</p>',null,'DRAFT','','POST',2,'2011-01-09 01:11:11',null,null,null,null),
-	(16,10,'Post 10, Content 1','http://placehold.it/900x300','Post 10, Content 1 Image','<p>Post 10, Content 1 test content body</p>',null,'AWAITING','','POST',2,'2011-01-10 01:11:11',null,null,null,null),
-	(17,11,'Post 11, Content 1','http://placehold.it/900x300','Post 11, Content 1 Image','<p>Post 11, Content 1 test content body</p>',null,'PUBLISHED','','POST',2,'2011-01-11 01:11:11',1,'2011-01-11 02:11:11',null,null),
-	(18,12,'Post 12, Content 1','http://placehold.it/900x300','Post 12, Content 1 Image','<p>Post 12, Content 1 test content body</p>',null,'ARCHIVED','','POST',2,'2011-01-12 01:11:11',null,null,3,'2011-01-12 02:11:11'),
-	(19,12,'Post 12, Content 2','http://placehold.it/900x300','Post 12, Content 2 Image','<p>Post 12, Content 2 test content body</p>',null,'DRAFT','','POST',3,'2011-01-12 02:11:11',null,null,null,null),
-	(20,13,'Post 13, Content 1','http://placehold.it/900x300','Post 13, Content 1 Image','<p>Post 13, Content 1 test content body</p>',null,'ARCHIVED','','POST',2,'2011-01-13 01:11:11',null,null,3,'2011-01-13 02:11:11'),
-	(21,13,'Post 13, Content 2','http://placehold.it/900x300','Post 13, Content 2 Image','<p>Post 13, Content 2 test content body</p>',null,'PUBLISHED','','POST',3,'2011-01-13 02:11:11',1,'2011-01-13 03:11:11',null,null),
-	(22,14,'Post 14, Content 1','http://placehold.it/900x300','Post 14, Content 1 Image','<p>Post 14, Content 1 test content body</p>',null,'PUBLISHED','','POST',1,'2011-01-14 01:11:11',null,null,null,null),
-	(23,14,'Post 14, Content 2','http://placehold.it/900x300','Post 14, Content 2 Image','<p>Post 14, Content 2 test content body</p>',null,'DRAFT','','POST',3,'2011-01-14 02:11:11',1,'2011-01-14 03:11:11',null,null);
+	(1,1,'Post 1, Content 1','http://placehold.it/900x300','Post 1, Content 1 Image','<p>Post 1, Content 1 test content body</p>',null,'DRAFT','1','POST',1,'2011-01-01 01:11:11',null,null,null,null),
+	(2,2,'Post 2, Content 1','http://placehold.it/900x300','Post 2, Content 1 Image','<p>Post 2, Content 1 test content body</p>',null,'ARCHIVED','2','POST',1,'2011-01-02 01:11:11',null,null,1,'2011-01-02 02:11:11'),
+	(3,2,'Post 2, Content 2','http://placehold.it/900x300','Post 2, Content 2 Image','<p>Post 2, Content 2 test content body</p>',null,'DRAFT','2','POST',1,'2011-01-02 02:11:11',null,null,null,null),
+	(4,3,'Post 3, Content 1','http://placehold.it/900x300','Post 3, Content 1 Image','<p>Post 3, Content 1 test content body</p>',null,'ARCHIVED','3','POST',1,'2011-01-03 01:11:11',null,null,1,'2011-01-03 02:11:11'),
+	(5,3,'Post 3, Content 2','http://placehold.it/900x300','Post 3, Content 2 Image','<p>Post 3, Content 2 test content body</p>',null,'ARCHIVED','3','POST',1,'2011-01-03 02:11:11',null,null,1,'2011-01-03 03:11:11'),
+	(6,4,'Post 4, Content 1','http://placehold.it/900x300','Post 4, Content 1 Image','<p>Post 4, Content 1 test content body</p>',null,'PUBLISHED','4','POST',1,'2011-01-04 01:11:11',null,null,null,null),
+	(7,5,'Post 5, Content 1','http://placehold.it/900x300','Post 5, Content 1 Image','<p>Post 5, Content 1 test content body</p>',null,'ARCHIVED','5','POST',1,'2011-01-05 01:11:11',null,null,1,'2011-01-05 02:11:11'),
+	(8,5,'Post 5, Content 2','http://placehold.it/900x300','Post 5, Content 2 Image','<p>Post 5, Content 2 test content body</p>',null,'PUBLISHED','5','POST',1,'2011-01-05 02:11:11',null,null,1,'2011-01-05 03:11:11'),
+	(9,6,'Post 6, Content 1','http://placehold.it/900x300','Post 6, Content 1 Image','<p>Post 6, Content 1 test content body</p>',null,'ARCHIVED','6','POST',1,'2011-01-06 01:11:11',null,null,2,'2011-01-06 02:11:11'),
+	(10,6,'Post 6, Content 2','http://placehold.it/900x300','Post 6, Content 2 Image','<p>Post 6, Content 2 test content body</p>',null,'AWAITING','6','POST',2,'2011-01-06 02:11:11',null,null,null,null),
+	(11,7,'Post 7, Content 1','http://placehold.it/900x300','Post 7, Content 1 Image','<p>Post 7, Content 1 test content body</p>',null,'ARCHIVED','7','POST',1,'2011-01-07 01:11:11',null,null,3,'2011-01-07 02:11:11'),
+	(12,7,'Post 7, Content 2','http://placehold.it/900x300','Post 7, Content 2 Image','<p>Post 7, Content 2 test content body</p>',null,'PUBLISHED','7','POST',3,'2011-01-07 02:11:11',1,'2011-01-07 03:11:11',null,null),
+	(13,8,'Post 8, Content 1','http://placehold.it/900x300','Post 8, Content 1 Image','<p>Post 8, Content 1 test content body</p>',null,'ARCHIVED','8','POST',1,'2011-01-08 01:11:11',null,null,2,'2011-01-08 02:11:11'), -- created by admin
+	(14,8,'Post 8, Content 2','http://placehold.it/900x300','Post 8, Content 2 Image','<p>Post 8, Content 2 test content body</p>',null,'ARCHIVED','8','POST',2,'2011-01-08 02:11:11',null,null,1,'2011-01-08 03:11:11'), -- updated by author 1, rejected by admin
+	(15,9,'Post 9, Content 1','http://placehold.it/900x300','Post 9, Content 1 Image','<p>Post 9, Content 1 test content body</p>',null,'DRAFT','9','POST',2,'2011-01-09 01:11:11',null,null,null,null),
+	(16,10,'Post 10, Content 1','http://placehold.it/900x300','Post 10, Content 1 Image','<p>Post 10, Content 1 test content body</p>',null,'AWAITING','10','POST',2,'2011-01-10 01:11:11',null,null,null,null),
+	(17,11,'Post 11, Content 1','http://placehold.it/900x300','Post 11, Content 1 Image','<p>Post 11, Content 1 test content body</p>',null,'PUBLISHED','11','POST',2,'2011-01-11 01:11:11',1,'2011-01-11 02:11:11',null,null),
+	(18,12,'Post 12, Content 1','http://placehold.it/900x300','Post 12, Content 1 Image','<p>Post 12, Content 1 test content body</p>',null,'ARCHIVED','12','POST',2,'2011-01-12 01:11:11',null,null,3,'2011-01-12 02:11:11'),
+	(19,12,'Post 12, Content 2','http://placehold.it/900x300','Post 12, Content 2 Image','<p>Post 12, Content 2 test content body</p>',null,'DRAFT','12','POST',3,'2011-01-12 02:11:11',null,null,null,null),
+	(20,13,'Post 13, Content 1','http://placehold.it/900x300','Post 13, Content 1 Image','<p>Post 13, Content 1 test content body</p>',null,'ARCHIVED','13','POST',2,'2011-01-13 01:11:11',null,null,3,'2011-01-13 02:11:11'),
+	(21,13,'Post 13, Content 2','http://placehold.it/900x300','Post 13, Content 2 Image','<p>Post 13, Content 2 test content body</p>',null,'PUBLISHED','13','POST',3,'2011-01-13 02:11:11',1,'2011-01-13 03:11:11',null,null),
+	(22,14,'Post 14, Content 1','http://placehold.it/900x300','Post 14, Content 1 Image','<p>Post 14, Content 1 test content body</p>',null,'PUBLISHED','14','POST',1,'2011-01-14 01:11:11',null,null,null,null),
+	(23,14,'Post 14, Content 2','http://placehold.it/900x300','Post 14, Content 2 Image','<p>Post 14, Content 2 test content body</p>',null,'DRAFT','14','POST',3,'2011-01-14 02:11:11',1,'2011-01-14 03:11:11',null,null);
 
 -- static page insertions.
-insert into Content (ContentId, Title, ContentImgLink, ContentImgAltTxt, Body, ContentStatusCode, UrlPattern, ContentTypeCode, CreatedByUserId, CreatedOnDate) VALUES
-(24,'StaticPage1Content24','http://placehold.it/900x300','StaticPage1Content24Img','<p>Post 14, Content 2 test content body</p>','PUBLISHED','statPgUrlPattern','STATIC PAGE',1,'2011-01-14 02:11:11');
+insert into Content (ContentId, Title, ContentImgLink, ContentImgAltTxt, Body, ContentStatusCode, UrlPattern, ContentTypeCode, CreatedByUserId, CreatedOnDate, UpdatedByUserId, UpdatedOnDate, ArchivedByUserId, ArchivedOnDate) VALUES
+(24,'StaticPage1Content24','http://placehold.it/900x300','StaticPage1Content24Img','<p>Content24 test content body</p>','PUBLISHED','statPgUrlPattern1','STATIC PAGE',1,'2011-01-14 02:11:11', null, null, null, null),
+(25,'StaticPage2Content25','http://placehold.it/900x300','StaticPage2Content25Img','<p>Content25 test content body</p>','ARCHIVED','statPgUrlPattern2','STATIC PAGE',1,'2011-01-15 02:24:11', null, null, 1, '2014-01-17 02:24:11'),
+(26,'StaticPage3Content26','http://placehold.it/900x300','StaticPage3Content26Img','<p>Content26 test content body</p>','DRAFT','statPgUrlPattern3','STATIC PAGE',1,'2011-01-16 02:41:11', null, null, null, null),
+(27,'StaticPage4Content27','http://placehold.it/900x300','StaticPage4Content27Img','<p>Content27 test content body</p>','PUBLISHED','statPgUrlPattern4','STATIC PAGE',1,'2011-01-17 02:11:11', 1, '2013-01-14 02:11:11', null, null),
+(28,'StaticPage5Content28','http://placehold.it/900x300','StaticPage5Content28Img','<p>Content28 test content body</p>','PUBLISHED','statPgUrlPattern5','STATIC PAGE',1,'2011-01-18 02:21:11', null, null, null, null),
+(29,'StaticPage6Content29','http://placehold.it/900x300','StaticPage5Content29Img','<p>Content29 test content body</p>','ARCHIVED','statPgUrlPattern6','STATIC PAGE',1,'2011-01-19 02:21:11', null, null, 1, '2014-01-17 02:24:11');
 
 -- post comments
 insert into User (UserId, RoleCode, CreatedDate, UserName, UserPassword, UserEmail) 
 values
-(4,'ROLE_GUEST','2012-01-14 01:11:11','Post 14 Commenter 1','','');
-insert into Content (ContentId, PostId, Body, ContentStatusCode, ContentTypeCode, CreatedByUserId, CreatedOnDate) 
+(4,'ROLE_GUEST','2012-01-14 01:11:11','Post 14 Commenter 1','','111');
+insert into Content (ContentId, PostId, Body, UrlPattern, ContentStatusCode, ContentTypeCode, CreatedByUserId, CreatedOnDate) 
 values
-(25,14,'First!','PUBLISHED','COMMENT',4,'2012-01-14 01:11:11');
+(25,14,'First!', '','PUBLISHED','COMMENT',4,'2012-01-14 01:11:11');
 insert into User (UserId, RoleCode, CreatedDate, UserName, UserPassword, UserEmail) 
 values
-(5,'ROLE_GUEST','2012-01-14 02:11:11','Post 14 Commenter 2','','');
-insert into Content (ContentId, PostId, Body, ContentStatusCode, ContentTypeCode, CreatedByUserId, CreatedOnDate,ArchivedByUserId,ArchivedDate) 
+(5,'ROLE_GUEST','2012-01-14 02:11:11','Post 14 Commenter 2','','222');
+insert into Content (ContentId, PostId, Body, UrlPattern, ContentStatusCode, ContentTypeCode, CreatedByUserId, CreatedOnDate,ArchivedByUserId,ArchivedOnDate) 
 values
-(26,14,'Second!','ARCHIVED','COMMENT',5,'2012-01-14 02:11:11',1,'2012-01-14 03:11:11');
+(26,14,'Second!', '','ARCHIVED','COMMENT',5,'2012-01-14 02:11:11',1,'2012-01-14 03:11:11');
 insert into User (UserId, RoleCode, CreatedDate, UserName, UserPassword, UserEmail) 
 values
-(6,'ROLE_GUEST','2012-01-14 04:11:11','Post 14 Commenter 3','','');
-insert into Content (ContentId, PostId, Body, ContentStatusCode, ContentTypeCode, CreatedByUserId, CreatedOnDate,ArchivedByUserId,ArchivedDate) 
+(6,'ROLE_GUEST','2012-01-14 04:11:11','Post 14 Commenter 3','','333');
+insert into Content (ContentId, PostId, Body, UrlPattern, ContentStatusCode, ContentTypeCode, CreatedByUserId, CreatedOnDate,ArchivedByUserId,ArchivedOnDate) 
 values
-(27,14,'Third! (Second commenter was deleted)','PUBLISHED','COMMENT',6,'2012-01-14 04:11:11',null,null);
+(27,14,'Third! (Second commenter was deleted)', '','PUBLISHED','COMMENT',6,'2012-01-14 04:11:11',null,null);
 
 -- post 5 has no tags
 insert into content_tag values
@@ -187,7 +192,8 @@ SET
             		<p>Test test test test <strong>test test test</strong> test test test test test <em>test test test.</em> Test test test test <strong>test test test</strong> test test test test test <em>test test test.</em> 
             			Test test test test <strong>test test test</strong> test test test test test <em>test test test.</em> Test test test test <strong>test test test</strong> test test test test test <em>test test test.</em> 
                         Test test test test <strong>test test test</strong> test test test test test <em>test test test.</em> Test test test test <strong>test test test</strong> test test test test test <em>test test test.</em> 
-                        Test test test test <strong>test test test</strong> test test test test test <em>test test test.</em> Test test test test <strong>test test test</strong> test test test test test <em>test test test.</em> </p>');
+                        Test test test test <strong>test test test</strong> test test test test test <em>test test test.</em> Test test test test <strong>test test test</strong> test test test test test <em>test test test.</em> </p>')
+where ContentTypeCode = 'POST';
                         
 END$$
 DELIMITER ;

@@ -20,7 +20,6 @@ public interface ContentDaoInterface {
     public Content getMostRecentPostContent(int postID);
     public void setAwaitingToArchived(Post post);
     public Content updatePostContent(Content content);
-    public List<Content> getAllStaticPages(boolean showArchived);
     public List<Content> getPublishedStaticPages();
     public List<Content> getStaticPageByStatus(String statusCode);
     public Content getStaticPageByURL(String urlPattern);
