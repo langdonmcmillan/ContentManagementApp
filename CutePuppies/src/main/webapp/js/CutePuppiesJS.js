@@ -84,7 +84,7 @@ function fillPostSnippetsContainer(posts) {
         if (!post.createdByUser.userName === post.publishedContent.createdByUser.userName) {
             appendInput = $('<p class = "lead userName">').html('updated by <a href="#">' + post.publishedContent.createdByUser.userName + '</a>');
         }
-        postSnippetContainer.append($('<div class="singlePost">')
+        postSnippetContainer.append($('<div class="row singlePost">')
                 .append($('<a href="' + contextPath + '/post/' + post.postId + '">')
                         .append($('<h1 class="title readMoreLink">')
                                 .text(post.publishedContent.title)
@@ -93,7 +93,7 @@ function fillPostSnippetsContainer(posts) {
                 .append(appendInput)
                 .append('<hr>')
                 .append($('<p>')
-                        .html('<span class="glyphicon glyphicon-time createdOnDate"></span><span>' + ' ' + postCreateDateString + '</span>')))
+                        .html('<span class="glyphicon glyphicon-time createdOnDate"></span><span>' + ' ' + postCreateDateString + '</span>'))
                 .append($('<div>')
                         .attr('id', 'categories' + post.publishedContent.contentId)
                         .append($('<img>')
@@ -118,7 +118,7 @@ function fillPostSnippetsContainer(posts) {
                         .text('Read more »')
                         .attr({'data-postId': post.postId})
                         )
-                .append('<hr>');
+                .append('<hr>'));
 
         var delimiter = "";
         $.each(post.publishedContent.listOfCategories, function (index, category) {
