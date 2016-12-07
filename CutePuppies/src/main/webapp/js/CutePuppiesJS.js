@@ -61,7 +61,8 @@ function loadPagePosts() {
             postsPerPage: sessionStorage.getItem('postsPerPage'),
             tagId: sessionStorage.getItem('selectedTagId'),
             categoryId: sessionStorage.getItem('selectedCategoryId'),
-            searchTerm: sessionStorage.getItem('searchTerm')
+            searchTerm: sessionStorage.getItem('searchTerm'),
+            userId: sessionStorage.getItem('postCreatedByUserId')
         }
     }).success(function (data, status) {
         fillPostSnippetsContainer(data);
@@ -88,7 +89,7 @@ function fillPostSnippetsContainer(posts) {
                         .append($('<h1 class="title readMoreLink">')
                                 .text(post.publishedContent.title)
                                 .attr({'data-postId': post.postId})))
-                .append($('<p class = "lead userName">').html('created by <a href="#">' + post.createdByUser.userName + '</a>'))
+                .append($('<p class = "lead userName">').html('created by <a href="#" class="authorId" data-userId="' + post.createdByUser.userId + '">' + post.createdByUser.userName + '</a>'))
                 .append(appendInput)
                 .append('<hr>')
                 .append($('<p>')
@@ -163,6 +164,9 @@ function setSessionProperties() {
     if (sessionStorage.getItem('selectedCategoryId') === null) {
         sessionStorage.setItem('selectedCategoryId', 'null');
     }
+    if (sessionStorage.getItem('postCreatedByUserId') === null) {
+        sessionStorage.setItem('postCreatedByUserId', 'null');
+    }
     if (sessionStorage.getItem('searchTerm') === null) {
         sessionStorage.setItem('searchTerm', '');
     }
@@ -221,6 +225,7 @@ $(document).on('click', '.category', function () {
     sessionStorage.setItem('selectedTagId', 'null');
     sessionStorage.setItem('selectedCategoryId', $(this).data('categoryid'));
     sessionStorage.setItem('searchTerm', '');
+    sessionStorage.setItem('postCreatedByUserId', 'null');
     updatePageNav(1);
     window.location.replace(contextPath);
 });
@@ -228,6 +233,17 @@ $(document).on('click', '.category', function () {
 $(document).on('click', '.tag', function () {
     var tagId = $(this).data('tagid');
     sessionStorage.setItem('selectedTagId', $(this).data('tagid'));
+    sessionStorage.setItem('selectedCategoryId', 'null');
+    sessionStorage.setItem('searchTerm', '');
+    sessionStorage.setItem('postCreatedByUserId', 'null');
+    updatePageNav(1);
+    window.location.replace(contextPath);
+});
+
+$(document).on('click', '.authorId', function () {
+    var userId = $(this).data('userid');
+    sessionStorage.setItem('postCreatedByUserId', userId);
+    sessionStorage.setItem('selectedTagId', 'null');
     sessionStorage.setItem('selectedCategoryId', 'null');
     sessionStorage.setItem('searchTerm', '');
     updatePageNav(1);

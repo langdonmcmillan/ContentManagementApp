@@ -12,5 +12,6 @@ function resetSessionProperties() {
     sessionStorage.setItem('pageNumber', 1);
     sessionStorage.setItem('selectedTagId', 'null');
     sessionStorage.setItem('selectedCategoryId', 'null');
+    sessionStorage.setItem('postCreatedByUserId', 'null');
     sessionStorage.setItem('searchTerm', '');
 }

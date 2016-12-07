@@ -50,7 +50,7 @@ insert into Post values
 	(11,1,'2011-01-11 01:11:11',null,null,null,null), -- Author 1 created, approved by admin
 	(12,1,'2011-01-12 01:11:11',null,null,null,null), -- Author 1 created, saved draft, author 2 edited, saved draft
 	(13,1,'2011-01-13 01:11:11',null,null,null,null), -- Author 1 created, saved draft, author 2 edited, approved by admin
-	(14,1,'2011-01-14 01:11:11',null,null,null,null); -- Created and published, author 1 created new draft (published version stays)
+	(14,2,'2011-01-14 01:11:11',null,null,null,null); -- Created and published, author 1 created new draft (published version stays)
 -- 	(15,1,'2011-01-15 01:11:11',null,null,null,null), -- Created and published, author 1 created new draft awaiting approval (published version stays)
 -- 	(16,1,'2011-01-16 01:11:11',null,null,null,null), -- Created and published, author 1 created new draft awaiting approval, new version published
 -- 	(17,1,'2011-01-17 01:11:11',null,null,null,null),
@@ -98,19 +98,19 @@ values
 (4,'ROLE_GUEST','2012-01-14 01:11:11','Post 14 Commenter 1','','111');
 insert into Content (ContentId, PostId, Body, UrlPattern, ContentStatusCode, ContentTypeCode, CreatedByUserId, CreatedOnDate) 
 values
-(25,14,'First!', '','PUBLISHED','COMMENT',4,'2012-01-14 01:11:11');
+(30,14,'First!', '','PUBLISHED','COMMENT',4,'2012-01-14 01:11:11');
 insert into User (UserId, RoleCode, CreatedDate, UserName, UserPassword, UserEmail) 
 values
 (5,'ROLE_GUEST','2012-01-14 02:11:11','Post 14 Commenter 2','','222');
 insert into Content (ContentId, PostId, Body, UrlPattern, ContentStatusCode, ContentTypeCode, CreatedByUserId, CreatedOnDate,ArchivedByUserId,ArchivedOnDate) 
 values
-(26,14,'Second!', '','ARCHIVED','COMMENT',5,'2012-01-14 02:11:11',1,'2012-01-14 03:11:11');
+(31,14,'Second!', '','ARCHIVED','COMMENT',5,'2012-01-14 02:11:11',1,'2012-01-14 03:11:11');
 insert into User (UserId, RoleCode, CreatedDate, UserName, UserPassword, UserEmail) 
 values
 (6,'ROLE_GUEST','2012-01-14 04:11:11','Post 14 Commenter 3','','333');
 insert into Content (ContentId, PostId, Body, UrlPattern, ContentStatusCode, ContentTypeCode, CreatedByUserId, CreatedOnDate,ArchivedByUserId,ArchivedOnDate) 
 values
-(27,14,'Third! (Second commenter was deleted)', '','PUBLISHED','COMMENT',6,'2012-01-14 04:11:11',null,null);
+(32,14,'Third! (Second commenter was deleted)', '','PUBLISHED','COMMENT',6,'2012-01-14 04:11:11',null,null);
 
 -- post 5 has no tags
 insert into content_tag values

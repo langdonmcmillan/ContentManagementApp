@@ -54,12 +54,13 @@ public class CutePuppiesController {
 
     @RequestMapping(value = "/ajax/getPagePosts/", method = RequestMethod.GET)
     @ResponseBody
-    public List<Post> getPagePosts(String pageNumber, String postsPerPage, String tagId, String categoryId, String searchTerm) {
+    public List<Post> getPagePosts(String pageNumber, String postsPerPage, String tagId, String categoryId, String searchTerm, String userId) {
         // parse to int: newestPostId, oldestPostId, postsPerPage, tagId, categoryId
         int pageNumberInt = 0;
         int postsPerPageInt = 0;
         int tagIdInt = 0;
         int categoryIdInt = 0;
+        int userIdInt = 0;
 
         if (!pageNumber.equals("null")) {
             pageNumberInt = Integer.parseInt(pageNumber);
@@ -73,9 +74,12 @@ public class CutePuppiesController {
         if (!categoryId.equals("null")) {
             categoryIdInt = Integer.parseInt(categoryId);
         }
+        if (!userId.equals("null")) {
+            userIdInt = Integer.parseInt(userId);
+        }
 
         // get me a list of Post objects.
-        List<Post> listOfPosts = postDao.getPostsByAllCriteria(pageNumberInt, postsPerPageInt, tagIdInt, categoryIdInt, searchTerm);
+        List<Post> listOfPosts = postDao.getPostsByAllCriteria(pageNumberInt, postsPerPageInt, tagIdInt, categoryIdInt, searchTerm, userIdInt);
 
         listOfPosts.forEach((post) -> {
             int postId = post.getPostId();
