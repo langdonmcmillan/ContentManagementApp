@@ -205,8 +205,7 @@ $('#deleteButton').click(function () {
         }).success(function (content, status) {
             window.location.assign('/CutePuppies/admin/manageStaticPages');
         });
-    }
-    else if (postID === null || postID === 0) {
+    } else if (postID === null || postID === 0) {
         window.location.assign(contextPath + '/admin/dashboard');
     } else if (checkIfAllArchived()) {
         if (confirm('This post will be archived if this content is archived. Continue?')) {
@@ -274,14 +273,13 @@ function validateTitleAndUrl(contentStatusCode) {
     $('#titleEmptyError').empty();
     $('#urlEmptyError').empty();
     if (pageType === 'StaticPage') {
-        if (title === "" && urlPattern === "") {
+        if (title === "") {
             $('#titleEmptyError').text("Please enter a title.");
+        }
+        if (urlPattern === "" || regexPattern.test(urlPattern) === false) {
             $('#urlEmptyError').text("Please enter a valid URL (only letters, numbers, dashes, underscores)");
-        } else if (title === "") {
-            $('#titleEmptyError').text("Please enter a title.");
-        } else if (urlPattern === "" || regexPattern.test(urlPattern) === false) {
-            $('#urlEmptyError').text("Please enter a valid URL (only letters, numbers, dashes, underscores)");
-        } else {
+        }
+        if (title !== "" && urlPattern !== "" && regexPattern.test(urlPattern) === true) {
             $.ajax({
                 type: 'GET',
                 url: contextPath + '/admin/ajax/isUniqueUrl/' + urlPattern,
@@ -307,9 +305,17 @@ function validateTitleAndUrl(contentStatusCode) {
         }
     } else {
         if (postID === null || postID === 0) {
-            addPost(contentStatusCode);
+            if (title === "") {
+                $('#titleEmptyError').text("Please enter a title.");
+            } else {
+                addPost(contentStatusCode);
+            }
         } else {
-            addContent(contentStatusCode);
+            if (title === "") {
+                $('#titleEmptyError').text("Please enter a title.");
+            } else {
+                addContent(contentStatusCode);
+            }
         }
     }
 }
