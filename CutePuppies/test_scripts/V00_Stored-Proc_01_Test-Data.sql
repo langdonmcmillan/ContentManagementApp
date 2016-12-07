@@ -25,7 +25,8 @@ insert into Tag values
 	(3, 'TestTag3'),
 	(4, 'TestTag4'),
 	(5, 'TestTag5'),
-	(6, 'TestTag6');
+	(6, 'TestTag6'),
+	(7, 'UnpublishedTag7');
     
 insert into Category values
 	(1, 'TestCategory1'),

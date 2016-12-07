@@ -14,9 +14,7 @@ import java.util.List;
  */
 public interface CategoryDaoInterface {
     public List<Category> getAllCategories();
-
     public List<Category> getCategoriesByContentId(int contentId);
-    public Category getCategoryByName(String category);
     public Category addCategory(String category);
     public Category updateCategory(Category category);
     public void deleteCategory(int categoryID);

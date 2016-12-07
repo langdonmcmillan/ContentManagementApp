@@ -5,6 +5,7 @@
  */
 
 import com.sg.cutepuppies.daos.TagDaoInterface;
+import com.sg.cutepuppies.models.Category;
 import com.sg.cutepuppies.models.Tag;
 import java.util.ArrayList;
 import java.util.List;
@@ -60,31 +61,43 @@ public class TagDAOTest {
         assertEquals(numTags + 1, tagDao.getAllTags(false).size());
     }
 
-//    @Test
-//    public void testUpdateTag() {
-//        Tag tag = tagDao.getAllTags(false).get(0);
-//        
-//        tag.setTagDescription("ZZUPDATED TAG");
-//        int tagId = tag.getTagID();
-//        
-//        int numTags = tagDao.getAllTags(false).size();
-//        
-//        tagDao.updateTag(tag);
-//        
-//        assertEquals(numTags, tagDao.getAllTags(false).size());
-//        assertEquals("ZZUPDATED TAG", tagDao.getAllTags(false).get(numTags - 1).getTagDescription());
-//    }
-//
-//    @Test
-//    public void testDeleteTag() {
-//        List<Tag> tags = new ArrayList<>();
-//        tags = tagDao.getAllTags(false);
-//        int numTags = tags.size();
-//        int firstTagID = tags.get(0).getTagID();
-//        
-//        tagDao.deleteTag(firstTagID);
-//        
-//        assertEquals(numTags - 1, tagDao.getAllTags(false).size());
-//        assertNotEquals(firstTagID, tagDao.getAllTags(false).get(0).getTagID());
-//    }
+    @Test
+    public void testUpdateTag() {
+        Tag tag = tagDao.getAllTags(false).get(0);
+        
+        // Because we do not have a get Tag by ID, started it with ZZ so it will be last alphabetically
+        tag.setTagDescription("ZZUPDATED TAG");
+        
+        int numTags = tagDao.getAllTags(false).size();
+        
+        tagDao.updateTag(tag);
+        
+        assertEquals(numTags, tagDao.getAllTags(false).size());
+        assertEquals("ZZUPDATED TAG", tagDao.getAllTags(false).get(numTags - 1).getTagDescription());
+    }
+
+    @Test
+    public void testDeleteTag() {
+        List<Tag> tags = new ArrayList<>();
+        tags = tagDao.getAllTags(false);
+        int numTags = tags.size();
+        int firstTagID = tags.get(0).getTagID();
+        
+        tagDao.deleteTag(firstTagID);
+        
+        assertEquals(numTags - 1, tagDao.getAllTags(false).size());
+        assertNotEquals(firstTagID, tagDao.getAllTags(false).get(0).getTagID());
+    }
+    
+    @Test
+    public void testGetTagsByContentId() {
+        assertEquals(3, tagDao.getTagsByContentId(1).size());
+        assertEquals(6, tagDao.getTagsByContentId(3).size());
+    }
+    
+    @Test
+    public void testGetTagsPublishedUnpublished() {
+        assertEquals(5, tagDao.getAllTags(true).size());
+        assertEquals(7, tagDao.getAllTags(false).size());
+    }
 }
