@@ -76,7 +76,7 @@ public class ContentDbImpl implements ContentDaoInterface {
             + " on c.PostId = p.PostId"
             + " where p.PostId = ? "
             + " and c.ContentTypeCode = 'POST' "
-            + " order by c.ContentId desc"
+            + " order by c.CreatedOnDate desc"
             + " limit 1";
 
     private static final String SQL_ADD_CONTENT_TO_POST = "insert into Content (PostId, Title, "
@@ -131,7 +131,7 @@ public class ContentDbImpl implements ContentDaoInterface {
             + " where 1 = 1 "
             + " and c.ContentTypeCode = 'COMMENT'"
             + " and c.ContentStatusCode = 'PUBLISHED'"
-            + " and PostId = ?";
+            + " and PostId = ? ";
 
     // test written.
     @Override
@@ -292,11 +292,13 @@ public class ContentDbImpl implements ContentDaoInterface {
         return content;
     }
 
+     // test written.
     @Override
     public Content getPublishedPostContent(int postID) {
         return jdbcTemplate.queryForObject(SQL_GET_PUBLISHED_CONTENT_BY_POST_ID, new ContentMapper(), postID);
     }
 
+    // test written.
     @Override
     public Content getMostRecentPostContent(int postID) {
         return jdbcTemplate.queryForObject(SQL_GET_MOST_RECENT_CONTENT_BY_POST_ID, new ContentMapper(), postID);
@@ -320,11 +322,13 @@ public class ContentDbImpl implements ContentDaoInterface {
         npJdbcTemplate.update(SQL_ARCHIVE_POST, namedParameters);
     }
 
+    // test written.
     @Override
     public Content getContentById(int contentId) {
         return jdbcTemplate.queryForObject(SQL_GET_CONTENT_BY_ID, new ContentMapper(), contentId);
     }
 
+    // test written, integration and unit.
     @Override
     public Content addPostComment(Content newComment) {
         MapSqlParameterSource namedParameters = new MapSqlParameterSource();
@@ -345,13 +349,9 @@ public class ContentDbImpl implements ContentDaoInterface {
         return newComment;
     }
 
+    // test written.
     @Override
-    public Content archivePostComment(int commentId) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public List<Content> getAllPostComments(int postId) {
+    public List<Content> getAllPostCommentsPublished(int postId) {
         return jdbcTemplate.query(SQL_GET_POST_COMMENTS, new ContentMapper(), postId);
     }
 

@@ -28,6 +28,7 @@ public class ContentDAOTest {
 
     ApplicationContext ctx = new ClassPathXmlApplicationContext("test-applicationContext.xml");
     private ContentDaoInterface contentDao;
+    private UserDaoInterface userDao;
     private JdbcTemplate jdbcTemplate;
     SimpleJdbcCall simpleJdbcCall;
 
@@ -42,6 +43,8 @@ public class ContentDAOTest {
         simpleJdbcCall.execute();
 
         contentDao = ctx.getBean("ContentDBImplTest", ContentDaoInterface.class);
+        userDao = ctx.getBean("UserDBImplTest", UserDaoInterface.class);
+        
         JdbcTemplate template = (JdbcTemplate) ctx.getBean("jdbcTemplate");
 
     }
@@ -290,4 +293,116 @@ public class ContentDAOTest {
         assertEquals(0, emptyContent.getPostId());
         
     }
+    
+    @Test
+    public void testGetPublishedPostContent() {
+        // post 5 has 2 contents - 
+        // contentId7 (archived) and contentId 8 (archived)
+        // this should get me contentId of 8.
+        Content publishedContent = contentDao.getPublishedPostContent(5);
+        int actualpublishedContentId = publishedContent.getContentId();
+        int expectedpublishedContentId = 8;
+        assertEquals(expectedpublishedContentId, actualpublishedContentId);
+        
+        String actualPublishedContentImgAltText = publishedContent.getContentImgAltTxt();
+        String expectedPublishedContentImgAltText = "Post 5, Content 2 Image";
+        assertEquals(expectedPublishedContentImgAltText, actualPublishedContentImgAltText);
+        
+        String archivedContentTitle = contentDao.getContentById(7).getTitle();
+        String publishedContentTitle = publishedContent.getTitle();
+        assertNotEquals(publishedContentTitle, archivedContentTitle);
+    
+    }
+    
+    @Test
+    public void getMostRecentPostContent() {
+        // post 14 has contentId 22 (published) and contentId23 (draft).
+        // contentId22 was created 1-14 @1:11pm
+        // contentId23 was created 1-14 @2:11pm
+        // most recent content should be the contentId23.
+        
+        Content mostRecentContent = contentDao.getMostRecentPostContent(14);
+        int expectedContentId = 23;
+        int actualContentId = mostRecentContent.getContentId();
+        assertEquals(expectedContentId, actualContentId);
+        
+        String expectedContentStatus = "DRAFT";
+        String actualContentStatus = mostRecentContent.getContentStatusCode();
+        assertEquals(expectedContentStatus, actualContentStatus);
+        
+        String unexpectedContentTitle = "Post14, Content 1";
+        String actualContentTitle = mostRecentContent.getTitle();
+        assertNotEquals(unexpectedContentTitle, actualContentTitle);
+        
+        Content notMostRecentContent = contentDao.getContentById(22);
+        assertNotSame(notMostRecentContent, mostRecentContent);
+        
+    }
+    
+    @Test
+    public void testGetContentById() {
+        
+        Content blogPost = contentDao.getContentById(23);
+        String actualContent1Title = blogPost.getTitle();
+        String expectedContent1Title = "Post 14, Content 2";
+        assertEquals(expectedContent1Title, actualContent1Title);
+        
+        String expectedContent1Type = "POST";
+        String actualContent1Type = blogPost.getContentTypeCode();
+        assertEquals(expectedContent1Type, actualContent1Type);
+        
+        Content staticPage = contentDao.getContentById(29);
+        String expectedStaticPageUrl = "statPgUrlPattern6";
+        String actualStaticPageUrl = staticPage.getUrlPattern();
+        assertEquals(expectedStaticPageUrl, actualStaticPageUrl);
+        
+        String expectedStaticPageContentStatus = "ARCHIVED";
+        String actualStaticPageContentStatus = staticPage.getContentStatusCode();
+        assertEquals(expectedStaticPageContentStatus, actualStaticPageContentStatus);
+    }
+
+    @Test
+    public void testAddPostComment() {
+        Content comment1 = new Content();
+        comment1.setPostId(13);
+        comment1.setBody("FIRST!!!!!");
+        User user = new User();
+        user.setUserId(7);
+        comment1.setCreatedByUser(user);
+        comment1 = contentDao.addPostComment(comment1);
+        
+        Content comment2 = new Content();
+        comment2.setPostId(13);
+        comment2.setBody("SECOND!!!!!");
+        comment2.setCreatedByUser(user);
+        
+        comment2 = contentDao.addPostComment(comment2);
+        
+        String actualComment1Body = comment1.getBody();
+        String expectedComment1Body = "FIRST!!!!!";
+        assertEquals(expectedComment1Body, actualComment1Body);
+        
+        assertNotNull(comment2.getContentId());
+    }
+    
+    @Test
+    public void testAllPostCommentsPublished() {
+        List<Content> allPublishedCommentsForPost14 = contentDao.getAllPostCommentsPublished(14);
+        
+        // there's 4 comments but only 2 of them are published.
+        int actualNumOfComments = allPublishedCommentsForPost14.size();
+        int expectedNumOfComments = 2;
+        
+        assertEquals(expectedNumOfComments, actualNumOfComments);
+        
+        String actualComment1Body = allPublishedCommentsForPost14.get(0).getBody();
+        String expectedComment1Body = "First!";
+        assertEquals(expectedComment1Body, actualComment1Body);
+        
+        String actualComment2ContentStatus = allPublishedCommentsForPost14.get(1).getContentStatusCode();
+        String expectedComment2ContentStatus = "PUBLISHED";
+        assertEquals(expectedComment2ContentStatus, actualComment2ContentStatus);
+        
+    }
+    
 }

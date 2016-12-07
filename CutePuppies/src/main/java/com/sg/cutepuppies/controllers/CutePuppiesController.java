@@ -112,7 +112,7 @@ public class CutePuppiesController {
         postContent.setListOfCategories(categoryDao.getCategoriesByContentId(postContent.getContentId()));
         postContent.setCreatedByUser(userDao.getUserWhoCreatedContent(postContent.getContentId()));
         post.setCreatedByUser(userDao.getUserWhoCreatedPost(postId));
-        post.setPostComments(contentDao.getAllPostComments(postId));
+        post.setPostComments(contentDao.getAllPostCommentsPublished(postId));
         post.getPostComments().forEach(comment -> comment.setCreatedByUser(userDao.getUserWhoCreatedContent(comment.getContentId())));
 
         post.setPublishedContent(postContent);

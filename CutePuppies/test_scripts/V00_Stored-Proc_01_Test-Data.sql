@@ -17,7 +17,8 @@ DELETE FROM `User`;
 insert into `User` values
 	(1,'ROLE_ADMIN','2011-01-01 01:11:11',null,null,'admin','admin','admin@cutepuppies.com'),
 	(2,'ROLE_AUTHOR','2012-02-02 02:22:22',null,null,'author1','author2','author1@cutepuppies.com'),
-	(3,'ROLE_AUTHOR','2013-03-03 03:33:33',null,null,'author2','author2','author2@cutepuppies.com');
+	(3,'ROLE_AUTHOR','2013-03-03 03:33:33',null,null,'author2','author2','author2@cutepuppies.com'),
+	(7,'ROLE_GUEST','2013-03-10 03:33:33',null,null,'guest1','','');
     
 insert into Tag values
 	(1, 'TestTag1'),
@@ -98,19 +99,19 @@ values
 (4,'ROLE_GUEST','2012-01-14 01:11:11','Post 14 Commenter 1','','111');
 insert into Content (ContentId, PostId, Body, UrlPattern, ContentStatusCode, ContentTypeCode, CreatedByUserId, CreatedOnDate) 
 values
-(25,14,'First!', '','PUBLISHED','COMMENT',4,'2012-01-14 01:11:11');
+(30,14,'First!', '','PUBLISHED','COMMENT',4,'2012-01-14 01:11:11');
 insert into User (UserId, RoleCode, CreatedDate, UserName, UserPassword, UserEmail) 
 values
 (5,'ROLE_GUEST','2012-01-14 02:11:11','Post 14 Commenter 2','','222');
 insert into Content (ContentId, PostId, Body, UrlPattern, ContentStatusCode, ContentTypeCode, CreatedByUserId, CreatedOnDate,ArchivedByUserId,ArchivedOnDate) 
 values
-(26,14,'Second!', '','ARCHIVED','COMMENT',5,'2012-01-14 02:11:11',1,'2012-01-14 03:11:11');
+(31,14,'Second!', '','ARCHIVED','COMMENT',5,'2012-01-14 02:11:11',1,'2012-01-14 03:11:11');
 insert into User (UserId, RoleCode, CreatedDate, UserName, UserPassword, UserEmail) 
 values
 (6,'ROLE_GUEST','2012-01-14 04:11:11','Post 14 Commenter 3','','333');
 insert into Content (ContentId, PostId, Body, UrlPattern, ContentStatusCode, ContentTypeCode, CreatedByUserId, CreatedOnDate,ArchivedByUserId,ArchivedOnDate) 
 values
-(27,14,'Third! (Second commenter was deleted)', '','PUBLISHED','COMMENT',6,'2012-01-14 04:11:11',null,null);
+(32,14,'Third! (Second commenter was deleted)', '','PUBLISHED','COMMENT',6,'2012-01-14 04:11:11',null,null);
 
 -- post 5 has no tags
 insert into content_tag values
