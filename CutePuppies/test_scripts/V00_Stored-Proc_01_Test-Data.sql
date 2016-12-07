@@ -86,6 +86,27 @@ insert into Content values
 -- static page insertions.
 insert into Content (ContentId, Title, ContentImgLink, ContentImgAltTxt, Body, ContentStatusCode, UrlPattern, ContentTypeCode, CreatedByUserId, CreatedOnDate) VALUES
 (24,'StaticPage1Content24','http://placehold.it/900x300','StaticPage1Content24Img','<p>Post 14, Content 2 test content body</p>','PUBLISHED','statPgUrlPattern','STATIC PAGE',1,'2011-01-14 02:11:11');
+
+-- post comments
+insert into User (UserId, RoleCode, CreatedDate, UserName, UserPassword, UserEmail) 
+values
+(4,'ROLE_GUEST','2012-01-14 01:11:11','Post 14 Commenter 1','','');
+insert into Content (ContentId, PostId, Body, ContentStatusCode, ContentTypeCode, CreatedByUserId, CreatedOnDate) 
+values
+(25,14,'First!','PUBLISHED','COMMENT',4,'2012-01-14 01:11:11');
+insert into User (UserId, RoleCode, CreatedDate, UserName, UserPassword, UserEmail) 
+values
+(5,'ROLE_GUEST','2012-01-14 02:11:11','Post 14 Commenter 2','','');
+insert into Content (ContentId, PostId, Body, ContentStatusCode, ContentTypeCode, CreatedByUserId, CreatedOnDate,ArchivedByUserId,ArchivedDate) 
+values
+(26,14,'Second!','ARCHIVED','COMMENT',5,'2012-01-14 02:11:11',1,'2012-01-14 03:11:11');
+insert into User (UserId, RoleCode, CreatedDate, UserName, UserPassword, UserEmail) 
+values
+(6,'ROLE_GUEST','2012-01-14 04:11:11','Post 14 Commenter 3','','');
+insert into Content (ContentId, PostId, Body, ContentStatusCode, ContentTypeCode, CreatedByUserId, CreatedOnDate,ArchivedByUserId,ArchivedDate) 
+values
+(27,14,'Third! (Second commenter was deleted)','PUBLISHED','COMMENT',6,'2012-01-14 04:11:11',null,null);
+
 -- post 5 has no tags
 insert into content_tag values
 	(1,1),
