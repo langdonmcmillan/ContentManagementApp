@@ -53,47 +53,52 @@ public class PostDAOTest {
         simpleJdbcCall.execute();
     }
 
-//    @Test
-//    public void testAddPost() {
-//        String date = "2000-11-01";
-//        java.sql.Date adminCreateDate = java.sql.Date.valueOf(date);
-//
-//        User admin = new User();
-//        admin.setUserId(1);
-//        admin.setRoleCode("ADMIN");
-//        admin.setCreatedDate(adminCreateDate);
-//        admin.setUserName("sadukie");
-//
-//        Post post = new Post();
-//        post.setCreatedByUser(admin);
-//
-//        int numPosts = postDao.getAllPosts(true).size();
-//        assertEquals(0, post.getPostId());
-//
-//        postDao.addPost(post);
-//
-//        assertEquals(numPosts + 1, postDao.getAllPosts(true).size());
-//        assertNotEquals(0, post.getPostId());
-//    }
+    @Test
+    public void testAddPost() {
+        String date = "2000-11-01";
+        java.sql.Date adminCreateDate = java.sql.Date.valueOf(date);
+
+        User admin = new User();
+        admin.setUserId(1);
+
+        Post post = new Post();
+        post.setCreatedByUser(admin);
+
+        post = postDao.addPost(post);
+        
+        assertNotEquals(0, post.getPostId());
+    }
     
     @Test
     public void testArchivePost() {
+        List<Post> publishedPosts = postDao.getAllPosts("PUBLISHED");
+        int postId = publishedPosts.get(0).getPostId();
         int userId = 1;
-        int postId = 5;
-
+        
         postDao.archivePost(postId, userId);
-
         Post post = postDao.getPostByID(postId);
         
         assertNotNull(post.getArchivedOnDate());
+    }
+    
+    @Test
+    public void testUpdatePost() {
+        List<Post> publishedPosts = postDao.getAllPosts("PUBLISHED");
+        Post post = publishedPosts.get(0);
+        User user = new User();
+        user.setUserId(1);
+        post.setUpdatedByUser(user);
+        postDao.updatePost(post);
+        post = postDao.getPostByID(post.getPostId());
         
+        assertNotNull(post.getUpdatedOnDate());
     }
     
     @Test
     public void testGetAllPosts() {
-        // All archived - 2, 3, 8
-        
-        //assertEquals(3, postDao.getAllPosts("ARCHIVED").size());
+        // All archived - 3, 8
+        List<Post> allArchived = postDao.getAllPosts("ARCHIVED");
+        assertEquals(2, postDao.getAllPosts("ARCHIVED").size());
         
         // All Published
         

@@ -43,11 +43,6 @@ public class CategoryDbImpl implements CategoryDaoInterface {
     }
 
     @Override
-    public Category getCategoryByName(String category) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
     public Category addCategory(String category) {
         jdbcTemplate.update(SQL_ADD_CATEGORY, category);
         Category newCategory = new Category();

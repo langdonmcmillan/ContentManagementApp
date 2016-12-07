@@ -9,7 +9,7 @@ body {
 
 #listScroll {
     height: 400px;
-    overflow: scroll;
+    overflow-y: scroll;
 }
 /*footer {
     margin: 50px;

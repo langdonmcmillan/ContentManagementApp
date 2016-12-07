@@ -51,11 +51,6 @@ public class TagDbImpl implements TagDaoInterface {
     }
 
     @Override
-    public Tag getTagByName(String tag) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
     public Tag addTag(String tag) {
         jdbcTemplate.update(SQL_ADD_TAG, tag);
         Tag newTag = new Tag();

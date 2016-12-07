@@ -25,7 +25,8 @@ insert into Tag values
 	(3, 'TestTag3'),
 	(4, 'TestTag4'),
 	(5, 'TestTag5'),
-	(6, 'TestTag6');
+	(6, 'TestTag6'),
+	(7, 'UnpublishedTag7');
     
 insert into Category values
 	(1, 'TestCategory1'),
@@ -90,6 +91,26 @@ insert into Content (ContentId, Title, ContentImgLink, ContentImgAltTxt, Body, C
 (27,'StaticPage4Content27','http://placehold.it/900x300','StaticPage4Content27Img','<p>Content27 test content body</p>','PUBLISHED','statPgUrlPattern4','STATIC PAGE',1,'2011-01-17 02:11:11', 1, '2013-01-14 02:11:11', null, null),
 (28,'StaticPage5Content28','http://placehold.it/900x300','StaticPage5Content28Img','<p>Content28 test content body</p>','PUBLISHED','statPgUrlPattern5','STATIC PAGE',1,'2011-01-18 02:21:11', null, null, null, null),
 (29,'StaticPage6Content29','http://placehold.it/900x300','StaticPage5Content29Img','<p>Content29 test content body</p>','ARCHIVED','statPgUrlPattern6','STATIC PAGE',1,'2011-01-19 02:21:11', null, null, 1, '2014-01-17 02:24:11');
+
+-- post comments
+insert into User (UserId, RoleCode, CreatedDate, UserName, UserPassword, UserEmail) 
+values
+(4,'ROLE_GUEST','2012-01-14 01:11:11','Post 14 Commenter 1','','');
+insert into Content (ContentId, PostId, Body, ContentStatusCode, ContentTypeCode, CreatedByUserId, CreatedOnDate) 
+values
+(25,14,'First!','PUBLISHED','COMMENT',4,'2012-01-14 01:11:11');
+insert into User (UserId, RoleCode, CreatedDate, UserName, UserPassword, UserEmail) 
+values
+(5,'ROLE_GUEST','2012-01-14 02:11:11','Post 14 Commenter 2','','');
+insert into Content (ContentId, PostId, Body, ContentStatusCode, ContentTypeCode, CreatedByUserId, CreatedOnDate,ArchivedByUserId,ArchivedDate) 
+values
+(26,14,'Second!','ARCHIVED','COMMENT',5,'2012-01-14 02:11:11',1,'2012-01-14 03:11:11');
+insert into User (UserId, RoleCode, CreatedDate, UserName, UserPassword, UserEmail) 
+values
+(6,'ROLE_GUEST','2012-01-14 04:11:11','Post 14 Commenter 3','','');
+insert into Content (ContentId, PostId, Body, ContentStatusCode, ContentTypeCode, CreatedByUserId, CreatedOnDate,ArchivedByUserId,ArchivedDate) 
+values
+(27,14,'Third! (Second commenter was deleted)','PUBLISHED','COMMENT',6,'2012-01-14 04:11:11',null,null);
 
 -- post 5 has no tags
 insert into content_tag values

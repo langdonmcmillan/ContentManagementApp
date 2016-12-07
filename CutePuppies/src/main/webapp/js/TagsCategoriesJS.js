@@ -90,6 +90,7 @@ function loadData() {
 }
 
 
+
 function setTableHeight() {
     var maxHeight = $(window).height() - 200 - $('#alphaDiv').height();
     $('#editTable').css('max-height', maxHeight); //set max height

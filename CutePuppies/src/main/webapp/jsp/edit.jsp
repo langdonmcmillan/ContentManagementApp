@@ -145,7 +145,7 @@
         <script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
         <script>tinymce.init({selector: 'textarea',
                 plugins: [
-                    'advlist autolink lists link image charmap preview hr',
+                    'autoresize advlist autolink lists link image charmap preview hr',
                     'searchreplace wordcount visualblocks visualchars code fullscreen',
                     'insertdatetime nonbreaking table contextmenu',
                     'emoticons paste textcolor colorpicker textpattern imagetools codesample'

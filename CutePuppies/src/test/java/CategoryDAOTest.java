@@ -64,6 +64,7 @@ public class CategoryDAOTest {
     public void testUpdateCategory() {
         Category category = categoryDao.getAllCategories().get(0);
         
+        // Because we do not have a get Category by ID, started it with ZZ so it will be last alphabetically
         category.setCategoryDescription("ZZUPDATED CATEGORY");
         
         int numCategories = categoryDao.getAllCategories().size();
@@ -85,5 +86,11 @@ public class CategoryDAOTest {
         
         assertEquals(numCategories - 1, categoryDao.getAllCategories().size());
         assertNotEquals(firstCategoryID, categoryDao.getAllCategories().get(0).getCategoryID());
+    }
+    
+    @Test
+    public void testGetCategoriesByContentId() {
+        assertEquals(1, categoryDao.getCategoriesByContentId(1).size());
+        assertEquals(3, categoryDao.getCategoriesByContentId(4).size());
     }
 }
