@@ -70,9 +70,9 @@ public class UserDbImpl implements UserDaoInterface {
     private static final String SQL_DELETE_USER
             = "delete from User where UserId = ?";
     private static final String SQL_GET_ID_FROM_USERNAME
-            = "select u.UserId from User u where u.UserName = ?";
+            = "select u.UserId from User u where u.UserName = ? and RoleCode != 'ROLE_GUEST'";
     private static final String SQL_GET_ID_FROM_EMAIL
-            = "select u.UserId from User u where u.UserEmail = ?";
+            = "select u.UserId from User u where u.UserEmail = ? and RoleCode != 'ROLE_GUEST'";
     private static final String SQL_GET_USER_BY_ID
             = "select * from User u where u.UserId = ?";
 
