@@ -41,7 +41,7 @@
             <div class="row">
               <h4>Content Status</h4>
               <div id="contentStatusText"></div>
-              <h4 id="titleText">Post Title</h4>
+              <h4 id="titleText">Post Title (Required)</h4>
               <input id="postTitle" class="form-control" placeholder="Title">
               <p id="titleEmptyError" class="label label-danger"></p>
               <c:if test="${PageType == 'StaticPage'}">
@@ -73,25 +73,30 @@
                   </div>
 
                   <div class="text-center">
-                    <button id="deletePostButton" class="btn btn-primary">Archive All Revisions</button>
+                    <sec:authorize access="hasRole('ROLE_ADMIN')">
+                        <button id="deletePostButton" class="btn btn-primary">Archive All Revisions</button>
+                    </sec:authorize>
                   </div>
                 </div>
             </c:if>
           </div>
 
-          <div class="row">
-            <div id="publishDiv" class="text-center">
-              <sec:authorize access="hasRole('ROLE_ADMIN')">
-                  <button id="publishButton" class="btn btn-primary">Publish</button>
-              </sec:authorize>
-              <sec:authorize access="hasRole('ROLE_AUTHOR')">
-                  <button id="requestPublishButton" class="btn btn-primary">Submit</button>
-              </sec:authorize>
-              <button id="saveButton" class="btn btn-primary">Save</button>
-              <button id="deleteButton" class="btn btn-primary">Delete</button>
-            </div>
 
-            <div id="sidebarColumn" class="col-md-offset-1 col-md-3">
+
+          <div id="sidebarColumn" class="col-md-offset-1 col-md-3">
+            <div class="row">
+              <div id="publishDiv" class="text-center">
+                <sec:authorize access="hasRole('ROLE_ADMIN')">
+                    <button id="publishButton" class="btn btn-primary">Publish</button>
+                </sec:authorize>
+                <sec:authorize access="hasRole('ROLE_AUTHOR')">
+                    <button id="requestPublishButton" class="btn btn-primary">Submit</button>
+                </sec:authorize>
+                <button id="saveButton" class="btn btn-primary">Save</button>
+                <sec:authorize access="hasRole('ROLE_ADMIN')">
+                    <button id="deleteButton" class="btn btn-primary">Delete</button>
+                </sec:authorize>
+              </div>
               <c:if test="${PageType == 'post'}">
                   <div class="row">
                     <div id="categoryDivChosen" class="well">
@@ -132,8 +137,8 @@
           </div>
         </div>
       </div>
-
     </div>
+
 
     <%@include file="includes/footer.jsp" %>
 
