@@ -60,6 +60,8 @@ public class CommentControllerIntegrationTest {
     // public void hello() {}
     @Test
     public void testAddPostComment() {
+        // ARRANGE
+        // creating a new user when adding a new comment.
         User commenter1 = new User();
         commenter1.setUserName("commenter1");
         commenter1.setRoleCode("ROLE_GUEST");
@@ -67,13 +69,14 @@ public class CommentControllerIntegrationTest {
         commenter1.setUserPassword("444");
         commenter1 = userDao.addUser(commenter1);
 
+        // that new user added the comment
         Content comment1 = new Content();
         comment1.setPostId(13);
         comment1.setBody("FIRST!!!!!");
         comment1.setCreatedByUser(commenter1);
-        
         contentDao.addPostComment(comment1);
-        
+
+        // same here, for the post.
         User commenter2 = new User();
         commenter2.setUserName("commenter2");
         commenter2.setRoleCode("ROLE_GUEST");
@@ -85,11 +88,13 @@ public class CommentControllerIntegrationTest {
         comment2.setPostId(13);
         comment2.setBody("SECOND!!!!!");
         comment2.setCreatedByUser(commenter2);
-        
         contentDao.addPostComment(comment2);
         
+        // ACT
+        // get all comments for the post.
         List<Content> commentsOfPost13 = contentDao.getAllPostCommentsPublished(13);
         
+        // ASSERT
         int expectedNumOfComments = 2;
         int actualNumOfComments = commentsOfPost13.size();
         assertEquals(expectedNumOfComments, actualNumOfComments);

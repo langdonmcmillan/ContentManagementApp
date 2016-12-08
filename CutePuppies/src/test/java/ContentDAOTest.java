@@ -13,10 +13,8 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.jdbc.core.JdbcTemplate;
 import com.sg.cutepuppies.daos.ContentDaoInterface;
-import com.sg.cutepuppies.daos.UserDaoInterface;
 import com.sg.cutepuppies.models.User;
 import java.util.List;
-import java.util.stream.Collectors;
 import org.junit.After;
 import org.springframework.jdbc.core.simple.SimpleJdbcCall;
 
@@ -28,7 +26,6 @@ public class ContentDAOTest {
 
     ApplicationContext ctx = new ClassPathXmlApplicationContext("test-applicationContext.xml");
     private ContentDaoInterface contentDao;
-    private UserDaoInterface userDao;
     private JdbcTemplate jdbcTemplate;
     SimpleJdbcCall simpleJdbcCall;
 
@@ -43,7 +40,6 @@ public class ContentDAOTest {
         simpleJdbcCall.execute();
 
         contentDao = ctx.getBean("ContentDBImplTest", ContentDaoInterface.class);
-        userDao = ctx.getBean("UserDBImplTest", UserDaoInterface.class);
         
         JdbcTemplate template = (JdbcTemplate) ctx.getBean("jdbcTemplate");
 
@@ -66,7 +62,7 @@ public class ContentDAOTest {
 
         User admin = new User();
         admin.setUserId(1);
-        admin.setRoleCode("ADMIN");
+        admin.setRoleCode("ROLE_ADMIN");
         admin.setCreatedDate(adminCreateDate);
         admin.setUserName("sadukie");
 
@@ -102,7 +98,7 @@ public class ContentDAOTest {
 
         User admin = new User();
         admin.setUserId(1);
-        admin.setRoleCode("ADMIN");
+        admin.setRoleCode("ROLE_ADMIN");
         admin.setCreatedDate(adminCreateDate);
         admin.setUserName("sadukie");
 
@@ -111,24 +107,33 @@ public class ContentDAOTest {
         post.setCreatedByUser(admin);
 
         Content content1 = new Content();
-        content1.setContentId(1);
         content1.setPostId(1);
-        content1.setTitle("Content1");
+        content1.setTitle("Content1Title");
         content1.setContentStatusCode("PUBLISHED");
         content1.setUrlPattern("someUrlForContent1");
         content1.setContentTypeCode("POST");
         content1.setCreatedByUser(admin);
         content1.setCreatedOnDate(contentCreateDate);
-
+        contentDao.updatePostContent(content1);
+        
         Content content2 = new Content();
-        content2.setContentId(2);
         content2.setPostId(1);
-        content2.setTitle("Content1");
+        content2.setTitle("Content2Title");
         content2.setContentStatusCode("ARCHIVED");
         content2.setUrlPattern("someUrlForContent2");
         content2.setContentTypeCode("POST");
         content2.setCreatedByUser(admin);
         content2.setCreatedOnDate(contentCreateDate);
+        contentDao.updatePostContent(content2);
+        
+        List<Content> allContentsInPostId1 = contentDao.getAllContentsByPostId(1);
+        int num = allContentsInPostId1.size();
+        assertEquals(3, num);
+        
+        Content archivedContent2 = allContentsInPostId1.get(2);
+        String expectedArchivedContentTitle = "Content2Title";
+        String actualArchivedContentTitle = archivedContent2.getTitle();
+        assertEquals(expectedArchivedContentTitle, actualArchivedContentTitle);
 
     }
 
