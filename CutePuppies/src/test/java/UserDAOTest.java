@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 
+import com.sg.cutepuppies.daos.PostDaoInterface;
 import com.sg.cutepuppies.daos.PostDbImpl;
 import com.sg.cutepuppies.daos.UserDaoInterface;
 import com.sg.cutepuppies.models.Post;
@@ -26,7 +27,7 @@ public class UserDAOTest {
     
     ApplicationContext ctx = new ClassPathXmlApplicationContext("test-applicationContext.xml");
     private UserDaoInterface userDao;
-
+    private PostDaoInterface postDao;
     private JdbcTemplate jdbcTemplate;
     SimpleJdbcCall simpleJdbcCall;
     
@@ -39,6 +40,7 @@ public class UserDAOTest {
         simpleJdbcCall = new SimpleJdbcCall(jdbcTemplate).withProcedureName("reset_CutePuppiesTest");
         simpleJdbcCall.execute();
 
+        postDao = ctx.getBean("PostDBImplTest", PostDaoInterface.class);
         userDao = ctx.getBean("UserDBImplTest", UserDaoInterface.class);
     }
 
@@ -118,21 +120,9 @@ public class UserDAOTest {
     @Test
     public void testGetUserWhoCreatedPost(){
         
-        String date = "2000-11-01";
-        java.sql.Date adminCreateDate = java.sql.Date.valueOf(date);
-
-        User admin = userDao.getUserById(1);
-
-        Post post = new Post();
-        post.setCreatedByUser(admin);
-
-        PostDbImpl postDao = new PostDbImpl();
-       // post = postDao.addPost(post);
+        String admin = "admin";
         
-        //int numPosts = postDao.getAllPosts("").size();
-        
-        
-       // assertEquals(admin, userDao.getUserWhoCreatedPost(numPosts));
+       assertEquals(admin, userDao.getUserWhoCreatedPost(1).getUserName());
     }
     
 }
