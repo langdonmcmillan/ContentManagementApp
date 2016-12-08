@@ -73,7 +73,9 @@
                                 </div>
 
                                 <div class="text-center">
+                                    <sec:authorize access="hasRole('ROLE_ADMIN')">
                                     <button id="deletePostButton" class="btn btn-primary">Archive All Revisions</button>
+                                    </sec:authorize>
                                 </div>
                             </div>
                         </c:if>
@@ -88,7 +90,9 @@
                                 <button id="requestPublishButton" class="btn btn-primary">Submit</button>
                             </sec:authorize>
                             <button id="saveButton" class="btn btn-primary">Save</button>
+                            <sec:authorize access="hasRole('ROLE_ADMIN')">
                             <button id="deleteButton" class="btn btn-primary">Delete</button>
+                            </sec:authorize>
                         </div>
 
                         <div id="sidebarColumn" class="col-md-offset-1 col-md-3">
