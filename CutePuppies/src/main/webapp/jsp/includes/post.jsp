@@ -33,10 +33,10 @@
 
 
     <hr>
-    <c:if test="${not empty post.publishedContent.contentImgLink}">
+<!--    <c:if test="${not empty post.publishedContent.contentImgLink}">
         <img class="img-responsive contentImgLink" src=${post.publishedContent.contentImgLink} alt=${post.publishedContent.contentImgAltTxt}>
     </c:if>
-    <hr>
+    <hr>-->
     <div id="postBody" class = "body">${post.publishedContent.body}</div>
     <hr>
 </div>

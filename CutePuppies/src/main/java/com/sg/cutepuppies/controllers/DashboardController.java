@@ -56,7 +56,7 @@ public class DashboardController {
         this.userDao = userDao;
     }
 
-    @RequestMapping(value = {"/dashboard", "/", "managePosts"}, method = RequestMethod.GET)
+    @RequestMapping(value = {"/dashboard", "/", "managePosts",""}, method = RequestMethod.GET)
     public String getDashBoardPage() {
         return "dashboard";
     }

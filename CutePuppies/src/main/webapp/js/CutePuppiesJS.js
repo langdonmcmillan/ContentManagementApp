@@ -105,14 +105,14 @@ function fillPostSnippetsContainer(posts) {
                         .attr('id', 'tags' + post.publishedContent.contentId)
                         .append($('<img>').attr('src', contextPath + '/img/tag.png')))
                 .append('<hr>')
-                .append($('<a href="post/' + post.postId + '">')
-                        .append($('<img class="img-responsive contentImgLink readMoreLink">')
-                                .attr({
-                                    'src': post.publishedContent.contentImgLink,
-                                    'alt': post.publishedContent.contentImgAltTxt,
-                                    'data-postId': post.postId
-                                })))
-                .append('<hr>')
+//                .append($('<a href="post/' + post.postId + '">')
+//                        .append($('<img class="img-responsive contentImgLink readMoreLink">')
+//                                .attr({
+//                                    'src': post.publishedContent.contentImgLink,
+//                                    'alt': post.publishedContent.contentImgAltTxt,
+//                                    'data-postId': post.postId
+//                                })))
+//                .append('<hr>')
                 .append($('<p class = "body ellipsis">').html(post.publishedContent.body))
                 .append($('<a title="read more" class="readmore readMoreLink" href="post/' + post.postId + '">')
                         .text('Read more »')
