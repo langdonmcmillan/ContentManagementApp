@@ -41,7 +41,7 @@
                         <div class="row">
                             <h4>Content Status</h4>
                             <div id="contentStatusText"></div>
-                            <h4 id="titleText">Post Title</h4>
+                            <h4 id="titleText">Post Title (Required)</h4>
                             <input id="postTitle" class="form-control" placeholder="Title">
                             <p id="titleEmptyError" class="label label-danger"></p>
                             <c:if test="${PageType == 'StaticPage'}">
